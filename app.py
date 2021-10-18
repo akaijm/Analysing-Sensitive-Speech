@@ -52,34 +52,34 @@ app.layout = html.Div([
             dbc.Card([
                 dbc.CardHeader("Posts",  style={'font-size':30}),
                 dbc.CardBody(
-                    [html.H1("text", id = 'numPosts',className="lead",  style={'font-size':30}),
-                        html.P("text",id = 'avgPostLen',className="card-text"
+                    [html.H1(id = 'numPosts',className="lead",  style={'font-size':30}),
+                        html.P(id = 'avgPostLen',className="card-text"
                         )
                     ])
                 ], className="card border-dark mb-3")
-            ], style = {'float':'left','width':'20%'}),
+            ], style = {'float':'left', 'width': 400}),
         #Second card
         html.Div([
             dbc.Card([
                 dbc.CardHeader("Comments",  style={'font-size':30}),
                 dbc.CardBody(
-                    [html.H1("text", id = 'numComments',className="lead",  style={'font-size':30}),
-                        html.P("text",id = 'avgCommentLen',className="card-text"
+                    [html.H1(id = 'numComments',className="lead",  style={'font-size':30}),
+                        html.P(id = 'avgCommentLen',className="card-text"
                         )
                     ])
                 ], className="card border-dark mb-3")
-            ], style = {'float':'left','width':'20%', 'padding-left':20}),
+            ], style = {'float':'left', 'width': 450, 'padding-left':30}),
         #Third card
         html.Div([
             dbc.Card([
                 dbc.CardHeader("Total Users",  style={'font-size':30}),
                 dbc.CardBody(
-                    [html.H1("text", id = 'numUsers',className="lead",  style={'font-size':30}),
-                        html.P("text",id = 'userDescription',className="card-text"
+                    [html.H1(id = 'numUsers',className="lead",  style={'font-size':30}),
+                        html.P(id = 'userDescription',className="card-text"
                         )
                     ])
                 ], className="card border-dark mb-3")
-            ], style = {'float':'left','width':'20%', 'padding-left':20}),
+            ], style = {'float':'left', 'width': 400, 'padding-left':30}),
         ], style={'text-align':'center', 'padding-bottom':250}),
     #2nd row in dashboard
     html.Div([
