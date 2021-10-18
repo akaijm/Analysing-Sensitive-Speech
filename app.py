@@ -68,7 +68,7 @@ app.layout = html.Div([
                         )
                     ])
                 ], className="card border-dark mb-3")
-            ], style = {'float':'left', 'width': 450, 'padding-left':30}),
+            ], style = {'float':'left', 'width': 500, 'padding-left':100}),
         #Third card
         html.Div([
             dbc.Card([
@@ -79,7 +79,7 @@ app.layout = html.Div([
                         )
                     ])
                 ], className="card border-dark mb-3")
-            ], style = {'float':'left', 'width': 400, 'padding-left':30}),
+            ], style = {'float':'left', 'width': 500, 'padding-left':100}),
         ], style={'text-align':'center', 'padding-bottom':250}),
     #2nd row in dashboard
     html.Div([
@@ -142,9 +142,9 @@ app.layout = html.Div([
     
         cyto.Cytoscape(
             id='cytoscape-graph',
-            style={'width': '100%', 'height': '500px'},
+            style={'width': '100%', 'height': 750},
             layout={'name': 'cose','animate':True, 'fit':True
-                    , 'numIter':75, 'gravity': 100, 'nodeRepulsion': 500000000, 
+                    , 'numIter':100, 'gravity': 100, 'nodeRepulsion': 500000000, 
                     'boundingBox':{'x1':0, 'x2':7000, 'y1':0, 'y2':5000}},
             responsive = True,
             maxZoom = 0.2,
