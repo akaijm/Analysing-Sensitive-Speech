@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 
 def prepare_network_data():
-    data = pd.read_pickle('hashed_0_data.h5') 
+    data = pd.read_pickle('data/hashed_0_data.h5') 
 
     #Remove null post id
     post_data = data[data['hashed_post_id'] != 0]
@@ -55,6 +55,6 @@ def prepare_network_data():
     responses_new['time_elapsed'] = responses_new['comment_time'] - responses_new['post_time']
 
     #Save to CSV
-    responses_new.to_csv('time_elapsed.csv', index = False)
+    responses_new.to_csv('time_elapsed.csv2', index = False)
 if __name__ == "__main__":
     prepare_network_data()

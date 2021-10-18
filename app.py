@@ -24,7 +24,7 @@ styles = {
 }
 
 #Read in data
-data = pd.read_csv('time_elapsed.csv',encoding="utf-8")
+data = pd.read_csv('data/time_elapsed.csv',encoding="utf-8")
 data['post_time'] = pd.to_datetime(data['post_time'])
 data['comment_time'] = pd.to_datetime(data['comment_time'])
 data['time_elapsed'] = pd.to_timedelta(data['time_elapsed'])
