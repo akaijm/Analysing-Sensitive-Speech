@@ -111,10 +111,10 @@ app.layout = html.Div([
         #Fourth card
         html.Div([
             dbc.Card([
-                dbc.CardHeader("Peak Month",  style={'font-size':30}),
+                dbc.CardHeader("Peak Hour",  style={'font-size':30}),
                 dbc.CardBody(
-                    [html.H1(id = 'peakMonth',className="lead",  style={'font-size':30}),
-                        html.P(id = 'peakMonthAvg',className="card-text"
+                    [html.H1(id = 'peakHour',className="lead",  style={'font-size':30}),
+                        html.P(id = 'peakHourAvg',className="card-text"
                         )
                     ])
                 ], className="card border-dark mb-3")
@@ -133,10 +133,10 @@ app.layout = html.Div([
         #Sixth card
         html.Div([
             dbc.Card([
-                dbc.CardHeader("Peak Hour",  style={'font-size':30}),
+                dbc.CardHeader("Peak Month",  style={'font-size':30}),
                 dbc.CardBody(
-                    [html.H1(id = 'peakHour',className="lead",  style={'font-size':30}),
-                        html.P(id = 'peakHourAvg',className="card-text"
+                    [html.H1(id = 'peakMonth',className="lead",  style={'font-size':30}),
+                        html.P(id = 'peakMonthAvg',className="card-text"
                         )
                     ])
                 ], className="card border-dark mb-3")
