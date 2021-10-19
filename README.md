@@ -10,7 +10,7 @@ The objective of this project is to analyze sensitive speech in social media, as
 The code is set up into several main directories:
 - [**data**](https://github.com/Yocodeyo/Analysing-Sensitive-Speech/tree/main/data): contains the data to be used for model training and dashboarding
   - [**hashed__0_data**](https://github.com/Yocodeyo/Analysing-Sensitive-Speech/blob/main/data/hashed_0_data.h5): Raw data provided by the client
-  - [**time_elapsed.csv**](https://github.com/Yocodeyo/Analysing-Sensitive-Speech/blob/main/data/time_elapsed.csv): Processed data with cleaned post_dates
+  - [**time_elapsed.csv**](https://github.com/Yocodeyo/Analysing-Sensitive-Speech/blob/main/data/time_elapsed.csv): Contains unique comments and replies aggregated together, including the time_elapsed before each comment was made
 - [**assets**](https://github.com/Yocodeyo/Analysing-Sensitive-Speech/tree/main/assets): Contains css stylesheets for the dashboard
 - Are we including our models and notebooks in here too?
 
