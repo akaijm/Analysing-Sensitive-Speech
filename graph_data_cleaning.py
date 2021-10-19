@@ -55,6 +55,6 @@ def prepare_network_data():
     responses_new['time_elapsed'] = responses_new['comment_time'] - responses_new['post_time']
 
     #Save to CSV
-    responses_new.to_csv('time_elapsed.csv2', index = False)
+    responses_new.to_csv('data/time_elapsed.csv', index = False)
 if __name__ == "__main__":
     prepare_network_data()
