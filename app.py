@@ -74,7 +74,7 @@ app.layout = html.Div([
                 id='filter_cards',
                 options=[{'label': i, 'value': i} for i in all_labels],
                 placeholder="Filter by Label",
-            )], style={'width': 200,'padding-bottom':10}),
+            )], style={'width': '15%','padding-bottom':10}),
         #First card
          html.Div([
             dbc.Card([
@@ -85,7 +85,7 @@ app.layout = html.Div([
                         )
                     ])
                 ], className="card border-dark mb-3")
-            ], style = {'float':'left', 'width': 350}),
+            ], style = {'float':'left', 'width': '15%'}),
         #Second card
         html.Div([
             dbc.Card([
@@ -96,7 +96,7 @@ app.layout = html.Div([
                         )
                     ])
                 ], className="card border-dark mb-3")
-            ], style = {'float':'left', 'width': 400, 'padding-left':5}),
+            ], style = {'float':'left', 'width': '20%', 'padding-left':5}),
         #Third card
         html.Div([
             dbc.Card([
@@ -107,7 +107,7 @@ app.layout = html.Div([
                         )
                     ])
                 ], className="card border-dark mb-3")
-            ], style = {'float':'left', 'width': 400, 'padding-left':5}),
+            ], style = {'float':'left', 'width': '20%', 'padding-left':5}),
         #Fourth card
         html.Div([
             dbc.Card([
@@ -118,7 +118,7 @@ app.layout = html.Div([
                         )
                     ])
                 ], className="card border-dark mb-3")
-            ], style = {'float':'left', 'width': 300, 'padding-left':5}),
+            ], style = {'float':'left', 'width': '15%', 'padding-left':5}),
         #Fifth card
         html.Div([
             dbc.Card([
@@ -129,7 +129,7 @@ app.layout = html.Div([
                         )
                     ])
                 ], className="card border-dark mb-3")
-            ], style = {'float':'left', 'width': 350, 'padding-left':5}),
+            ], style = {'float':'left', 'width': '15%', 'padding-left':5}),
         #Sixth card
         html.Div([
             dbc.Card([
@@ -140,7 +140,7 @@ app.layout = html.Div([
                         )
                     ])
                 ], className="card border-dark mb-3")
-            ], style = {'float':'left', 'width': 350, 'padding-left':5}),
+            ], style = {'float':'left', 'width': '15%', 'padding-left':5}),
         ], style={'text-align':'center', 'padding-bottom':250}),
     #2nd row in dashboard
     html.Div([
