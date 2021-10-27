@@ -6,6 +6,7 @@ from dash import html
 from dash import dash_table
 from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
+import numpy as np
 
 import plotly.express as px
 import plotly.graph_objs as go
@@ -17,6 +18,7 @@ from apps import topic_modeling, desc_analyses, time_series, sentiment_analysis,
 text_df = pd.read_csv("outputs/text_data.csv") # can change this dataset, just using it for the labels!
 unique_labs = text_df['pred_label'].unique()
 unique_labs.sort()
+unique_labs = np.append(unique_labs, 'All')
 
 app.layout = html.Div([
     html.H2("Dashboard for Analyzing Sensitive Speech",
