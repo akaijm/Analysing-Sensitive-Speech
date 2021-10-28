@@ -14,7 +14,7 @@ import plotly.graph_objs as go
 
 from app import app
 
-data_filtered = pd.read_csv('outputs/data/time_elapsed_filtered.csv',encoding="utf-8")
+data_filtered = pd.read_csv('outputs/time_series_graphs/time_elapsed_filtered.csv',encoding="utf-8")
 data_filtered['post_time'] = pd.to_datetime(data_filtered['post_time'])
 data_filtered['comment_time'] = pd.to_datetime(data_filtered['comment_time'])
 data_filtered['time_elapsed'] = pd.to_timedelta(data_filtered['time_elapsed'])
@@ -44,9 +44,10 @@ layout = html.Div([
 @app.callback(
     Output('monthly_time_series', 'figure'),
     Input('Aggregation Period', 'value'),
+    Input('selected_label', 'value'),
     Input('Content Type', 'value'))
 
-def update_time_series(time_frame, content_type):
+def update_time_series(time_frame, label, content_type):
 
     post_time = data_filtered.loc[data_filtered.groupby('hashed_post_id')['post_time'].idxmin()].reset_index(drop = True).copy()
     post_time = post_time.rename(columns = {'post_text_pred':'label', 'post_time':'time'})
@@ -64,6 +65,10 @@ def update_time_series(time_frame, content_type):
         timeSeries = comment_time
     else:
         timeSeries = pd.concat([post_time, comment_time])
+
+    #Filter by selected label
+    if label != 'all':
+        timeSeries = timeSeries[timeSeries['label'] == label]
 
     #Aggregate by chosen timeframe
     if time_frame == 'Yearly':

@@ -16,7 +16,7 @@ HEADER_FONT_SIZE = 20
 BODY_FONT_SIZE = 25
 
 #Read in the processed data with post_dates set prior to the earliest comment_date
-data = pd.read_csv('outputs/data/time_elapsed.csv',encoding="utf-8")
+data = pd.read_csv('outputs/overview_cards post-centric_graph/time_elapsed.csv',encoding="utf-8")
 data['post_time'] = pd.to_datetime(data['post_time'])
 data['comment_time'] = pd.to_datetime(data['comment_time'])
 data['time_elapsed'] = pd.to_timedelta(data['time_elapsed'])
@@ -28,17 +28,6 @@ all_labels[::-1].sort()
 all_labels = np.append(['all'], all_labels)
 
 layout = html.Div([
-            html.Div([
-                dcc.Dropdown(
-                        id='filter_time',
-                        options=[{'label': 'Peak Hour', 'value': 'Hourly'},{'label': 'Peak Day', 'value': 'Daily'},
-                                    {'label': 'Peak Month', 'value': 'Monthly'}],
-                        placeholder="Peak Time Period",
-                        style={'width': '100%'}
-                    )
-                    ], style={'width':'15%', 'padding-bottom':10,
-                                'display':'flex','align-items':'left',
-                                'text-align':'left', 'padding-left':10}),
             dbc.Row([
                 dbc.Col([
                     dbc.Card([
@@ -72,7 +61,7 @@ layout = html.Div([
                 ]),
                 dbc.Col([
                     dbc.Card([
-                    dbc.CardHeader("Total Users",  style={'font-size':HEADER_FONT_SIZE}),
+                    dbc.CardHeader("Total Users",className="lead",  style={'font-size':HEADER_FONT_SIZE}),
                     dbc.CardBody(
                         [html.H1(id = 'numUsers',className="lead",  style={'font-size':BODY_FONT_SIZE}),
                             html.P(id = 'userDescription',className="card-text"
@@ -82,7 +71,14 @@ layout = html.Div([
                 ]),
                 dbc.Col([
                     dbc.Card([
-                    dbc.CardHeader("Peak Hour", id = 'peakTitle',  style={'font-size':HEADER_FONT_SIZE}),
+                    #dbc.CardHeader("Peak Hour", id = 'peakTitle',  style={'font-size':HEADER_FONT_SIZE}),
+                    dbc.CardHeader(dcc.Dropdown(
+                        id='filter_time',
+                        options=[{'label': 'Peak Hour', 'value': 'Hourly'},{'label': 'Peak Day', 'value': 'Daily'},
+                                    {'label': 'Peak Month', 'value': 'Monthly'}],
+                        value = 'Hourly',
+                        style={'width': '100%'}
+                    ),  style={'font-size':HEADER_FONT_SIZE}),
                     
                     dbc.CardBody(
                         [
@@ -90,7 +86,7 @@ layout = html.Div([
                             html.P(id = 'peakHourAvg',className="card-text"
                             )
                         ])
-                    ], className="card border-dark mb-3")
+                    ], className="card border-dark mb-3", style = {'height':'87%'})
                 ])
             ])], style={'text-align':'center', 'padding-bottom':10, 'padding-left':10, 'padding-right':10})
 
@@ -104,7 +100,7 @@ Output("numComments", "children"),
 Output("avgCommentLen", "children"),
 Output("numUsers", "children"),
 Output("userDescription", "children"),
-Output("peakTitle", "children"),
+#Output("peakTitle", "children"),
 Output("peakHour", "children"),
 Output("peakHourAvg", "children"),
 Output("avgPostLen", "style"),
@@ -226,7 +222,7 @@ def helper(label, time_period):
     likes_text = f'Posts with >0 likes: {posts_with_likes}%'
 
     return [num_posts, post_length_text, num_likes, likes_text, num_comments,
-                comment_length_text, all_users, user_description, cardTitle,
+                comment_length_text, all_users, user_description, 
                  peak_period, periodic_text, post_color, comment_color]
 
 def format_time(time):
