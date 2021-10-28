@@ -1,4 +1,10 @@
 # Importing modules
+import pandas as pd
+import numpy as np
+import networkx as nx
+import re
+
+import dash
 from dash import dcc
 from dash import html
 from dash import dash_table
@@ -6,23 +12,13 @@ from dash.dependencies import Input, Output
 import dash_bootstrap_components as dbc
 
 import plotly.express as px
+import plotly.offline as py
 import plotly.graph_objs as go
 
 from app import app
 
-##add code for individual
-import pandas as pd
-import dash_table as dt
-import dash_bootstrap_components as dbc
-import numpy as np
-import plotly.offline as py
-import plotly.graph_objects as go
-import networkx as nx
-import re
-
-
 #load nodes infoamation
-nodesdf = pd.read_csv("nodes.csv")
+nodesdf = pd.read_csv("outputs/agg_network/nodes.csv")
 nodesdfpost = nodesdf[nodesdf['type']=='post']
 nodesdfresponse = nodesdf[nodesdf['type']=='response']
 nodesdf2 = nodesdf[['topic','centrality']].sort_values(by=['centrality'], ascending=False).head(10)
@@ -57,7 +53,7 @@ for p_label in nodes.keys():
         network.add_node(p_label, size = nodes[p_label][0]/1000+1, node_color=nodes[p_label][1], symbol=nodes[p_label][2],freq=nodes[p_label][3],centrality=nodes[p_label][4])
 
 #load edge information
-edges=pd.read_csv('edges.csv')
+edges=pd.read_csv('outputs/agg_network/edges.csv')
 edgedf2 = edges[['source','target','weight']].sort_values(by=['weight'], ascending=False).head(10)
 print(edgedf2.head())
 
@@ -172,12 +168,6 @@ fig.update_yaxes(showticklabels = False)
 #fig.show()
 #py.plot(fig, filename='network.html')
 labels=['import','agreement','racist','culture','dehuman','ingroup','insult','opp','others','tyrannical','vto pap']
-
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
-
 graph_div=html.Div([
             html.P('Choose the post topic of your interest:'),
             dcc.Checklist(
@@ -323,10 +313,10 @@ def update_graph(boxval, sliderval):
     
 def update_graph(choice):
     if choice=='centrality':
-        return html.Div([dt.DataTable(id='tbl', data=nodesdf2.to_dict('records'),columns=[{"name": i, "id": i} for i in nodesdf2.columns])],style={'width': '50%','display': 'inline-block','text-align':'center'})
+        return html.Div([dash_table.DataTable(id='tbl', data=nodesdf2.to_dict('records'),columns=[{"name": i, "id": i} for i in nodesdf2.columns])],style={'width': '50%','display': 'inline-block','text-align':'center'})
     if choice=='pfrequency':
-        return html.Div([dt.DataTable(id='tbl2', data=nodesdfpostfrequency.to_dict('records'),columns=[{"name": i, "id": i} for i in nodesdfpostfrequency.columns])],style={'width': '50%','display': 'inline-block','text-align':'center'})
+        return html.Div([dash_table.DataTable(id='tbl2', data=nodesdfpostfrequency.to_dict('records'),columns=[{"name": i, "id": i} for i in nodesdfpostfrequency.columns])],style={'width': '50%','display': 'inline-block','text-align':'center'})
     if choice=='rfrequency':
-        return html.Div([dt.DataTable(id='tbl4', data=nodesdfresponsefrequency.to_dict('records'),columns=[{"name": i, "id": i} for i in nodesdfresponsefrequency.columns])],style={'width': '50%','display': 'inline-block','text-align':'center'})
+        return html.Div([dash_table.DataTable(id='tbl4', data=nodesdfresponsefrequency.to_dict('records'),columns=[{"name": i, "id": i} for i in nodesdfresponsefrequency.columns])],style={'width': '50%','display': 'inline-block','text-align':'center'})
     if choice=='weight':
-        return html.Div([dt.DataTable(id='tbl3', data=edgedf2.to_dict('records'),columns=[{"name": i, "id": i} for i in edgedf2.columns])],style={'width': '50%','display': 'inline-block','text-align':'center'})
+        return html.Div([dash_table.DataTable(id='tbl3', data=edgedf2.to_dict('records'),columns=[{"name": i, "id": i} for i in edgedf2.columns])],style={'width': '50%','display': 'inline-block','text-align':'center'})

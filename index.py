@@ -22,7 +22,7 @@ unique_labs.sort()
 unique_labs.insert(0, "all")
 
 app.layout = html.Div([
-    dcc.Tabs(id='tabs_dashboard', value='Overall', children=[
+    dcc.Tabs(id='tabs_dashboard', value='overall', children=[
         dcc.Tab(
             html.Div([
                 html.H2("Dashboard for Analyzing Sensitive Speech",
@@ -52,7 +52,7 @@ app.layout = html.Div([
                 "paddingLeft": '30px',
                 "paddingRight": '30px',
                 "paddingTop": '30px'
-            }), label='Overall', value='Overall'),
+            }), label='Overall', value='overall'),
         dcc.Tab(
             html.Div([
                 html.H2("Dashboard for Analyzing Sensitive Speech",
@@ -62,7 +62,7 @@ app.layout = html.Div([
                 "paddingLeft": '30px',
                     "paddingRight": '30px',
                     "paddingTop": '30px'
-            }), label='Network Graphs', value='Network Graphs'),
+            }), label='Network Graphs', value='network_graphs'),
     ])
 ])
 
