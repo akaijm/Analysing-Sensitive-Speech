@@ -60,8 +60,8 @@ app.layout = html.Div([
                 html.Div([agg_network.layout], className="mt-3"),
                 html.Div([post_cent_network.layout], className="mt-3")], style={
                 "paddingLeft": '30px',
-                    "paddingRight": '30px',
-                    "paddingTop": '30px'
+                "paddingRight": '30px',
+                "paddingTop": '30px'
             }), label='Network Graphs', value='network_graphs'),
     ])
 ])
