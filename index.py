@@ -14,6 +14,7 @@ import plotly.graph_objs as go
 
 from app import app
 from apps import topic_modeling, desc_analyses, time_series, sentiment_analysis, ecdf, agg_network, post_cent_network, absa, emotion_classif
+app.config.suppress_callback_exceptions=True
 
 # Default dataset
 # can change this dataset, just using it for the labels!
@@ -65,7 +66,7 @@ app.layout = html.Div([
                     "padding-top": '30px'
             }), label='Network Graphs', value='Network Graphs'),
     ]),
-    html.Div(id='tabs-example-content-1')
+    html.Div(id='tabs-content')
 ])
 
 if __name__ == '__main__':
