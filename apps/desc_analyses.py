@@ -77,6 +77,7 @@ layout = html.Div([
                         options=[{'label': 'Peak Hour', 'value': 'Hourly'},{'label': 'Peak Day', 'value': 'Daily'},
                                     {'label': 'Peak Month', 'value': 'Monthly'}],
                         value = 'Hourly',
+                        clearable=False,
                         style={'width': '100%'}
                     ),  style={'font-size':HEADER_FONT_SIZE}),
                     
