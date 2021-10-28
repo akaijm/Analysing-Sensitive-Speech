@@ -22,7 +22,7 @@ nodesdf = pd.read_csv("outputs/agg_network/nodes.csv")
 nodesdfpost = nodesdf[nodesdf['type'] == 'post']
 nodesdfresponse = nodesdf[nodesdf['type'] == 'response']
 nodesdf2 = nodesdf[['topic', 'centrality']].sort_values(
-    by=['centrality'], ascending=False).head(10)
+    by=['centrality'], ascending=False)
 nodesdfpostfrequency = nodesdfpost[['topic', 'freq']].sort_values(
     by=['freq'], ascending=False)
 nodesdfresponsefrequency = nodesdfresponse[[
@@ -186,7 +186,7 @@ layout = html.Div([
             [
                 dbc.Col([
                     html.P(
-                        'Choose the post topic of your interest:'),
+                        'Choose the post topic of your interest:',style={'font-weight': 'bold'}),
                     dcc.Checklist(
                         id='checkbox',
                         options=[
@@ -212,7 +212,7 @@ layout = html.Div([
                                'import', 'others', 'insult', 'opp', 'agreement', 'racist']
                     ),
                     html.P(
-                        'Drag the slider to see edges with weights higher than your chosen threshold:'),
+                        'Drag the slider to see edges with weights higher than your chosen threshold:',style={'font-weight': 'bold'}),
                     dcc.Slider(
                         id='my-slider',
                         min=0,
@@ -221,8 +221,8 @@ layout = html.Div([
                         value=1000,
                     ),
                     dcc.Graph(id='network', figure=fig, style={
-                              'width': '100%', 'height': '60vh', 'display': 'inline-block'})
-                ]),
+                              'width': '100%', 'height': '90vh', 'display': 'inline-block'})
+                ], width=8),
                 dbc.Col([
                     dcc.Tabs(id="tabs", value='centrality', children=[
                         dcc.Tab(label='centrality', value='centrality'),
@@ -232,8 +232,8 @@ layout = html.Div([
                         dcc.Tab(label='weight', value='weight')
                     ]),
                     html.Div(id='table', style={
-                        'display': 'inline-block', 'text-align': 'center'})
-                ])
+                        'display': 'inline-block'})
+                ], width=4)
             ]
         )
     ], style={'width': '100%', 'display': 'inline-block'})
@@ -251,6 +251,7 @@ def update_graph(boxval, sliderval):
     responsename = labels+'_response'
     cnt = 0
     colors = list(node_trace['marker']['color'])
+    texts=list(node_trace['text'])
     for i in network.nodes().keys():
         topici = i.split('_')[0]
         typei = i.split('_')[1]
@@ -263,6 +264,7 @@ def update_graph(boxval, sliderval):
         else:
             if topici not in boxval and typei == 'post':
                 colors[cnt] = 'white'
+                texts[cnt]=""
             else:
                 if topici == 'dehuman':
                     colors[cnt] = '#f0063e'
@@ -288,6 +290,7 @@ def update_graph(boxval, sliderval):
                     colors[cnt] = '#551f02'
         cnt += 1
     node_trace2['marker']['color'] = tuple(colors)
+    node_trace2['text']=tuple(texts)
     fig = go.Figure(layout=fig_layout)
 
     # For each edge, make an edge_trace, append to list
