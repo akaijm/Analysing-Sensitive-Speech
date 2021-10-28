@@ -287,6 +287,7 @@ def make_node(input, node_type, cluster_size = 1):
         label = input['post_text_pred']
         time = input['post_time'].strftime('%d-%m-%Y %X')
         username = input['hashed_username']
+        #sentiment = input['sentiment']
         #Check for NaN
         if input['post_text'] == input['post_text']:
             #Remove next line characters
@@ -297,7 +298,7 @@ def make_node(input, node_type, cluster_size = 1):
         reactions = input['reactions']
 
         element = {'data': {'label': label, 'text': text, 'cluster_size':cluster_size,'id': hashed_id, 'time': time, 'username': username,
-                            'group':group,'likes': likes, 'size': min(400, max(200,likes/5)), 'reactions':reactions},'classes':'post'}
+                             'group':group,'likes': likes, 'size': min(400, max(200,likes/5)), 'reactions':reactions},'classes':'post'}
 
     elif node_type == 'comment':
         #comment
