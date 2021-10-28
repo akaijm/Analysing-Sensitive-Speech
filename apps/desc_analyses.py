@@ -21,12 +21,6 @@ data['post_time'] = pd.to_datetime(data['post_time'])
 data['comment_time'] = pd.to_datetime(data['comment_time'])
 data['time_elapsed'] = pd.to_timedelta(data['time_elapsed'])
 
-all_labels = ['all']
-all_labels = data['post_text_pred'].unique()
-#Sort in descending order
-all_labels[::-1].sort()
-all_labels = np.append(['all'], all_labels)
-
 layout = html.Div([
             dbc.Row([
                 dbc.Col([
@@ -71,7 +65,6 @@ layout = html.Div([
                 ]),
                 dbc.Col([
                     dbc.Card([
-                    #dbc.CardHeader("Peak Hour", id = 'peakTitle',  style={'font-size':HEADER_FONT_SIZE}),
                     dbc.CardHeader(dcc.Dropdown(
                         id='filter_time',
                         options=[{'label': 'Peak Hour', 'value': 'Hourly'},{'label': 'Peak Day', 'value': 'Daily'},
@@ -101,7 +94,6 @@ Output("numComments", "children"),
 Output("avgCommentLen", "children"),
 Output("numUsers", "children"),
 Output("userDescription", "children"),
-#Output("peakTitle", "children"),
 Output("peakHour", "children"),
 Output("peakHourAvg", "children"),
 Output("avgPostLen", "style"),
@@ -126,7 +118,6 @@ def helper(label, time_period):
     avg_post_length = round(post_lengths.str.len().median())
 
     #Sentiment score of each post
-    #post_score = posts[posts["post_sentiment"] != 0]['post_sentiment']
 
     post_filtered = posts[posts['include'] == 1]['sentiment']
     post_sentiment = round(post_filtered.mean(), 2)
@@ -140,8 +131,8 @@ def helper(label, time_period):
     num_comments = f'{len(comments):,}'
     #Average length of each comment
     avg_comment_length = round(comments['comment_text'].str.len().median())
+    
     #Sentiment score of each comment
-    #comment_score = comments[comments["comment_sentiment"] != 0]['comment_sentiment']
 
     #Experiment with filtering by word length
     comment_filtered = comments[comments['include'] == 1]['sentiment']

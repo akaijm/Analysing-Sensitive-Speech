@@ -96,55 +96,55 @@ layout = html.Div([
                             {
                                 'selector' :'[label ^= "vto pap"]',
                                 'style': {
-                                    'background-color': '#B6D0E2'
+                                    'background-color': '#B6D0E2' #light blue
                             }
                                 },
                             {
                                 'selector' :'[label ^= "dehuman"]',
                                 'style': {
-                                    'background-color': '#f0063e'
+                                    'background-color': '#f0063e' #red
                             }
                                 },
                             {
                                 'selector' :'[label ^= "ingroup"]',
                                 'style': {
-                                    'background-color': '#f0d137'
+                                    'background-color': '#f0d137' #yellow
                             }
                                 },
                             {
                                 'selector' :'[label ^= "culture"]',
                                 'style': {
-                                    'background-color': '#cfa502'
+                                    'background-color': '#cfa502' #light brown
                             }
                                 },
                             {
                                 'selector' :'[label ^= "import"]',
                                 'style': {
-                                    'background-color': '#eb8bbe'
+                                    'background-color': '#eb8bbe' #pink
                             }
                                 },
                             {
                                 'selector' :'[label ^= "racist"]',
                                 'style': {
-                                    'background-color': '#551f02' 
+                                    'background-color': '#551f02' #dark brown
                             }
                                 },
                             {
                                 'selector' :'[label ^= "agreement"]',
                                 'style': {
-                                    'background-color': '#316102' #light green
+                                    'background-color': '#316102' #dark green
                             }
                                 },
                             {
                                 'selector' :'[label ^= "opp"]',
                                 'style': {
-                                    'background-color': '#7cf605'
+                                    'background-color': '#7cf605' #light green
                             }
                                 },
                             {
                                 'selector' :'[label ^= "others"]',
                                 'style': {
-                                    'background-color': '#cacdc7' 
+                                    'background-color': '#cacdc7' #grey
                             }
                                 },
                             {
@@ -194,63 +194,63 @@ layout = html.Div([
                                 'selector' :'.vto pap',
                                 'style': {
                                     'line-color':'#B6D0E2',
-                                    'background-color': '#B6D0E2'
+                                    'background-color': '#B6D0E2' #light blue
                             }
                                 },
                             {
                                 'selector' :'.dehuman',
                                 'style': {
                                     'line-color':'#f0063e',
-                                    'background-color': '#f0063e'
+                                    'background-color': '#f0063e' #red
                             }
                                 },
                             {
                                 'selector' :'.ingroup',
                                 'style': {
                                     'line-color':'#f0d137',
-                                    'background-color': '#f0d137'
+                                    'background-color': '#f0d137' #yellow
                             }
                                 },
                             {
                                 'selector' :'.culture',
                                 'style': {
                                     'line-color':'#cfa502',
-                                    'background-color': '#cfa502'
+                                    'background-color': '#cfa502' #light brown
                             }
                                 },
                             {
                                 'selector' :'.import',
                                 'style': {
                                     'line-color':'#eb8bbe',
-                                    'background-color': '#eb8bbe'
+                                    'background-color': '#eb8bbe' #pink
                             }
                                 },
                             {
                                 'selector' :'.racist',
                                 'style': {
                                     'line-color':'#551f02',
-                                    'background-color': '#551f02' 
+                                    'background-color': '#551f02'#dark brown
                             }
                                 },
                             {
                                 'selector' :'.agreement',
                                 'style': {
                                     'line-color':'#316102',
-                                    'background-color': '#316102' #light green
+                                    'background-color': '#316102' #dark green
                             }
                                 },
                             {
                                 'selector' :'.opp',
                                 'style': {
                                     'line-color':'#7cf605',
-                                    'background-color': '#7cf605'
+                                    'background-color': '#7cf605' #light green
                             }
                                 },
                             {
                                 'selector' :'.others',
                                 'style': {
                                     'line-color':'#cacdc7',
-                                    'background-color': '#cacdc7' 
+                                    'background-color': '#cacdc7' #grey
                             }
                                 },
                             {
@@ -287,7 +287,6 @@ def make_node(input, node_type, cluster_size = 1):
         label = input['post_text_pred']
         time = input['post_time'].strftime('%d-%m-%Y %X')
         username = input['hashed_username']
-        #sentiment = input['sentiment']
         #Check for NaN
         if input['post_text'] == input['post_text']:
             #Remove next line characters
@@ -323,7 +322,6 @@ def make_node(input, node_type, cluster_size = 1):
 @app.callback(
     Output('cytoscape-graph', 'elements'),
     Input('search_box', 'value'),
-    #Input('selected_label', 'value'),
     Input('filter_label', 'value'),
     Input('filter_group', 'value'),
     Input('top_n_clusters', 'value'),
