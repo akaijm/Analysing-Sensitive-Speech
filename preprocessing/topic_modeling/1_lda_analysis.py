@@ -37,7 +37,7 @@ for n in range(3,12):
 
   df['topic_pred'] = lda_est_topics
   df['topic_pred_score'] = lda_est_scores
-  #df['short_text'] = [t[:200] + "..." if len(t) > 500 else t for t in df['text']] # not necessary the next time ran
+  #df['short_text'] = [t[:200] + "..." if len(t) > 500 else t for t in df['text']]
 
   topic_df_dict = {'topic_no': [], 'topic_words': [], 'word_weights': []}
 
