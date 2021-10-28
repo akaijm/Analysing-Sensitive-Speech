@@ -12,7 +12,7 @@ dictionary = pickle.load(open("dictionary2_.p", 'rb'))
 doc_term_matrix = pickle.load(open("doc_term_matrix2_.p", 'rb'))
 
 # Default values of o and n
-o = 0 # not going to optimize hyperparams, find that it is better.
+o = 0 # optimize_interval=o, modify this to change optimize_interval
 # Precalculations for all the models from n = 3 to n = 11.
 
 for n in range(3,12):
