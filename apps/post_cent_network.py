@@ -295,9 +295,10 @@ def make_node(input, node_type, cluster_size = 1):
             text = ' '
         likes = input['likes']
         reactions = input['reactions']
+        sentiment = round(input['sentiment'], 2)
 
         element = {'data': {'label': label, 'text': text, 'cluster_size':cluster_size,'id': hashed_id, 'time': time, 'username': username,
-                             'group':group,'likes': likes, 'size': min(400, max(200,likes/5)), 'reactions':reactions},'classes':'post'}
+                             'sentiment': sentiment, 'group': group,'likes': likes, 'size': min(400, max(200,likes/5)), 'reactions':reactions},'classes':'post'}
 
     elif node_type == 'comment':
         #comment
@@ -311,10 +312,11 @@ def make_node(input, node_type, cluster_size = 1):
         else:
             text = ' '
         likes = input['likes']
+        sentiment = round(input['sentiment'], 2)
         #Convert time elapsed to minutes
         elapsed = input['time_elapsed'].days*1440 + round(input['time_elapsed'].seconds/60,2)
         element = {'data': {'label': label, 'text': text, 'num_comments':cluster_size,'id': hashed_id, 'group': group, 'time': time, 'username': username,
-                            'likes':likes, 'time_elapsed':f'{elapsed:.2f} minutes'}}
+                            'sentiment': sentiment,'likes':likes, 'time_elapsed':f'{elapsed:.2f} minutes'}}
         
     return element
 
@@ -350,7 +352,7 @@ def update_graph(search, label_name, group_name, num_clusters, time_elapsed, tim
         post_df = post_df[post_df['post_text'].str.contains(search, case = False, na=False)]
     
     #Get top n posts in terms of number of reactions
-    posts=post_df[['group','likes','comments','shares','reactions',
+    posts=post_df[['group','likes','comments','shares','reactions', 'sentiment',
                'reaction_count','hashed_post_id',
                'hashed_username','post_text','post_time','post_text_pred']].reset_index(drop = True)
     posts = posts.sort_values(by = 'reaction_count', ascending = False).iloc[0:num_clusters].reset_index(drop = True)
@@ -364,7 +366,7 @@ def update_graph(search, label_name, group_name, num_clusters, time_elapsed, tim
     for count, post_id in enumerate(posts['hashed_post_id'].unique()):
         comment_df = comments[comments['hashed_post_id'] == post_id]
         comment_df = comment_df.dropna(subset = ['comment_text', 'comment_time'])
-        comment_df=comment_df[['group','likes','comments','shares','reactions','reaction_count','hashed_post_id', 
+        comment_df=comment_df[['group','likes','comments','shares','reactions','reaction_count','hashed_post_id', 'sentiment',
                         'hashed_comment_id','hashed_commenter_name','comment_text','comment_time','comment_text_pred',
                         'comment_text_pred_prob', 'time_elapsed']]
         
@@ -407,11 +409,11 @@ def displayTapNodeData(data):
     if data:
         #Check if it is a post
         if 'cluster_size' in data:
-            for key in ['label', 'text', 'cluster_size', 'time', 'group', 'reactions']:
+            for key in ['label', 'text', 'cluster_size', 'sentiment', 'time', 'group', 'reactions']:
                 data_copy[key] = data[key]
         #Check if it is a comment
         elif 'time_elapsed' in data:
-            for key in ['text', 'label', 'time', 'time_elapsed', 'num_comments', 'likes']:
+            for key in ['text', 'label', 'sentiment', 'time_elapsed', 'time', 'num_comments', 'likes']:
                 data_copy[key] = data[key]
 
         #Node must be a text overlay
