@@ -14,6 +14,7 @@ import plotly.graph_objs as go
 
 from app import app
 from apps import topic_modeling, desc_analyses, time_series, sentiment_analysis, ecdf, agg_network, post_cent_network, absa, emotion_classif
+app.config.suppress_callback_exceptions=True
 
 # Default dataset
 text_df = pd.read_csv("outputs/text_data.csv") # can change this dataset, just using it for the labels!
@@ -22,18 +23,18 @@ unique_labs.sort()
 unique_labs.insert(0, "all")
 
 app.layout = html.Div([
-    dcc.Tabs(id='tabs-example', value='Overall', children=[
+    dcc.Tabs(id='tabs-header', value='Overall', children=[
         dcc.Tab(label='Overall', value='Overall'),
         dcc.Tab(label='Network Graphs', value='Network Graphs'),
     ]),
-    html.Div(id='tabs-example-content-1')
+    html.Div(id='tabs-content')
 ])
 
 @app.callback(
-    Output('tabs-example-content-1', 'children'),
-    Input('tabs-example', 'value')
+    Output('tabs-content', 'children'),
+    Input('tabs-header', 'value')
 )
-def render_content(tab):
+def generate_content(tab):
     if tab == 'Overall':
         return html.Div([
             html.H2("Dashboard for Analyzing Sensitive Speech",
@@ -76,4 +77,4 @@ def render_content(tab):
                 })
 
 if __name__ == '__main__':
-    app.run_server(debug=True,dev_tools_ui=False)
+    app.run_server(debug=True)
