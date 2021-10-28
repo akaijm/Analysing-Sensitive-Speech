@@ -272,7 +272,7 @@ layout = html.Div([
             ),
             html.Pre(id='cytoscape-tapNodeData-json', style={
                         'border': 'thin lightgrey solid',
-                        'overflowX': 'scroll',
+                        'overflowX': 'auto',
                         'height':'200px'
                     })
             ]),
