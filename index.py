@@ -1,5 +1,4 @@
 # Importing modules
-from numpy.lib.arraysetops import unique
 import pandas as pd
 
 from dash import dcc
@@ -14,7 +13,6 @@ import plotly.graph_objs as go
 
 from app import app
 from apps import topic_modeling, desc_analyses, time_series, sentiment_analysis, ecdf, agg_network, post_cent_network, absa, emotion_classif
-app.config.suppress_callback_exceptions=True
 
 # Default dataset
 # can change this dataset, just using it for the labels!
@@ -53,7 +51,7 @@ app.layout = html.Div([
             ], style={
                 "paddingLeft": '30px',
                 "paddingRight": '30px',
-                "padding-top": '30px'
+                "paddingTop": '30px'
             }), label='Overall', value='Overall'),
         dcc.Tab(
             html.Div([
@@ -63,7 +61,7 @@ app.layout = html.Div([
                 html.Div([post_cent_network.layout], className="mt-3")], style={
                 "paddingLeft": '30px',
                     "paddingRight": '30px',
-                    "padding-top": '30px'
+                    "paddingTop": '30px'
             }), label='Network Graphs', value='Network Graphs'),
     ])
 ])
