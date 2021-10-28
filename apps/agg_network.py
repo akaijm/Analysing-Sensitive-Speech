@@ -316,7 +316,7 @@ def update_graph(boxval, sliderval):
     fig.add_trace(node_trace2)
 
     fig.update_layout(
-        title_text='Interaction larger than "{}" will be shown.'.format(
+        title_text='Showing edges with >{} interactions.'.format(
             sliderval)
     )
     fig.update_layout(showlegend=False)
