@@ -19,9 +19,6 @@ from app import app
 text_df = pd.read_csv("outputs/topic_modeling/text_data5.csv")
 text_df = text_df.round({'topic_pred_score': 3})
 topic_df = pd.read_csv("outputs/topic_modeling/topic_data5.csv", index_col='topic_no')
-# Unique labels for data
-unique_labs = text_df['pred_label'].unique()
-unique_labs.sort()
 # Calculate percentage of short texts, and determine arbitrary threshold. 
 SHORT_THRESHOLD = 80 # texts with 80 characters and below are considered short texts.
 GSDMM_THRESHOLD = 0.65 # when overall percentage of short texts is 65% and above, the preselection of model changes to GSDMM.
@@ -40,7 +37,7 @@ layout = html.Div([
                         id='num_topics',
                         label="No. of Expected Topics in Dataset:",
                         size=250,
-                        value=5,
+                        value=7,
                         min=3,
                         max=11,
                         style={"float":"left"}
@@ -177,7 +174,10 @@ def update_clickdata(label):
 def update_piechart(label, df_jsons):
     text_df, topic_df = pd.read_json(df_jsons[0]), pd.read_json(df_jsons[1]) # can cache to make this process faster. If callback is not triggered by df_jsons, can use previously cached df
     # Label changes - model filtered, proportions change but topics remain the same
-    label_df = text_df[text_df['pred_label'] == label]
+    if label == "all":
+        label_df = text_df
+    else:
+        label_df = text_df[text_df['pred_label'] == label]
     # returns a pandas series, which is like a dataframe
     topic_counts = label_df['topic_pred'].value_counts()
     # Create dictionary that will be used as input to piechart
@@ -292,8 +292,11 @@ def update_table(clickData, label, page_current, page_size, df_jsons):
         text_df = pd.read_json(df_jsons[0])
         topic_selected = clickData['points'][0]['customdata']
         # Top texts from selected label that were categorised under selected topic.
-        filtered_temp = text_df[(text_df['pred_label'] == label) & (
-            text_df['topic_pred'] == topic_selected)].sort_values(by='topic_pred_score', ascending=False)
+        if label == "all":
+            filtered_temp = text_df[(text_df['topic_pred'] == topic_selected)].sort_values(by='topic_pred_score', ascending=False)
+        else:
+            filtered_temp = text_df[(text_df['pred_label'] == label) & (
+                text_df['topic_pred'] == topic_selected)].sort_values(by='topic_pred_score', ascending=False)
         filtered_texts = filtered_temp[['text', 'topic_pred_score']].iloc[
             page_current * page_size:(page_current + 1) * page_size
         ]
