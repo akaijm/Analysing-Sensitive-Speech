@@ -1,4 +1,5 @@
 # Importing modules
+from numpy.lib.arraysetops import unique
 import pandas as pd
 
 from dash import dcc
@@ -16,9 +17,9 @@ from apps import topic_modeling, desc_analyses, time_series, sentiment_analysis,
 
 # Default dataset
 text_df = pd.read_csv("outputs/text_data.csv") # can change this dataset, just using it for the labels!
-unique_labs = text_df['pred_label'].unique()
+unique_labs = list(text_df['pred_label'].unique())
 unique_labs.sort()
-unique_labs = np.append(unique_labs, 'All')
+unique_labs.insert(0, "all")
 
 app.layout = html.Div([
     html.H2("Dashboard for Analyzing Sensitive Speech",
@@ -30,7 +31,7 @@ app.layout = html.Div([
                  for i in unique_labs],
         multi=False,
         clearable=False,
-        value='agreement'
+        value='all'
     )]),
     html.Div([desc_analyses.layout], className="mt-3"),
     html.Div([topic_modeling.layout], className="mt-2"),
