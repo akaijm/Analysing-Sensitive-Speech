@@ -65,8 +65,7 @@ app.layout = html.Div([
                     "paddingRight": '30px',
                     "padding-top": '30px'
             }), label='Network Graphs', value='Network Graphs'),
-    ]),
-    html.Div(id='tabs-content')
+    ])
 ])
 
 if __name__ == '__main__':
