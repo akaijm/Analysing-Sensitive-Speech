@@ -21,11 +21,11 @@ data['post_time'] = pd.to_datetime(data['post_time'])
 data['comment_time'] = pd.to_datetime(data['comment_time'])
 data['time_elapsed'] = pd.to_timedelta(data['time_elapsed'])
 
-all_labels = ['All']
+all_labels = ['all']
 all_labels = data['post_text_pred'].unique()
 #Sort in descending order
 all_labels[::-1].sort()
-all_labels = np.append(['All'], all_labels)
+all_labels = np.append(['all'], all_labels)
 
 layout = html.Div([
             html.Div([
@@ -119,7 +119,7 @@ def helper(label, time_period):
     #Prepare comments data
     comments = data[data['hashed_comment_id'] != '0'].copy()
     #Filter by label
-    if label and (label != 'All'):
+    if label and (label != 'all'):
         posts = posts[posts['post_text_pred'] == label]
         comments = comments[comments['comment_text_pred'] == label]
     post_lengths = posts['post_text'].str.split("\\s+")
