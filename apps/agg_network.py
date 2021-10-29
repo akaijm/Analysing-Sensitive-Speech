@@ -62,7 +62,7 @@ for p_label in nodes.keys():
 edges = pd.read_csv('outputs/agg_network/edges.csv')
 edgedf2 = edges[['source', 'target', 'weight']].sort_values(
     by=['weight'], ascending=False).head(10)
-print(edgedf2.head())
+#print(edgedf2.head()) # prints to terminal
 
 comments_to_posts = {'agreement_post': {}, 'culture_post': {}, 'dehuman_post': {}, 'import_post': {}, 'ingroup_post': {
 }, 'insult_post': {}, 'opp_post': {}, 'others_post': {}, 'racist_post': {}, 'tyrannical_post': {}, 'vto pap_post': {}}

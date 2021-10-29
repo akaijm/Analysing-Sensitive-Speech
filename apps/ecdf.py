@@ -1,6 +1,7 @@
 # Importing modules
 import numpy as np
 import pandas as pd
+pd.options.mode.chained_assignment = None  # default='warn', this is to suppress false positive warnings in the filtertime function.
 from datetime import timedelta
 from datetime import datetime 
 from dateutil import parser
@@ -51,7 +52,7 @@ def filtertime(df, start_date, end_date, label):
     df['time_elapsed_days'] = df.time_elapsed.apply(lambda x: x.days)
     df['time_elapsed_hours'] = df.time_elapsed.apply(lambda x:x.days*24 + x.seconds//3600)
     df['time_elapsed_minutes'] = df.time_elapsed.apply(lambda x:x.seconds//60)
-    df['timestamp'] = df.post_time.astype('int64') // 10**6
+    df['timestamp'] = df.post_time.view('int64') // 10**6
     
     timestamp_start = pd.to_datetime(start_date).value/10**6
     timestamp_stop = (pd.to_datetime(end_date)+pd.DateOffset(1)).value/10**6
@@ -100,7 +101,7 @@ def contagion_te_df(df,label, start_date, end_date, freq, individualpost):
                                .agg(num_comments=('num_comments','sum'),
                                     ).sort_values([colname]).reset_index()
         df_agg_all['cumsum'] = df_agg_all['num_comments'].cumsum(axis=0)
-        print(totalcount)
+        #print(totalcount)
         df_agg_all['percentile'] = df_agg_all['cumsum']/totalcount *100
         return df_agg_all
         
@@ -133,7 +134,7 @@ def contagion_ts_df(df,label, start_date, end_date):
                                .agg(num_comments=('num_comments','sum'),
                                     ).sort_values(['comment_date']).reset_index()
     df_agg_all['cumsum'] = df_agg_all['num_comments'].cumsum(axis=0)
-    print(totalcount)
+    #print(totalcount)
     df_agg_all['percentile'] = df_agg_all['cumsum']/totalcount *100
     return df_agg_all
 
