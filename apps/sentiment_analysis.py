@@ -197,57 +197,60 @@ def sentiment_te_plot(df=df,label='tyrannical', freq='days'):
 
 ######### layout ##########
 
-sentiment_ts_tab_card = dbc.Card(
-    dbc.CardBody(
-        [dbc.Row([
-            dbc.Col(
-                    [
-                        html.Div("Text Type"),
-                        dcc.Dropdown(
-                            id='porc-dropdown', placeholder="Comments", multi=False,
-                            options=[
-                                    {'label': 'Comments', 'value': 'comments'},
-                                    {'label': 'Posts', 'value': 'posts'},
-                                ],
-                            value='comments',
-                        )
-                    ] , width = 3, style = {"marginLeft" : "7%","marginRight" : "13%"}
-                ),
-
-            dbc.Col(
-                    [
-                        html.Div("Aggregation level"),
-                        dcc.Dropdown(
-                            id='agg-dropdown', placeholder="By Day", multi=False,
-                            options=[
-                                    {'label': 'By Month', 'value': 'month'},
-                                    {'label': 'By Day', 'value': 'day'},
-                                ],
-                            value='day',
-                        )
-                    ], width = 3, style = {"marginLeft" : "7%","marginRight" : "13%"}
-                ),
-        ]),
-        dbc.Row(
-            [
+sentiment_ts_tab_card = dcc.Loading(id = "loading-sentiment-ts",
+children=[
+    dbc.Card(
+        dbc.CardBody(
+            [dbc.Row([
                 dbc.Col(
                         [
-                            dcc.Graph(
-                            id= "sentiment_ts_fig",
-                            figure= sentiment_ts_plot(),
+                            html.Div("Text Type"),
+                            dcc.Dropdown(
+                                id='porc-dropdown', placeholder="Comments", multi=False,
+                                options=[
+                                        {'label': 'Comments', 'value': 'comments'},
+                                        {'label': 'Posts', 'value': 'posts'},
+                                    ],
+                                value='comments',
                             )
-                        ]#, width = 12
-                    )
+                        ] , width = 3, style = {"marginLeft" : "7%","marginRight" : "13%"}
+                    ),
+
+                dbc.Col(
+                        [
+                            html.Div("Aggregation level"),
+                            dcc.Dropdown(
+                                id='agg-dropdown', placeholder="By Day", multi=False,
+                                options=[
+                                        {'label': 'By Month', 'value': 'month'},
+                                        {'label': 'By Day', 'value': 'day'},
+                                    ],
+                                value='day',
+                            )
+                        ], width = 3, style = {"marginLeft" : "7%","marginRight" : "13%"}
+                    ),
+            ]),
+            dbc.Row(
+                [
+                    dbc.Col(
+                            [
+                                dcc.Graph(
+                                id= "sentiment_ts_fig",
+                                figure= sentiment_ts_plot(),
+                                )
+                            ]#, width = 12
+                        )
+                ]
+            )
             ]
-        )
-        ]
-    ),
-    #className="mt-3",
-    #style= {"marginLeft": "10%",  "width": "80%"}
-)
+        ),
+        #className="mt-3",
+        #style= {"marginLeft": "10%",  "width": "80%"}
+    )])
 
 
-sentiment_te_tab_card = dbc.Card(
+sentiment_te_tab_card = dcc.Loading(id = "loading-sentiment-te",
+children=[dbc.Card(
     dbc.CardBody(
         [dbc.Row([
             dbc.Col(
@@ -281,7 +284,7 @@ sentiment_te_tab_card = dbc.Card(
     ),
     #className="mt-3",
     #style= {"marginLeft": "10%",  "width": "80%"}
-)
+)])
 
 sentiment_tabs = dcc.Tabs([
     dcc.Tab(label='Time Series plot', children=[

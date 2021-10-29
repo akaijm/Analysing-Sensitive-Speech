@@ -50,7 +50,7 @@ def filtertime(df, start_date, end_date, label):
     df['time_elapsed_days'] = df.time_elapsed.apply(lambda x: x.days)
     df['time_elapsed_hours'] = df.time_elapsed.apply(lambda x:x.days*24 + x.seconds//3600)
     df['time_elapsed_minutes'] = df.time_elapsed.apply(lambda x:x.seconds//60)
-    df['timestamp'] = df.comment_time.astype('int64') // 10**6
+    # df['timestamp'] = df.comment_time.astype('int64') // 10**6
     
     timestamp_start = pd.to_datetime(start_date)#.value/10**6
     # print('start: ')
@@ -302,26 +302,28 @@ def contagion_ts_plot(df=df, label='all', start_date='2018-01-03', end_date='202
 
 
 ########## layout ##############
-ecdf_ts_tab_card = dbc.Card(
-    dbc.CardBody(
-        [
-        dbc.Row(
+ecdf_ts_tab_card = dcc.Loading(id = "loading-ecdf-ts",
+    children=[
+        dbc.Card(
+        dbc.CardBody(
             [
-                dbc.Col(
-                        [
-                            dcc.Graph(
-                            id= "contagion_ts_fig",
-                            figure= contagion_ts_plot(),
-                            )
-                        ] #, width = 12
-                    )
+            dbc.Row(
+                [
+                    dbc.Col(
+                            [
+                                dcc.Graph(
+                                id= "contagion_ts_fig",
+                                figure= contagion_ts_plot(),
+                                )
+                            ] #, width = 12
+                        )
+                ]
+            )
             ]
-        )
-        ]
-    ),
-    # className="mt-3",
-    #style= {"marginLeft": "10%",  "width": "80%"}
-)
+        ),
+        # className="mt-3",
+        #style= {"marginLeft": "10%",  "width": "80%"}
+)])
 
 posttexttable = dash_table.DataTable(
                             style_data={
@@ -343,71 +345,73 @@ posttexttable = dash_table.DataTable(
                         )
 
 
-ecdf_te_tab_card = dbc.Card(
-    dbc.CardBody(
-        [dbc.Row([
+ecdf_te_tab_card = dcc.Loading(id = "loading-ecdf-te",
+    children=[
+    dbc.Card(
+        dbc.CardBody(
+            [dbc.Row([
 
-            dbc.Col(
-                    [
-                        html.Div("Display comments under posts"),
-                        dcc.Dropdown(
-                            id='contagion-post-dropdown', placeholder="All", multi=False,
-                            options=[
-                                    {'label': 'All', 'value': -1},
-                                    {'label': 'Top 1', 'value': 0},
-                                    {'label': 'Top 2', 'value': 1},
-                                    {'label': 'Top 3', 'value': 2},
-                                    {'label': 'Top 4', 'value': 3},
-                                    {'label': 'Top 5', 'value': 4},
-                                ],
-                            value=-1,
-                        )
-                    ] #, width = 3, style = {"marginLeft" : "7%","marginRight" : "13%"}
-                    , width="auto"
-                ),
-            
-                dbc.Col(
-                    [
-                        html.Div("Frequency"),
-                        dcc.Dropdown(
-                            id='contagion-freq-dropdown', placeholder="Days", multi=False,
-                            options=[
-                                    {'label': 'Days', 'value': 'days'},
-                                    {'label': 'Hours', 'value': 'hours'},
-                                    {'label': 'Minutes', 'value': 'minutes'},
-                                ],
-                            value='days',
-                        )
-                    ]#, width = 3, style = {"marginLeft" : "7%","marginRight" : "13%"}
-                    , width=2
-                )
-        ]),
-        dbc.Row(
-            [
                 dbc.Col(
                         [
-                            dcc.Graph(
-                            id= "contagion_te_fig",
-                            figure= contagion_te_plot(),
+                            html.Div("Display comments under posts"),
+                            dcc.Dropdown(
+                                id='contagion-post-dropdown', placeholder="All", multi=False,
+                                options=[
+                                        {'label': 'All', 'value': -1},
+                                        {'label': 'Top 1', 'value': 0},
+                                        {'label': 'Top 2', 'value': 1},
+                                        {'label': 'Top 3', 'value': 2},
+                                        {'label': 'Top 4', 'value': 3},
+                                        {'label': 'Top 5', 'value': 4},
+                                    ],
+                                value=-1,
                             )
-                        ] #, width = 12
-                    )
-            ]
-        ),
-        dbc.Row(
-            [
-                dbc.Col(
+                        ] #, width = 3, style = {"marginLeft" : "7%","marginRight" : "13%"}
+                        , width="auto"
+                    ),
+                
+                    dbc.Col(
                         [
-                            html.Div(posttexttable)
-                        ] , width={"size": 8, "offset": 2},
+                            html.Div("Frequency"),
+                            dcc.Dropdown(
+                                id='contagion-freq-dropdown', placeholder="Days", multi=False,
+                                options=[
+                                        {'label': 'Days', 'value': 'days'},
+                                        {'label': 'Hours', 'value': 'hours'},
+                                        {'label': 'Minutes', 'value': 'minutes'},
+                                    ],
+                                value='days',
+                            )
+                        ]#, width = 3, style = {"marginLeft" : "7%","marginRight" : "13%"}
+                        , width=2
                     )
+            ]),
+            dbc.Row(
+                [
+                    dbc.Col(
+                            [
+                                dcc.Graph(
+                                id= "contagion_te_fig",
+                                figure= contagion_te_plot(),
+                                )
+                            ] #, width = 12
+                        )
+                ]
+            ),
+            dbc.Row(
+                [
+                    dbc.Col(
+                            [
+                                html.Div(posttexttable)
+                            ] , width={"size": 8, "offset": 2},
+                        )
+                ]
+            ),
             ]
         ),
-        ]
-    ),
-    # className="mt-3",
-    #style= {"marginLeft": "10%",  "width": "80%"}
-)
+        # className="mt-3",
+        #style= {"marginLeft": "10%",  "width": "80%"}
+)])
 
 contagion_tabs = dcc.Tabs([
     dcc.Tab(label='Time Series plot', children=[
