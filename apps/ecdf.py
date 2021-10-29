@@ -324,25 +324,20 @@ ecdf_ts_tab_card = dbc.Card(
 posttexttable = dash_table.DataTable(
                             style_data={
                                 'whiteSpace': 'normal',
-                                'height': '100px',
-                                'overflowY': 'auto',
-                                'width': '400px'
+                                'height': 'auto'
                             },
                             id='post_texts',
                             columns=[{"name": "Post Text", "id": "post_text"},],
                             data=[{}],
-                            page_action='none',
                             style_table={'height': '150px', 'overflowY': 'auto'},
                             style_cell={
                                 'text_align': 'left',
+                                'max-width': '400px',
+                                'min-width': '400px',
+                                'width': '400px',
                                 'font_family': '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
                             },
                             fill_width = True, # cannot change this
-
-                            css=[{
-                                'selector': '.dash-spreadsheet td div',
-
-                            }]
                         )
 
 
@@ -506,4 +501,4 @@ def update_posttext_fig(start_date, end_date,label, individual, freq):
         # print(res)
         return res
     else:
-        return None
+        return [{}]
