@@ -321,7 +321,7 @@ ecdf_ts_tab_card = dbc.Card(
     #style= {"marginLeft": "10%",  "width": "80%"}
 )
 
-posttexttable = dash_table.DataTable(
+posttexttable = html.Div(id="toggle_post", children=[dash_table.DataTable(
                             style_data={
                                 'whiteSpace': 'normal',
                                 'height': 'auto'
@@ -338,7 +338,7 @@ posttexttable = dash_table.DataTable(
                                 'font_family': '"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
                             },
                             fill_width = True, # cannot change this
-                        )
+                        )], style={'display': 'none'})
 
 
 ecdf_te_tab_card = dbc.Card(
@@ -484,7 +484,8 @@ def update_contagion_ts_fig(start_date, end_date,label):
     return plot
 
 @app.callback(
-    Output('post_texts', 'data'),
+    [Output('post_texts', 'data'),
+     Output('toggle_post', 'style')],
     [Input('my-date-picker-range', 'start_date'),
     Input('my-date-picker-range', 'end_date'),
     Input('selected_label', 'value'),
@@ -492,13 +493,12 @@ def update_contagion_ts_fig(start_date, end_date,label):
     Input('contagion-freq-dropdown', 'value'),
     ])
 def update_posttext_fig(start_date, end_date,label, individual, freq):
-    
     if individual >=0:
         tempdf = contagion_te_df(df = df, label= label, start_date=start_date,end_date=end_date,freq=freq,individualpost=individual)
         tempdf.reset_index(inplace=True)
         text = tempdf[['post_text']][:1]
         res = text.to_dict('records')
         # print(res)
-        return res
+        return res, {'display': 'block'}
     else:
-        return [{}]
+        return [{}], {'display': 'none'}
