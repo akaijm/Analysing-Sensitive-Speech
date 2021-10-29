@@ -39,8 +39,6 @@ def datepickervariables(df, label):
     
     earliest = min(df['comment_date'])
     latest = max(df['comment_date'])
-#     earliest_arr = (earliest.year, earliest.month, earliest.day)
-#     latest_arr = (latest.year, latest.month, latest.day)
     return (df, earliest, latest)
 
 
@@ -52,13 +50,17 @@ def filtertime(df, start_date, end_date, label):
     df['time_elapsed_days'] = df.time_elapsed.apply(lambda x: x.days)
     df['time_elapsed_hours'] = df.time_elapsed.apply(lambda x:x.days*24 + x.seconds//3600)
     df['time_elapsed_minutes'] = df.time_elapsed.apply(lambda x:x.seconds//60)
-    df['timestamp'] = df.post_time.view('int64') // 10**6
+    df['timestamp'] = df.comment_time.astype('int64') // 10**6
     
-    timestamp_start = pd.to_datetime(start_date).value/10**6
-    timestamp_stop = (pd.to_datetime(end_date)+pd.DateOffset(1)).value/10**6
+    timestamp_start = pd.to_datetime(start_date)#.value/10**6
+    # print('start: ')
+    # print(timestamp_start)
+#     timestamp_stop = (pd.to_datetime(end_date)+pd.DateOffset(1)).value/10**6
+    timestamp_stop = pd.to_datetime(end_date)
+    # print(timestamp_stop)
     
-    df = df[(df['timestamp']>=timestamp_start)
-           &(df['timestamp']<timestamp_stop)]
+    df = df[(df['comment_date']>=timestamp_start)
+           &(df['comment_date']<=timestamp_stop)]
 
     return df
 
