@@ -26,10 +26,29 @@ df = pd.read_csv('outputs/time_series_graphs/time_elapsed_filtered.csv',encoding
 
 ######### data processing functions ########################
 
-def datepickervariables(df, label):
-    if label=='all':
+# def datepickervariables(df, label):
+#     if label=='all':
+#         df=df
+#     else:
+#         df = df[df.post_text_pred==label]
+#     df['post_time'] = pd.to_datetime(df['post_time'])
+#     df['comment_time'] = pd.to_datetime(df['comment_time'])
+    
+#     df['comment_date'] = df['comment_time'].apply(lambda x: x.date())
+#     df = df[~df.comment_date.isnull()]
+    
+#     earliest = min(df['comment_date'])
+#     latest = max(df['comment_date'])
+#     return (df, earliest, latest)
+def datepickervariables(df, label,group):
+    if (label=='all') and (group=='all'):
         df=df
+    elif label=='all':
+        df = df[df.group==group]
+    elif group=='all':
+        df = df[df.post_text_pred==label]
     else:
+        df = df[df.group==group]
         df = df[df.post_text_pred==label]
     df['post_time'] = pd.to_datetime(df['post_time'])
     df['comment_time'] = pd.to_datetime(df['comment_time'])
@@ -39,12 +58,13 @@ def datepickervariables(df, label):
     
     earliest = min(df['comment_date'])
     latest = max(df['comment_date'])
+#     earliest_arr = (earliest.year, earliest.month, earliest.day)
+#     latest_arr = (latest.year, latest.month, latest.day)
     return (df, earliest, latest)
 
 
-
-def filtertime(df, start_date, end_date, label):
-    df = datepickervariables(df, label)[0]
+def filtertime(df, start_date, end_date, label,group):
+    df = datepickervariables(df, label,group)[0]
     df['time_elapsed'] = pd.to_timedelta(df['time_elapsed'])
     
     df['time_elapsed_days'] = df.time_elapsed.apply(lambda x: x.days)
@@ -52,11 +72,11 @@ def filtertime(df, start_date, end_date, label):
     df['time_elapsed_minutes'] = df.time_elapsed.apply(lambda x:x.seconds//60)
     # df['timestamp'] = df.comment_time.astype('int64') // 10**6
     
-    timestamp_start = pd.to_datetime(start_date)#.value/10**6
+    timestamp_start = pd.Timestamp(start_date)#.value/10**6
     # print('start: ')
     # print(timestamp_start)
 #     timestamp_stop = (pd.to_datetime(end_date)+pd.DateOffset(1)).value/10**6
-    timestamp_stop = pd.to_datetime(end_date)
+    timestamp_stop = pd.Timestamp(end_date)
     # print(timestamp_stop)
     
     df = df[(df['comment_date']>=timestamp_start)
@@ -67,9 +87,9 @@ def filtertime(df, start_date, end_date, label):
 
     
 # individualpost should be changed to 6 options (-1, 0 to 4)
-def contagion_te_df(df,label, start_date, end_date, freq, individualpost):
+def contagion_te_df(df,label,group, start_date, end_date, freq, individualpost):
     # df = df[df.post_text_pred==label]
-    df = filtertime(df, start_date, end_date, label)
+    df = filtertime(df, start_date, end_date, label,group)
     
     
     if freq == 'days':
@@ -108,7 +128,11 @@ def contagion_te_df(df,label, start_date, end_date, freq, individualpost):
         return df_agg_all
         
     else:
-        postid = top_5_post_ids[individualpost]
+        try:
+            postid = top_5_post_ids[individualpost]
+        except IndexError:
+            tempdf = pd.DataFrame([], columns=[colname, 'cumsum', 'percentile'])
+            return tempdf
         tempdf = df_agg[df_agg.hashed_post_id==postid].reset_index()
         totalcount = sum(tempdf.num_comments)
         tempdf['percentile'] = tempdf['cumsum']/totalcount *100
@@ -118,12 +142,12 @@ def contagion_te_df(df,label, start_date, end_date, freq, individualpost):
         
 
 
-def contagion_ts_df(df,label, start_date, end_date):
+def contagion_ts_df(df,label,group, start_date, end_date):
     # if label == 'all':
     #     df = df
     # else:
     #     df = df[df.post_text_pred==label]
-    df = filtertime(df, start_date, end_date, label)
+    df = filtertime(df, start_date, end_date, label,group)
     
     df_agg = df.groupby(['hashed_post_id','post_text', 'comment_date'])[['hashed_comment_id']] \
                            .agg(num_comments=('hashed_comment_id','count'),
@@ -141,10 +165,10 @@ def contagion_ts_df(df,label, start_date, end_date):
     return df_agg_all
 
 
-def contagion_te_df_all(df, start_date, end_date, freq):
+def contagion_te_df_all(df,group, start_date, end_date, freq):
     dfdict = {}
 
-    df = filtertime(df, start_date, end_date, label='all')
+    df = filtertime(df, start_date, end_date, label='all', group=group)
     
     
     if freq == 'days':
@@ -180,14 +204,14 @@ def contagion_te_df_all(df, start_date, end_date, freq):
 
 
 ############ plotting functions ###############
-def contagion_te_plot(df=df, label='all', start_date='2018-01-03', end_date='2021-05-31', freq='days', individualpost=-1):
+def contagion_te_plot(df=df, label='all',group='all', start_date='2018-01-03', end_date='2021-05-31', freq='days', individualpost=-1):
     colname = 'time_elapsed_'+freq
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     coltoplot = 'cumsum'
     
     if label=='all':
         individualpost=False
-        data = contagion_te_df_all(df, start_date, end_date, freq)
+        data = contagion_te_df_all(df,group, start_date, end_date, freq)
         
         for label in data.keys():
             df = data[label]
@@ -217,7 +241,7 @@ def contagion_te_plot(df=df, label='all', start_date='2018-01-03', end_date='202
         label='all'
         
     else:
-        data = contagion_te_df(df, label, start_date, end_date, freq, individualpost)
+        data = contagion_te_df(df, label, group, start_date, end_date, freq, individualpost)
         fig.add_trace(go.Scatter(
                             x=data[colname], y=data[coltoplot],
                             mode='lines',
@@ -256,10 +280,10 @@ def contagion_te_plot(df=df, label='all', start_date='2018-01-03', end_date='202
     return fig
 
 
-def contagion_ts_plot(df=df, label='all', start_date='2018-01-03', end_date='2021-05-31'):
+def contagion_ts_plot(df=df, label='all',group='all', start_date='2018-01-03', end_date='2021-05-31'):
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     coltoplot = 'cumsum'
-    data = contagion_ts_df(df,label, start_date, end_date)
+    data = contagion_ts_df(df,label,group, start_date, end_date)
     
     fig.add_trace(go.Scatter(
                             x=data['comment_date'], y=data[coltoplot],
@@ -423,7 +447,7 @@ contagion_tabs = dcc.Tabs([
     ]  
 )
 
-dates = datepickervariables(df,'all')
+dates = datepickervariables(df,'all','all')
 
 layout = html.Div(
     [
@@ -457,10 +481,11 @@ layout = html.Div(
     Output('my-date-picker-range', 'end_date'),],
     [
     Input('selected_label', 'value'),
+    Input('selected_group', 'value'),
     ])
-def update_datepicker(label):
+def update_datepicker(label,group):
     
-    dates = datepickervariables(df,label)
+    dates = datepickervariables(df,label,group)
     return dates[1], dates[2]
 
 # update te graph
@@ -469,12 +494,13 @@ def update_datepicker(label):
     [Input('my-date-picker-range', 'start_date'),
     Input('my-date-picker-range', 'end_date'),
     Input('selected_label', 'value'),
+    Input('selected_group', 'value'),
     Input('contagion-post-dropdown', 'value'),
     Input('contagion-freq-dropdown', 'value'),
     ])
-def update_contagion_te_fig(start_date, end_date,label, individual, freq):
+def update_contagion_te_fig(start_date, end_date,label,group, individual, freq):
     
-    plot = contagion_te_plot(start_date=start_date, end_date=end_date, label = label, freq=freq, individualpost=individual)
+    plot = contagion_te_plot(start_date=start_date, end_date=end_date, label = label,group=group, freq=freq, individualpost=individual)
     return plot
 
 # update ts graph
@@ -483,10 +509,11 @@ def update_contagion_te_fig(start_date, end_date,label, individual, freq):
     [Input('my-date-picker-range', 'start_date'),
     Input('my-date-picker-range', 'end_date'),
     Input('selected_label', 'value'),
+    Input('selected_group', 'value'),
     ])
-def update_contagion_ts_fig(start_date, end_date,label):
+def update_contagion_ts_fig(start_date, end_date,label,group):
     
-    plot = contagion_ts_plot(start_date=start_date, end_date=end_date, label = label)
+    plot = contagion_ts_plot(start_date=start_date, end_date=end_date, label = label,group=group)
     return plot
 
 @app.callback(
@@ -495,16 +522,20 @@ def update_contagion_ts_fig(start_date, end_date,label):
     [Input('my-date-picker-range', 'start_date'),
     Input('my-date-picker-range', 'end_date'),
     Input('selected_label', 'value'),
+    Input('selected_group', 'value'),
     Input('contagion-post-dropdown', 'value'),
     Input('contagion-freq-dropdown', 'value'),
     ])
-def update_posttext_fig(start_date, end_date,label, individual, freq):
+def update_posttext_fig(start_date, end_date,label,group, individual, freq):
     if individual >=0:
-        tempdf = contagion_te_df(df = df, label= label, start_date=start_date,end_date=end_date,freq=freq,individualpost=individual)
-        tempdf.reset_index(inplace=True)
-        text = tempdf[['post_text']][:1]
-        res = text.to_dict('records')
-        # print(res)
-        return res, {'display': 'block'}
+        tempdf = contagion_te_df(df = df, label= label,group=group, start_date=start_date,end_date=end_date,freq=freq,individualpost=individual)
+        if len(tempdf)==0:
+            return [{'post_text': 'No datapoint for the post selected.'}], {'display': 'block'}
+        else:
+            tempdf.reset_index(inplace=True)
+            text = tempdf[['post_text']][:1]
+            res = text.to_dict('records')
+            print(res)
+            return res, {'display': 'block'}
     else:
         return [{}], {'display': 'none'}
