@@ -17,8 +17,7 @@ HEADER_FONT_SIZE = 20
 BODY_FONT_SIZE = 25
 
 # Read in the processed data with post_dates set prior to the earliest comment_date
-data = pd.read_csv(
-    'outputs/overview_cards post-centric_graph/time_elapsed.csv', encoding="utf-8")
+data = pd.read_csv('outputs/time_series_graphs/time_elapsed_filtered.csv', encoding="utf-8")
 data['post_time'] = pd.to_datetime(data['post_time'])
 data['comment_time'] = pd.to_datetime(data['comment_time'])
 data['time_elapsed'] = pd.to_timedelta(data['time_elapsed'])
@@ -43,18 +42,25 @@ layout = html.Div([
         ], className="card border-dark mb-3", style={"padding": 0}),
         dbc.Col([
             html.Div(children=[
-                "Likes (Median)"], className="lead card-header flex-fill", style={'font-size': HEADER_FONT_SIZE}),
-            html.Div([
-                html.H1(id='numLikes', className="lead",  style={'font-size': BODY_FONT_SIZE}),
-                html.P(id='avgLikes', className="card-text")
-            ], className="card-body flex-fill")
-        ], className="card border-dark mb-3", style={"padding": 0}),
-        dbc.Col([
-            html.Div(children=[
                 "Total Users"], className="lead card-header flex-fill", style={'font-size': HEADER_FONT_SIZE}),
             html.Div([
                 html.H1(id='numUsers', className="lead",  style={'font-size': BODY_FONT_SIZE}),
                 html.P(id='userDescription', className="card-text")
+            ], className="card-body flex-fill")
+        ], className="card border-dark mb-3", style={"padding": 0}),
+        dbc.Col([
+            html.Div(children=[
+                dcc.Dropdown(
+                    id='filter_likes',
+                    options=[{'label': 'Post Likes (Median)', 'value': 'Likes (Median)'}, {'label': 'Post Likes (Mode)', 'value': 'Likes (Mode)'},
+                             {'label': 'Post Likes (Mean)', 'value': 'Likes (Mean)'}],
+                    value='Likes (Median)',
+                    clearable=False,
+                    style={'width': '100%'}
+                )], className="lead card-header flex-fill", style={'font-size': HEADER_FONT_SIZE}),
+            html.Div([
+                html.H1(id='numLikes', className="lead",  style={'font-size': BODY_FONT_SIZE}),
+                html.P(id='avgLikes', className="card-text")
             ], className="card-body flex-fill")
         ], className="card border-dark mb-3", style={"padding": 0}),
         dbc.Col([
@@ -92,8 +98,9 @@ layout = html.Div([
     Output("avgPostLen", "style"),
     Output("avgCommentLen", "style"),
     Input('selected_label', 'value'),
-    Input('filter_time', 'value'))
-def helper(label, time_period):
+    Input('filter_time', 'value'),
+    Input('filter_likes', 'value'))
+def helper(label, time_period, filter_likes):
     # Prepare post data
     posts = data.loc[data.groupby('hashed_post_id')[
         'post_time'].idxmin()].reset_index(drop=True).copy()
@@ -142,7 +149,6 @@ def helper(label, time_period):
 
     # Filter by chosen peak time period
     # Filter by label
-    cardTitle = 'Peak Hour'
     period = 'hour'
     if time_period:
         if time_period == 'Daily':
@@ -158,7 +164,6 @@ def helper(label, time_period):
                 lambda x: Timestamp(x.year, x.month, x.day))
             num_periods = comments[['full_date', 'weekday']].groupby(
                 ['weekday']).nunique()
-            cardTitle = 'Peak Day'
         elif time_period == 'Monthly':
             # Peak month
             period = 'month'
@@ -173,7 +178,6 @@ def helper(label, time_period):
                 lambda x: Timestamp(x.year, x.month, 1))
             num_periods = comments[['month', 'month_year']].groupby(
                 ['month']).nunique()
-            cardTitle = 'Peak Month'
     if period == 'hour':
         # Peak hour
         comments['hour'] = comments['comment_time'].apply(
@@ -214,7 +218,13 @@ def helper(label, time_period):
         comment_color = {'color': 'red'}
 
     # Average number of likes
-    num_likes = posts['likes'].median()
+    if filter_likes == 'Likes (Median)':
+        likes = posts['likes'].median()
+    elif filter_likes == 'Likes (Mean)':
+        likes = round(posts['likes'].mean(), 2)
+    elif filter_likes == 'Likes (Mode)':
+        likes = posts['likes'].mode().values[0]
+    num_likes = f'{likes:,}'
     posts_with_likes = round(
         ((len(posts[posts['likes'] > 0])*100)/len(posts)), 2)
     likes_text = f'Posts with >0 likes: {posts_with_likes}%'
