@@ -43,13 +43,22 @@ def handletime(df):
     return df
 
 # aggregation for time series
-def sentiment_ts_df(df, label, porc, freq):
-    if label=='all':
-        df = df
-    else:
+def sentiment_ts_df(df, label,group, porc, freq):
+    if (label=='all') and (group=='all'):
+        df=df
+    elif label=='all':
+        df = df[df.group==group]
+    elif group=='all':
         df = df[df.post_text_pred==label]
-    df = df[df.include==1]
-    df = handletime(df)
+    else:
+        df = df[df.group==group]
+        df = df[df.post_text_pred==label]
+    try:
+        df = df[df.include==1]
+        df = handletime(df)
+    except:
+        return pd.DataFrame([], columns=['date', 'sentiment_score', 'count'])
+
     if porc=='posts':
         df = df[df.comment_text.isnull()]
         if freq=='month':
@@ -76,22 +85,39 @@ def sentiment_ts_df(df, label, porc, freq):
     return df_agg
 
 # aggregation for time elapsed
-def sentiment_te_df(df, label, freq):
-    if label=='all':
-        df = df
-    else:
-        df = df[df.post_text_pred==label]
-    df = df[df.include==1]
-    df = handletime(df)
+def sentiment_te_df(df, label,group, freq):
+    # if label=='all':
+    #     df = df
+    # else:
+    #     df = df[df.post_text_pred==label]
+    # df = df[df.include==1]
+    # df = handletime(df)
         
     if freq == 'days':
         colname = 'time_elapsed_days'
     elif freq == 'hours':
         colname = 'time_elapsed_hours'
     elif freq == 'minutes':
-        df = df[df.time_elapsed_hours==0]
         colname = 'time_elapsed_minutes'
         
+    if (label=='all') and (group=='all'):
+        df=df
+    elif label=='all':
+        df = df[df.group==group]
+    elif group=='all':
+        df = df[df.post_text_pred==label]
+    else:
+        df = df[df.group==group]
+        df = df[df.post_text_pred==label]
+    try:
+        df = df[df.include==1]
+        df = handletime(df)
+        if freq=='minutes':
+
+            df = df[df.time_elapsed_hours==0]
+    except:
+        return pd.DataFrame([], columns=[colname, 'sentiment_score', 'count'])
+
     df_agg = df.groupby([colname])[['sentiment','hashed_comment_id']] \
                            .agg(sentiment_score=('sentiment','mean'),
                                 count = ('hashed_comment_id','count')
@@ -100,13 +126,17 @@ def sentiment_te_df(df, label, freq):
 
 
 ######### plotting functions ################
-def sentiment_ts_plot(df=df,label='tyrannical', porc='comments', freq = 'day'):
-    data = sentiment_ts_df(df, label, porc, freq)
+def sentiment_ts_plot(df=df,label='all',group='all', porc='comments', freq = 'day'):
+    data = sentiment_ts_df(df, label,group, porc, freq)
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-    miny = min(data['sentiment_score'])
-    miny = str(round(miny, 2))
-    maxy = max(data['sentiment_score'])
-    maxy = str(round(maxy, 2))
+    try:
+        miny = min(data['sentiment_score'])
+        miny = str(round(miny, 2))
+        maxy = max(data['sentiment_score'])
+        maxy = str(round(maxy, 2))
+    except:
+        miny = '0.0'
+        maxy = '0.0'
     
     fig.add_trace(go.Scatter(
                                 x=data['date'], y=data["sentiment_score"],
@@ -148,14 +178,18 @@ def sentiment_ts_plot(df=df,label='tyrannical', porc='comments', freq = 'day'):
 
 
 
-def sentiment_te_plot(df=df,label='tyrannical', freq='days'):
-    data = sentiment_te_df(df, label, freq)
+def sentiment_te_plot(df=df,label='tyrannical',group='all', freq='days'):
+    data = sentiment_te_df(df, label,group, freq)
     colname = 'time_elapsed_'+freq
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-    miny = min(data['sentiment_score'])
-    miny = str(round(miny, 2))
-    maxy = max(data['sentiment_score'])
-    maxy = str(round(maxy, 2))
+    try:
+        miny = min(data['sentiment_score'])
+        miny = str(round(miny, 2))
+        maxy = max(data['sentiment_score'])
+        maxy = str(round(maxy, 2))
+    except:
+        miny = '0.0'
+        maxy = '0.0'
     
     fig.add_trace(go.Scatter(
                                 x=data[colname], y=data['sentiment_score'],
@@ -201,7 +235,8 @@ sentiment_ts_tab_card = dcc.Loading(id = "loading-sentiment-ts",
 children=[
     dbc.Card(
         dbc.CardBody(
-            [dbc.Row([
+            [dbc.Row([html.Div("Sentiment score equals to -1 indicates the most negative sentiment while 1 indicates the most positive sentiment."),]),
+            dbc.Row([
                 dbc.Col(
                         [
                             html.Div("Text Type"),
@@ -310,21 +345,27 @@ layout = html.Div([
 @app.callback(
     Output('sentiment_ts_fig', 'figure'),
     [Input('selected_label', 'value'),
+    Input('selected_group', 'value'),
     Input('porc-dropdown', 'value'),
     Input('agg-dropdown', 'value'),
     ])
-def update_sentiment_ts_fig(label, porc, freq):
-    
-    plot = sentiment_ts_plot(label=label, porc = porc, freq=freq)
+def update_sentiment_ts_fig(label,group, porc, freq):
+    if porc==None:
+        porc='comments'
+    if freq==None:
+        freq='day'
     # print(label)
+    plot = sentiment_ts_plot(label=label, group=group, porc = porc, freq=freq)
     return plot
 
 @app.callback(
     Output('sentiment_te_fig', 'figure'),
     [Input('selected_label', 'value'),
+    Input('selected_group', 'value'),
     Input('sentiment-freq-dropdown', 'value'),
     ])
-def update_sentiment_te_fig(label, freq):
-    
-    plot = sentiment_te_plot(label=label, freq=freq)
+def update_sentiment_te_fig(label,group, freq):
+    if freq==None:
+        freq='days'
+    plot = sentiment_te_plot(label=label,group=group, freq=freq)
     return plot
