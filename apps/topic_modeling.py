@@ -1,3 +1,5 @@
+# Maybe need to rerun preprocessing steps to include the group filter. 
+# Or to just change the altered_df to include group, and to include group in current csv files. 
 # Importing modules
 import pandas as pd
 from wordcloud import WordCloud
