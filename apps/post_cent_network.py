@@ -264,20 +264,31 @@ layout = html.Div([
                         ]
                 ),
             html.Div([
-                dcc.Markdown("**Time Elapsed (Click on post node to filter)**",
+                dcc.Markdown("**Time Elapsed (Click on triangle node to filter)**",
                     style={'color': 'black', 'fontSize': 15,
                             'text-align': 'center', 'float':'middle'}),
                 dcc.Slider(
                     id = 'time_slider'
             ),
-            html.Pre(id='cytoscape-tapNodeData-json', style={
-                        'border': 'thin lightgrey solid',
-                        'overflowX': 'auto',
-                        'height':'200px'
-                    })
-            ]),
-            
-    ],style={'width':'100%', 'float':'middle','padding-left':100, 'padding-right':100})
+            html.Div([
+                html.Div([  
+                    html.H5("Details on Source Post",
+                    style={'color': 'black', 'fontSize': 15,
+                            'text-align': 'center', 'float':'middle'}), 
+                    html.Pre(id='cytoscape-postNodeData-json')
+                ], style={'border': 'thin lightgrey solid','overflowX': 'auto','height':'310px',
+                             'width':'55%', 'display':'inline-block'
+                            }),
+                html.Div([  
+                    html.H5("Details on Hovered Node",
+                    style={'color': 'black', 'fontSize': 15,
+                            'text-align': 'center', 'float':'middle'}), 
+                    html.Pre(id='cytoscape-tapNodeData-json')
+                ], style={'border': 'thin lightgrey solid','overflowX': 'auto','height':'310px',
+                             'width':'45%', 'display':'inline-block'
+                })
+            ])
+    ],style={'width':'100%', 'float':'middle','padding-left':100, 'padding-right':100})])
 
 #Function to create a node
 def make_node(input, node_type, cluster_size = 1):
@@ -297,12 +308,13 @@ def make_node(input, node_type, cluster_size = 1):
         reactions = input['reactions']
         sentiment = round(input['sentiment'], 2)
 
-        element = {'data': {'label': label, 'text': text, 'cluster_size':cluster_size,'id': hashed_id, 'time': time, 'username': username,
+        element = {'data': {'label': label, 'text': text, 'cluster_size':cluster_size,'id': hashed_id, 'post_id': hashed_id, 'time': time, 'username': username,
                              'sentiment': sentiment, 'group': group,'likes': likes, 'size': min(400, max(200,likes/5)), 'reactions':reactions},'classes':'post'}
 
     elif node_type == 'comment':
         #comment
         hashed_id = input['hashed_comment_id']
+        post_id = input['hashed_post_id']
         group = input['group']
         label = input['comment_text_pred']
         time = input['comment_time'].strftime('%d-%m-%Y %X')
@@ -315,8 +327,9 @@ def make_node(input, node_type, cluster_size = 1):
         sentiment = round(input['sentiment'], 2)
         #Convert time elapsed to minutes
         elapsed = input['time_elapsed'].days*1440 + round(input['time_elapsed'].seconds/60,2)
-        element = {'data': {'label': label, 'text': text, 'num_comments':cluster_size,'id': hashed_id, 'group': group, 'time': time, 'username': username,
-                            'sentiment': sentiment,'likes':likes, 'time_elapsed':f'{elapsed:.2f} minutes'}}
+        element = {'data': {'label': label, 'text': text, 'num_comments':cluster_size,'id': hashed_id, 'post_id':post_id,
+                             'group': group, 'time': time, 'username': username,'sentiment': sentiment,'likes':likes, 
+                             'time_elapsed':f'{elapsed:.2f} minutes'}}
         
     return element
 
@@ -391,7 +404,8 @@ def update_graph(search, label_name, group_name, num_clusters, time_elapsed, tim
         #Group together all comments with the same label
         for label in comment_df['comment_text_pred'].unique():
             filtered_comments = comment_df[comment_df['comment_text_pred'] == label]
-            nodes.append({'data':{'id':label + str(count), 'label':label, 'num_comments':len(filtered_comments)},'classes':'comment'})
+            nodes.append({'data':{'id':label + str(count), 'label':label, 'num_comments':len(filtered_comments), 
+                                'post_id':post_id},'classes':'comment'})
             target = label + str(count)
             edge_id = post_id + ',' + target
             element = {'data': {'id': edge_id, 'source':post_id, 'target':target}}
@@ -401,26 +415,67 @@ def update_graph(search, label_name, group_name, num_clusters, time_elapsed, tim
     return all_elements
 
 #Display node data when hovering
-@app.callback(Output('cytoscape-tapNodeData-json', 'children'),
-              Input('cytoscape-graph', 'mouseoverNodeData'))
+@app.callback(
+Output('cytoscape-tapNodeData-json', 'children'),
+Output('cytoscape-postNodeData-json', 'children'),
+Input('cytoscape-graph', 'mouseoverNodeData'),
+Input('time_slider', 'value'),
+Input("time_slider", "max"))
               
-def displayTapNodeData(data):
+def displayTapNodeData(node, time_elapsed, time_limit):
     data_copy = {}
-    if data:
+    source_post = {}
+    output = []
+    if node:
+        post_id = node['post_id']
         #Check if it is a post
-        if 'cluster_size' in data:
-            for key in ['label', 'text', 'cluster_size', 'sentiment', 'time', 'group', 'reactions']:
-                data_copy[key] = data[key]
+        if 'cluster_size' in node:
+            data_copy['Label'] = node['label']
+            data_copy['Post Text'] = node['text']
+            data_copy['No. of Comments for This Post'] = node['cluster_size']
+            data_copy['Post Sentiment'] = node['sentiment']
+            data_copy['Date Posted'] = node['time']
+            data_copy['Group'] = node['group']
+            data_copy['Reactions'] = node['reactions']
+            output.append(json.dumps(data_copy, indent=2, ensure_ascii=False,sort_keys=False))
+        
         #Check if it is a comment
-        elif 'time_elapsed' in data:
-            for key in ['text', 'label', 'sentiment', 'time_elapsed', 'time', 'num_comments', 'likes']:
-                data_copy[key] = data[key]
-
-        #Node must be a text overlay
+        elif 'time_elapsed' in node:
+            data_copy['Label'] = node['label']
+            data_copy['Comment Text'] = node['text']
+            data_copy['Comment Sentiment'] = node['sentiment']
+            data_copy['Time Elapsed Before Comment Was Made'] = node['time_elapsed']
+            data_copy['Comment Time'] = node['time']
+            data_copy['No. of Comments with the Same Label'] = node['num_comments']
+            output.append(json.dumps(data_copy, indent=2, ensure_ascii=False,sort_keys=False))
         else:
-            return_dict = {'label':data['label'], 'num_comments':data['num_comments']}
-            return json.dumps(return_dict, indent=2, ensure_ascii=False)
-        return json.dumps(data_copy, indent=2, ensure_ascii=False,sort_keys=False)
+            output.append('')
+
+        #Generate post details from post_id
+        post_df = data.loc[data.groupby('hashed_post_id')['post_time'].idxmin()]
+        post_df = post_df.loc[post_df['hashed_post_id'] == post_id].reset_index(drop = True).iloc[0]
+
+        #Get cluster size
+        comments = data[data['hashed_comment_id'] != '0'].copy()
+
+        if time_elapsed < time_limit:
+            comments = comments[comments['time_elapsed'] < datetime.timedelta(minutes = time_elapsed)].copy()
+
+        comment_df = comments[comments['hashed_post_id'] == post_id]
+        comment_df = comment_df.dropna(subset = ['comment_text', 'comment_time'])
+
+        source_post['Label'] = post_df['post_text_pred']
+        source_post['Post Text'] = post_df['post_text']
+        source_post['No. of Comments for This Post'] = len(comment_df)
+        source_post['Post Sentiment'] = round(post_df['sentiment'], 2)
+        source_post['Date Posted'] = post_df['post_time'].strftime('%d-%m-%Y %X')
+        source_post['Group'] = post_df['group']
+        source_post['Reactions'] = post_df['reactions']
+        
+        output.append(json.dumps(source_post, indent=2, ensure_ascii=False,sort_keys=False))
+    else:
+        output = ['', '']
+    return output
 
 #Filter time slider by clicked post
 @app.callback(

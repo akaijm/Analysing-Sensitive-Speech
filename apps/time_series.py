@@ -45,9 +45,10 @@ layout = html.Div([
     Output('monthly_time_series', 'figure'),
     [Input('Aggregation Period', 'value'),
     Input('selected_label', 'value'),
-    Input('Content Type', 'value')])
+    Input('Content Type', 'value'),
+    Input('selected_group', 'value')])
 
-def update_time_series(time_frame, label, content_type):
+def update_time_series(time_frame, label, content_type, group):
 
     post_time = data_filtered.loc[data_filtered.groupby('hashed_post_id')['post_time'].idxmin()].reset_index(drop = True).copy()
     post_time = post_time.rename(columns = {'post_text_pred':'label', 'post_time':'time'})
@@ -69,6 +70,10 @@ def update_time_series(time_frame, label, content_type):
     #Filter by selected label
     if label != 'all':
         timeSeries = timeSeries[timeSeries['label'] == label]
+
+    #Filter by selected group
+    if group != 'all':
+        timeSeries = timeSeries[timeSeries['group'] == group]
 
     #Aggregate by chosen timeframe
     if time_frame == 'Yearly':

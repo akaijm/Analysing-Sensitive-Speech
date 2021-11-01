@@ -155,6 +155,8 @@ for node in network.nodes():
     node_trace['text'] += tuple(['<b>' + node + '</b>'])
     #node_trace['text'] += tuple(['Type: '+'<b>'+node+'</b>'+'      \nFrequency: '+'<b>' + str(network.nodes()[node]['freq']) + '</b>'+'\n     Centrality:'+'<b>'+str(network.nodes()[node]['centrality'])+ '</b>'])
 
+textsall=list(node_trace['text'])
+
 fig_layout = go.Layout(
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)'
@@ -190,21 +192,21 @@ layout = html.Div([
                     dcc.Checklist(
                         id='checkbox',
                         options=[
-                            {'label': 'dehuman',
+                            {'label': 'dehuman   ',
                              'value': 'dehuman'},
-                            {'label': 'tyrannical',
+                            {'label': 'tyrannical   ',
                              'value': 'tyrannical'},
-                            {'label': 'vto pap',
+                            {'label': 'vto pap   ',
                              'value': 'vto pap'},
-                            {'label': 'ingroup',
+                            {'label': 'ingroup   ',
                              'value': 'ingroup'},
-                            {'label': 'culture',
+                            {'label': 'culture   ',
                              'value': 'culture'},
-                            {'label': 'import', 'value': 'import'},
-                            {'label': 'others', 'value': 'others'},
-                            {'label': 'insult', 'value': 'insult'},
-                            {'label': 'opp', 'value': 'opp'},
-                            {'label': 'agreement',
+                            {'label': 'import   ', 'value': 'import'},
+                            {'label': 'others   ', 'value': 'others'},
+                            {'label': 'insult   ', 'value': 'insult'},
+                            {'label': 'opp   ', 'value': 'opp'},
+                            {'label': 'agreement   ',
                              'value': 'agreement'},
                             {'label': 'racist', 'value': 'racist'},
                         ],
@@ -251,48 +253,46 @@ def update_graph(boxval, sliderval):
     responsename = labels+'_response'
     cnt = 0
     colors = list(node_trace['marker']['color'])
-    texts=list(node_trace['text'])
+    texts=textsall
+    #print(network.nodes().keys())
+    print(boxval)
     for i in network.nodes().keys():
         topici = i.split('_')[0]
         typei = i.split('_')[1]
-        if i == postname:
-            a = 3
-            # colors[cnt]='black'
-        elif i == responsename:
-            a = 3
-            # colors[cnt]='black'
+        
+        if topici not in boxval and typei == 'post':
+            colors[cnt] = 'white'
+            texts[cnt]=""
         else:
-            if topici not in boxval and typei == 'post':
-                colors[cnt] = 'white'
-                texts[cnt]=""
-            else:
-                if topici == 'dehuman':
-                    colors[cnt] = '#f0063e'
-                elif topici == 'tyrannical':
-                    colors[cnt] = '#0495eb'
-                elif topici == 'vto pap':
-                    colors[cnt] = "#B6D0E2"
-                elif topici == 'ingroup':
-                    colors[cnt] = "#f0d137"
-                elif topici == 'culture':
-                    colors[cnt] = "#cfa502"
-                elif topici == 'import':
-                    colors[cnt] = "#eb8bbe"
-                elif topici == 'others':
-                    colors[cnt] = "#cacdc7"
-                elif topici == 'insult':
-                    colors[cnt] = "#8105c0"
-                elif topici == 'opp':
-                    colors[cnt] = '#7cf605'
-                elif topici == 'agreement':
-                    colors[cnt] = '#316102'
-                elif topici == 'racist':
-                    colors[cnt] = '#551f02'
+            texts[cnt]=i
+            if topici == 'dehuman':
+                colors[cnt] = '#f0063e'
+            elif topici == 'tyrannical':
+                colors[cnt] = '#0495eb'
+            elif topici == 'vto pap':
+                colors[cnt] = "#B6D0E2"
+            elif topici == 'ingroup':
+                colors[cnt] = "#f0d137"
+            elif topici == 'culture':
+                colors[cnt] = "#cfa502"
+            elif topici == 'import':
+                colors[cnt] = "#eb8bbe"
+            elif topici == 'others':
+                colors[cnt] = "#cacdc7"
+            elif topici == 'insult':
+                colors[cnt] = "#8105c0"
+            elif topici == 'opp':
+                colors[cnt] = '#7cf605'
+            elif topici == 'agreement':
+                colors[cnt] = '#316102'
+            elif topici == 'racist':
+                colors[cnt] = '#551f02'
         cnt += 1
     node_trace2['marker']['color'] = tuple(colors)
     node_trace2['text']=tuple(texts)
     fig = go.Figure(layout=fig_layout)
-
+    print(node_trace2['text'])
+    fig.add_trace(node_trace2)
     # For each edge, make an edge_trace, append to list
     edge_trace = []
 
@@ -316,7 +316,6 @@ def update_graph(boxval, sliderval):
 
     for trace in edge_trace:
         fig.add_trace(trace)
-    fig.add_trace(node_trace2)
 
     fig.update_layout(
         title_text='Showing edges with >{} interactions.'.format(
