@@ -237,7 +237,10 @@ def helper(label, group, time_period, filter_likes):
     elif filter_likes == 'Likes (Mean)':
         likes = round(posts['likes'].mean(), 2)
     elif filter_likes == 'Likes (Mode)':
-        likes = posts['likes'].mode().values[0]
+        if posts['likes'].mode().values == posts['likes'].mode().values:
+            likes = posts['likes'].mode().values[0]
+        else:
+            likes = 0
     num_likes = f'{likes:,}'
     if len(posts) != 0:
         posts_with_likes = round(((len(posts[posts['likes'] > 0])*100)/len(posts)), 2)
