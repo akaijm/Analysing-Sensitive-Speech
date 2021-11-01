@@ -98,9 +98,10 @@ layout = html.Div([
     Output("avgPostLen", "style"),
     Output("avgCommentLen", "style"),
     Input('selected_label', 'value'),
+    Input('selected_group', 'value'),
     Input('filter_time', 'value'),
     Input('filter_likes', 'value'))
-def helper(label, time_period, filter_likes):
+def helper(label, group, time_period, filter_likes):
     # Prepare post data
     posts = data.loc[data.groupby('hashed_post_id')[
         'post_time'].idxmin()].reset_index(drop=True).copy()
@@ -108,15 +109,24 @@ def helper(label, time_period, filter_likes):
     # Prepare comments data
     comments = data[data['hashed_comment_id'] != '0'].copy()
     # Filter by label
-    if label and (label != 'all'):
+    if label != 'all':
         posts = posts[posts['post_text_pred'] == label]
         comments = comments[comments['comment_text_pred'] == label]
+    
+    # Filter by group
+    if group != 'all':
+        posts = posts[posts['group'] == group]
+        comments = comments[comments['group'] == group]
+
     post_lengths = posts['post_text'].str.split("\\s+")
     # Number of posts
     num_posts = f'{posts["hashed_post_id"].nunique():,}'
     # Average length of each post
-    avg_post_length = round(post_lengths.str.len().median())
-
+    avg_post_length = post_lengths.str.len().median()
+    if avg_post_length == avg_post_length:
+        avg_post_length = round(avg_post_length)
+    else:
+        avg_post_length = 0
     # Sentiment score of each post
 
     post_filtered = posts[posts['include'] == 1]['sentiment']
@@ -129,7 +139,11 @@ def helper(label, time_period, filter_likes):
     # Number of comments
     num_comments = f'{len(comments):,}'
     # Average length of each comment
-    avg_comment_length = round(comments['comment_text'].str.len().median())
+    avg_comment_length = comments['comment_text'].str.len().median()
+    if avg_comment_length == avg_comment_length:
+        avg_comment_length = round(avg_comment_length)
+    else:
+        avg_comment_length = 0
 
     # Sentiment score of each comment
 
@@ -225,8 +239,10 @@ def helper(label, time_period, filter_likes):
     elif filter_likes == 'Likes (Mode)':
         likes = posts['likes'].mode().values[0]
     num_likes = f'{likes:,}'
-    posts_with_likes = round(
-        ((len(posts[posts['likes'] > 0])*100)/len(posts)), 2)
+    if len(posts) != 0:
+        posts_with_likes = round(((len(posts[posts['likes'] > 0])*100)/len(posts)), 2)
+    else:
+        posts_with_likes = 0
     likes_text = f'Posts with >0 likes: {posts_with_likes}%'
 
     return [num_posts, post_length_text, num_likes, likes_text, num_comments,
@@ -235,6 +251,8 @@ def helper(label, time_period, filter_likes):
 
 
 def format_time(time):
+    if time != time:
+        return "NAN"
     time = int(time)
     if time == 0:
         return '12 AM'

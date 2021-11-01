@@ -31,7 +31,7 @@ app.layout = html.Div([
                 html.H2("Dashboard for Analyzing Sensitive Speech",
                         style={'textAlign': 'center'}),
                 
-                html.Div([html.Label("Select a Label:"),
+                html.Div([html.Label("Filter by Label:"),
                       dcc.Dropdown(
                     id='selected_label',
                     options=[{'label': i.capitalize(), 'value': i}
@@ -39,8 +39,8 @@ app.layout = html.Div([
                     multi=False,
                     clearable=False,
                     value='all'
-                )],style={'display':'inline-block', 'width': '50%',}),
-                html.Div([html.Label("Select a Group:"),
+                )],style={'display':'inline-block', 'width': '50%','padding-right':20}),
+                html.Div([html.Label("Filter by Group:"),
                       dcc.Dropdown(
                     id='selected_group',
                     options=[{'label': i.capitalize(), 'value': i}
