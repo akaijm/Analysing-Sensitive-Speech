@@ -25,7 +25,7 @@ unique_groups.sort()
 unique_groups.insert(0, "all")
 
 app.layout = html.Div([
-    dcc.Tabs(id='tabs_dashboard', value='overall', children=[
+    dcc.Tabs(id='tabs_dashboard', value='main graphs', children=[
         dcc.Tab(
             html.Div([
                 html.H2("Dashboard for Analyzing Sensitive Speech",
@@ -61,7 +61,7 @@ app.layout = html.Div([
                 "paddingLeft": '30px',
                 "paddingRight": '30px',
                 "paddingTop": '30px'
-            }), label='Overall', value='overall'),
+            }), label='Main Graphs', value='main graphs'),
         dcc.Tab(
             html.Div([
                 html.H2("Dashboard for Analyzing Sensitive Speech",
