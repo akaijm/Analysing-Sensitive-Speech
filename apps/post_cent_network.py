@@ -276,7 +276,7 @@ layout = html.Div([
                     style={'color': 'black', 'fontSize': 15,
                             'text-align': 'center', 'float':'middle'}), 
                     html.Pre(id='cytoscape-postNodeData-json')
-                ], style={'border': 'thin lightgrey solid','overflowX': 'auto','height':'310px',
+                ], style={'border': 'thin lightgrey solid','overflowX': 'auto','height':'320px',
                              'width':'55%', 'display':'inline-block'
                             }),
                 html.Div([  
@@ -284,7 +284,7 @@ layout = html.Div([
                     style={'color': 'black', 'fontSize': 15,
                             'text-align': 'center', 'float':'middle'}), 
                     html.Pre(id='cytoscape-tapNodeData-json')
-                ], style={'border': 'thin lightgrey solid','overflowX': 'auto','height':'310px',
+                ], style={'border': 'thin lightgrey solid','overflowX': 'auto','height':'320px',
                              'width':'45%', 'display':'inline-block'
                 })
             ])
