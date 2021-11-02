@@ -162,24 +162,32 @@ def update_df_used(num_topics, model):
 
 @app.callback(
     Output("piechart", "clickData"),
-    Input("selected_label", "value")
+    [Input("selected_label", "value"),
+     Input("selected_group", "value")]
 )
-def update_clickdata(label):
+def update_clickdata(label, group):
     return None
 
 
 @app.callback(
     Output(component_id="piechart", component_property="figure"),
     [Input("selected_label", "value"),
+     Input("selected_group", "value"),
      Input("intermediate_value", "children")]
 )
-def update_piechart(label, df_jsons):
+def update_piechart(label, group, df_jsons):
     text_df, topic_df = pd.read_json(df_jsons[0]), pd.read_json(df_jsons[1]) # can cache to make this process faster. If callback is not triggered by df_jsons, can use previously cached df
     # Label changes - model filtered, proportions change but topics remain the same
     if label == "all":
-        label_df = text_df
+        if group == "all":
+            label_df = text_df
+        else:
+            label_df = text_df[text_df['group'] == group]
     else:
-        label_df = text_df[text_df['pred_label'] == label]
+        if group == "all":
+            label_df = text_df[text_df['pred_label'] == label]
+        else:
+            label_df = text_df[(text_df['pred_label'] == label) & (text_df['group'] == group)]
     # returns a pandas series, which is like a dataframe
     topic_counts = label_df['topic_pred'].value_counts()
     # Create dictionary that will be used as input to piechart
@@ -216,9 +224,10 @@ def update_piechart(label, df_jsons):
     Output('wordcloud', 'figure'),
     [Input('piechart', 'clickData'),
      Input('selected_label', 'value'),
+     Input('selected_group', 'value'),
      Input('intermediate_value', 'children')]
 )
-def update_wordcloud(clickData, label, df_jsons):
+def update_wordcloud(clickData, label, group, df_jsons):
     blank = {
         "layout": {
             "xaxis": {
@@ -241,7 +250,7 @@ def update_wordcloud(clickData, label, df_jsons):
         }
     }
     ctx = dash.callback_context
-    if ctx.triggered[0]["prop_id"] == 'selected_label.value' or ctx.triggered[0]["prop_id"] == 'intermediate_value.children':
+    if ctx.triggered[0]["prop_id"] == 'selected_label.value' or ctx.triggered[0]["prop_id"] == 'selected_group.value' or ctx.triggered[0]["prop_id"] == 'intermediate_value.children':
         return blank
     if clickData is not None:
         topic_df = pd.read_json(df_jsons[1])
@@ -280,13 +289,14 @@ def update_wordcloud(clickData, label, df_jsons):
      Output('toggle_container', 'style')],
     [Input('piechart', 'clickData'),
      Input('selected_label', 'value'),
+     Input('selected_group', 'value'),
      Input('sample_texts', "page_current"),
      Input('sample_texts', "page_size"),
      Input('intermediate_value', 'children')]
 )
-def update_table(clickData, label, page_current, page_size, df_jsons):
+def update_table(clickData, label, group, page_current, page_size, df_jsons):
     ctx = dash.callback_context
-    if ctx.triggered[0]["prop_id"] == 'selected_label.value' or ctx.triggered[0]["prop_id"] == 'intermediate_value.children':
+    if ctx.triggered[0]["prop_id"] == 'selected_label.value' or ctx.triggered[0]["prop_id"] == 'selected_group.value' or ctx.triggered[0]["prop_id"] == 'intermediate_value.children':
         return [{}], 0, {'display': 'none'}
     if ctx.triggered[0]["prop_id"] == 'piechart.clickData':
         page_current = 0
@@ -295,10 +305,15 @@ def update_table(clickData, label, page_current, page_size, df_jsons):
         topic_selected = clickData['points'][0]['customdata']
         # Top texts from selected label that were categorised under selected topic.
         if label == "all":
-            filtered_temp = text_df[(text_df['topic_pred'] == topic_selected)].sort_values(by='topic_pred_score', ascending=False)
+            if group == "all":
+                filtered_temp = text_df[(text_df['topic_pred'] == topic_selected)].sort_values(by='topic_pred_score', ascending=False)
+            else:
+                filtered_temp = text_df[(text_df['group'] == group) & (text_df['topic_pred'] == topic_selected)].sort_values(by='topic_pred_score', ascending=False)
         else:
-            filtered_temp = text_df[(text_df['pred_label'] == label) & (
-                text_df['topic_pred'] == topic_selected)].sort_values(by='topic_pred_score', ascending=False)
+            if group == "all":
+                filtered_temp = text_df[(text_df['pred_label'] == label) & (text_df['topic_pred'] == topic_selected)].sort_values(by='topic_pred_score', ascending=False)
+            else:
+                filtered_temp = text_df[(text_df['group'] == group) & (text_df['pred_label'] == label) & (text_df['topic_pred'] == topic_selected)].sort_values(by='topic_pred_score', ascending=False)
         filtered_texts = filtered_temp[['text', 'topic_pred_score']].iloc[
             page_current * page_size:(page_current + 1) * page_size
         ]

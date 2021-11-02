@@ -48,11 +48,13 @@ def emotion_barchart(entity_chosen):
     
     data = []
     for emotion in EMOTIONS:
-        df_cnt = df[df.entities.isin(entity_chosen) & (df.emotion_label == emotion)]
-        df_cnt = df_cnt.entities.value_counts().to_dict()
+        df_perc = df[df.entities.isin(entity_chosen) & (df['emotion_label'] == emotion)]
+        df_cnt = df_perc['entities'].value_counts().to_dict()
+        df_perc = {k:v/len(df[df['entities'].isin([k])]) for k,v in df_perc['entities'].value_counts().to_dict().items()}
         x_value = entity_chosen #[eval(entity)[0] for entity in entity_chosen]
-        y_value = [df_cnt.get(entity, 0) for entity in entity_chosen]
-        data.append(go.Bar(name = emotion, x=x_value, y=y_value))#, marker_color = hex_to_rgb(COLORS[emotion])))
+        y_value = [df_perc.get(entity, 0) for entity in entity_chosen]
+        count = [df_cnt.get(entity, 0) for entity in entity_chosen]
+        data.append(go.Bar(name = emotion, meta=count, x=x_value, y=y_value, hovertemplate="Proportion of <b>" + emotion + "</b> in <b>%{label}</b>: %{value}<br>Count: %{meta}<extra></extra>"))#, marker_color = hex_to_rgb(COLORS[emotion])))
 
     fig = go.Figure(data=data)
     fig.update_layout(barmode='group')

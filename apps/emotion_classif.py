@@ -41,11 +41,13 @@ def emotion_barchart(labels):
     
     data = []
     for emotion in EMOTIONS:
-        df_cnt = df[(df['label'].isin(labels)) & (df['emotion'] == emotion)]
-        df_cnt = df_cnt.label.value_counts().to_dict()
+        df_perc = df[(df['label'].isin(labels)) & (df['emotion'] == emotion)]
+        df_cnt = df_perc.label.value_counts().to_dict()
+        df_perc = {k:v/len(df[df['label']==k]) for k,v in df_perc['label'].value_counts().to_dict().items()}
         x_value = labels
-        y_value = [df_cnt.get(lab, 0) for lab in labels]
-        data.append(go.Bar(name = emotion, x=x_value, y=y_value))#, marker_color = hex_to_rgb(COLORS[emotion])))
+        y_value = [df_perc.get(lab, 0) for lab in labels]
+        count = [df_cnt.get(lab, 0) for lab in labels]
+        data.append(go.Bar(name = emotion, meta=count, x=x_value, y=y_value, hovertemplate="Proportion of <b>" + emotion + "</b> in <b>%{label}</b>: %{value}<br>Count: %{meta}<extra></extra>"))#, marker_color = hex_to_rgb(COLORS[emotion])))
 
     fig = go.Figure(data=data)
     fig.update_layout(barmode='group')
