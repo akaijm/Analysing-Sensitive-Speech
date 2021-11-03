@@ -211,7 +211,8 @@ layout = html.Div([
                             {'label': 'racist', 'value': 'racist'},
                         ],
                         value=['dehuman', 'tyrannical', 'vto pap', 'ingroup', 'culture',
-                               'import', 'others', 'insult', 'opp', 'agreement', 'racist']
+                               'import', 'others', 'insult', 'opp', 'agreement', 'racist'],
+                        inputStyle={"margin-left": "20px","margin-right": "5px"}
                     ),
                     html.P(
                         'Drag the slider to see edges with weights higher than your chosen threshold:',style={'font-weight': 'bold'}),
