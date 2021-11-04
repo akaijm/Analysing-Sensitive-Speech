@@ -236,7 +236,7 @@ layout = html.Div([
                         dcc.Tab(label='weight', value='weight')
                     ]),
                     html.Div(id='table', style={'text-align': 'center'})
-                ], width=4, style={'width': '100%', 'height': '100%'})
+                ], width=4)
             ]
         )
     ], style={'width': '100%', 'display': 'inline-block'})

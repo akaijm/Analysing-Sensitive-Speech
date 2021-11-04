@@ -235,8 +235,7 @@ sentiment_ts_tab_card = dcc.Loading(id = "loading-sentiment-ts",
 children=[
     dbc.Card(
         dbc.CardBody(
-            [dbc.Row([html.Div("Sentiment score equals to -1 indicates the most negative sentiment while 1 indicates the most positive sentiment."),]),
-            dbc.Row([
+            [dbc.Row([
                 dbc.Col(
                         [
                             html.Div("Text Type"),
@@ -276,7 +275,8 @@ children=[
                             ]#, width = 12
                         )
                 ]
-            )
+            ),
+            html.Div("*Sentiment score equals to -1 indicates the most negative sentiment while 1 indicates the most positive sentiment.", style={'textAlign':'center'})
             ]
         ),
         #className="mt-3",
