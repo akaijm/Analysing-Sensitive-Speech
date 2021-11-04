@@ -27,7 +27,7 @@ layout = html.Div([
     dbc.Row([
         dbc.Col([
             html.Div(children=[
-                "Posts"], className="lead card-header flex-fill", style={'font-size': HEADER_FONT_SIZE}),
+                "Posts"], className="lead card-header", style={'font-size': HEADER_FONT_SIZE}),
             html.Div([
                 html.H1(id='numPosts', className="lead",  style={'font-size': BODY_FONT_SIZE}),
                 html.P(id='avgPostLen', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
@@ -35,7 +35,7 @@ layout = html.Div([
         ], className="card border-dark mb-3", style={"padding": 0}),
         dbc.Col([
             html.Div(children=[
-                "Comments"], className="lead card-header flex-fill", style={'font-size': HEADER_FONT_SIZE}),
+                "Comments"], className="lead card-header", style={'font-size': HEADER_FONT_SIZE}),
             html.Div([
                 html.H1(id='numComments', className="lead",  style={'font-size': BODY_FONT_SIZE}),
                 html.P(id='avgCommentLen', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
@@ -43,7 +43,7 @@ layout = html.Div([
         ], className="card border-dark mb-3", style={"padding": 0}),
         dbc.Col([
             html.Div(children=[
-                "Total Users"], className="lead card-header flex-fill", style={'font-size': HEADER_FONT_SIZE}),
+                "Total Users"], className="lead card-header", style={'font-size': HEADER_FONT_SIZE}),
             html.Div([
                 html.H1(id='numUsers', className="lead",  style={'font-size': BODY_FONT_SIZE}),
                 html.P(id='userDescription', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
@@ -58,7 +58,7 @@ layout = html.Div([
                     value='Likes (Median)',
                     clearable=False,
                     style={'width': '100%'}
-                )], className="lead card-header flex-fill", style={'font-size': HEADER_FONT_SIZE}),
+                )], className="lead card-header", style={'font-size': HEADER_FONT_SIZE}),
             html.Div([
                 html.H1(id='numLikes', className="lead",  style={'font-size': BODY_FONT_SIZE}),
                 html.P(id='avgLikes', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
@@ -74,7 +74,7 @@ layout = html.Div([
                     clearable=False,
                     style={'width': '100%'}
                 )
-            ], className="lead card-header flex-fill", style={'font-size': HEADER_FONT_SIZE}),
+            ], className="lead card-header", style={'font-size': HEADER_FONT_SIZE}),
             html.Div([
                 html.H1(id='peakHour', className="lead",  style={'font-size': BODY_FONT_SIZE}),
                 html.P(id='peakHourAvg', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
