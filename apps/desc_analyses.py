@@ -15,6 +15,7 @@ import plotly.graph_objs as go
 from app import app
 HEADER_FONT_SIZE = 20
 BODY_FONT_SIZE = 25
+FOOTER_FONT_SIZE = 19
 
 # Read in the processed data with post_dates set prior to the earliest comment_date
 data = pd.read_csv('outputs/time_series_graphs/time_elapsed_filtered.csv', encoding="utf-8")
@@ -29,7 +30,7 @@ layout = html.Div([
                 "Posts"], className="lead card-header flex-fill", style={'font-size': HEADER_FONT_SIZE}),
             html.Div([
                 html.H1(id='numPosts', className="lead",  style={'font-size': BODY_FONT_SIZE}),
-                html.P(id='avgPostLen', className="card-text")
+                html.P(id='avgPostLen', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
             ], className="card-body flex-fill")
         ], className="card border-dark mb-3", style={"padding": 0}),
         dbc.Col([
@@ -37,7 +38,7 @@ layout = html.Div([
                 "Comments"], className="lead card-header flex-fill", style={'font-size': HEADER_FONT_SIZE}),
             html.Div([
                 html.H1(id='numComments', className="lead",  style={'font-size': BODY_FONT_SIZE}),
-                html.P(id='avgCommentLen', className="card-text")
+                html.P(id='avgCommentLen', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
             ], className="card-body flex-fill")
         ], className="card border-dark mb-3", style={"padding": 0}),
         dbc.Col([
@@ -45,7 +46,7 @@ layout = html.Div([
                 "Total Users"], className="lead card-header flex-fill", style={'font-size': HEADER_FONT_SIZE}),
             html.Div([
                 html.H1(id='numUsers', className="lead",  style={'font-size': BODY_FONT_SIZE}),
-                html.P(id='userDescription', className="card-text")
+                html.P(id='userDescription', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
             ], className="card-body flex-fill")
         ], className="card border-dark mb-3", style={"padding": 0}),
         dbc.Col([
@@ -60,7 +61,7 @@ layout = html.Div([
                 )], className="lead card-header flex-fill", style={'font-size': HEADER_FONT_SIZE}),
             html.Div([
                 html.H1(id='numLikes', className="lead",  style={'font-size': BODY_FONT_SIZE}),
-                html.P(id='avgLikes', className="card-text")
+                html.P(id='avgLikes', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
             ], className="card-body flex-fill")
         ], className="card border-dark mb-3", style={"padding": 0}),
         dbc.Col([
@@ -76,7 +77,7 @@ layout = html.Div([
             ], className="lead card-header flex-fill", style={'font-size': HEADER_FONT_SIZE}),
             html.Div([
                 html.H1(id='peakHour', className="lead",  style={'font-size': BODY_FONT_SIZE}),
-                html.P(id='peakHourAvg', className="card-text")
+                html.P(id='peakHourAvg', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
             ], className="card-body flex-fill")
         ], className="card border-dark mb-3", style={"padding": 0})
     ])], style={'text-align': 'center', 'padding-bottom': 10, 'padding-left': 10, 'padding-right': 10})
@@ -230,6 +231,9 @@ def helper(label, group, time_period, filter_likes):
         comment_color = {'color': 'green'}
     elif round(comment_filtered.mean(), 2) < 0:
         comment_color = {'color': 'red'}
+
+    post_color['font-size']= FOOTER_FONT_SIZE
+    comment_color['font-size'] = FOOTER_FONT_SIZE
 
     # Average number of likes
     if filter_likes == 'Likes (Median)':
