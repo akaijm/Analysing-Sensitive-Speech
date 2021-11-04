@@ -17,7 +17,7 @@ from app import app
 
 
 #Read in the processed data with post_dates set prior to the earliest comment_date
-data = pd.read_csv('outputs/overview_cards post-centric_graph/time_elapsed.csv',encoding="utf-8")
+data = pd.read_csv('outputs/post-centric_graph/time_elapsed.csv',encoding="utf-8")
 data['post_time'] = pd.to_datetime(data['post_time'])
 data['comment_time'] = pd.to_datetime(data['comment_time'])
 data['time_elapsed'] = pd.to_timedelta(data['time_elapsed'])
@@ -275,20 +275,22 @@ layout = html.Div([
                     html.H5("Details on Source Post",
                     style={'color': 'black', 'fontSize': 15,
                             'text-align': 'center', 'float':'middle'}), 
-                    html.Pre(id='cytoscape-postNodeData-json')
-                ], style={'border': 'thin lightgrey solid','overflowX': 'auto','height':'320px',
-                             'width':'55%', 'display':'inline-block'
+                    html.Pre(id='cytoscape-postNodeData-json', style={'whiteSpace': 'break-spaces','height': 'auto'})
+                ], style={'border': 'thin lightgrey solid','overflowY': 'auto','height':'300px',
+                             'width':'50%', 'display':'inline-block'
                             }),
                 html.Div([  
                     html.H5("Details on Hovered Node",
                     style={'color': 'black', 'fontSize': 15,
                             'text-align': 'center', 'float':'middle'}), 
-                    html.Pre(id='cytoscape-tapNodeData-json')
-                ], style={'border': 'thin lightgrey solid','overflowX': 'auto','height':'320px',
-                             'width':'45%', 'display':'inline-block'
+                    html.Pre(id='cytoscape-tapNodeData-json', style={'whiteSpace': 'break-spaces','height': 'auto'})
+                ], style={'border': 'thin lightgrey solid','overflowY': 'auto','height':'300px',
+                             'width':'50%', 'display':'inline-block'
                 })
             ])
-    ],style={'width':'100%', 'float':'middle','padding-left':100, 'padding-right':100})])
+    ],style={'width':'100%', 'float':'middle','padding-left':100, 'padding-right':100}),
+        html.Br()
+    ])
 
 #Function to create a node
 def make_node(input, node_type, cluster_size = 1):

@@ -62,7 +62,7 @@ for p_label in nodes.keys():
 edges = pd.read_csv('outputs/agg_network/edges.csv')
 edgedf2 = edges[['source', 'target', 'weight']].sort_values(
     by=['weight'], ascending=False).head(10)
-#print(edgedf2.head()) # prints to terminal
+# print(edgedf2.head()) # prints to terminal
 
 comments_to_posts = {'agreement_post': {}, 'culture_post': {}, 'dehuman_post': {}, 'import_post': {}, 'ingroup_post': {
 }, 'insult_post': {}, 'opp_post': {}, 'others_post': {}, 'racist_post': {}, 'tyrannical_post': {}, 'vto pap_post': {}}
@@ -155,7 +155,7 @@ for node in network.nodes():
     node_trace['text'] += tuple(['<b>' + node + '</b>'])
     #node_trace['text'] += tuple(['Type: '+'<b>'+node+'</b>'+'      \nFrequency: '+'<b>' + str(network.nodes()[node]['freq']) + '</b>'+'\n     Centrality:'+'<b>'+str(network.nodes()[node]['centrality'])+ '</b>'])
 
-textsall=list(node_trace['text'])
+textsall = list(node_trace['text'])
 
 fig_layout = go.Layout(
     paper_bgcolor='rgba(0,0,0,0)',
@@ -188,7 +188,7 @@ layout = html.Div([
             [
                 dbc.Col([
                     html.P(
-                        'Choose the post topic of your interest:',style={'font-weight': 'bold'}),
+                        'Choose the post topic of your interest:', style={'font-weight': 'bold'}),
                     dcc.Checklist(
                         id='checkbox',
                         options=[
@@ -211,10 +211,12 @@ layout = html.Div([
                             {'label': 'racist', 'value': 'racist'},
                         ],
                         value=['dehuman', 'tyrannical', 'vto pap', 'ingroup', 'culture',
-                               'import', 'others', 'insult', 'opp', 'agreement', 'racist']
+                               'import', 'others', 'insult', 'opp', 'agreement', 'racist'],
+                        inputStyle={"margin-left": "20px",
+                                    "margin-right": "5px"}
                     ),
                     html.P(
-                        'Drag the slider to see edges with weights higher than your chosen threshold:',style={'font-weight': 'bold'}),
+                        'Drag the slider to see edges with weights higher than your chosen threshold:', style={'font-weight': 'bold'}),
                     dcc.Slider(
                         id='my-slider',
                         min=0,
@@ -233,9 +235,8 @@ layout = html.Div([
                                 value='rfrequency'),
                         dcc.Tab(label='weight', value='weight')
                     ]),
-                    html.Div(id='table', style={
-                        'display': 'inline-block'})
-                ], width=4)
+                    html.Div(id='table', style={'text-align': 'center'})
+                ], width=4, style={'width': '100%', 'height': '100%'})
             ]
         )
     ], style={'width': '100%', 'display': 'inline-block'})
@@ -253,18 +254,18 @@ def update_graph(boxval, sliderval):
     responsename = labels+'_response'
     cnt = 0
     colors = list(node_trace['marker']['color'])
-    texts=textsall
-    #print(network.nodes().keys())
+    texts = textsall
+    # print(network.nodes().keys())
     print(boxval)
     for i in network.nodes().keys():
         topici = i.split('_')[0]
         typei = i.split('_')[1]
-        
+
         if topici not in boxval and typei == 'post':
             colors[cnt] = 'white'
-            texts[cnt]=""
+            texts[cnt] = ""
         else:
-            texts[cnt]=i
+            texts[cnt] = i
             if topici == 'dehuman':
                 colors[cnt] = '#f0063e'
             elif topici == 'tyrannical':
@@ -289,7 +290,7 @@ def update_graph(boxval, sliderval):
                 colors[cnt] = '#551f02'
         cnt += 1
     node_trace2['marker']['color'] = tuple(colors)
-    node_trace2['text']=tuple(texts)
+    node_trace2['text'] = tuple(texts)
     fig = go.Figure(layout=fig_layout)
     print(node_trace2['text'])
     fig.add_trace(node_trace2)
@@ -336,10 +337,10 @@ def update_graph(boxval, sliderval):
     Input('tabs', 'value'))
 def update_graph(choice):
     if choice == 'centrality':
-        return html.Div([dash_table.DataTable(id='tbl', data=nodesdf2.to_dict('records'), columns=[{"name": i, "id": i} for i in nodesdf2.columns])], style={'width': '50%', 'display': 'inline-block', 'text-align': 'center'})
+        return html.Div([dash_table.DataTable(id='tbl', data=nodesdf2.to_dict('records'), columns=[{"name": i, "id": i} for i in nodesdf2.columns],style_cell={'textAlign': 'center'},style_header={'backgroundColor': 'white','fontWeight': 'bold'})], style={'width': '50%', 'display': 'inline-block', 'text-align': 'center'})
     if choice == 'pfrequency':
-        return html.Div([dash_table.DataTable(id='tbl2', data=nodesdfpostfrequency.to_dict('records'), columns=[{"name": i, "id": i} for i in nodesdfpostfrequency.columns])], style={'width': '50%', 'display': 'inline-block', 'text-align': 'center'})
+        return html.Div([dash_table.DataTable(id='tbl2', data=nodesdfpostfrequency.to_dict('records'), columns=[{"name": i, "id": i} for i in nodesdfpostfrequency.columns],style_cell={'textAlign': 'center'},style_header={'backgroundColor': 'white','fontWeight': 'bold'})], style={'width': '50%', 'display': 'inline-block', 'text-align': 'center'})
     if choice == 'rfrequency':
-        return html.Div([dash_table.DataTable(id='tbl4', data=nodesdfresponsefrequency.to_dict('records'), columns=[{"name": i, "id": i} for i in nodesdfresponsefrequency.columns])], style={'width': '50%', 'display': 'inline-block', 'text-align': 'center'})
+        return html.Div([dash_table.DataTable(id='tbl4', data=nodesdfresponsefrequency.to_dict('records'), columns=[{"name": i, "id": i} for i in nodesdfresponsefrequency.columns],style_cell={'textAlign': 'center'},style_header={'backgroundColor': 'white','fontWeight': 'bold'})], style={'width': '50%', 'display': 'inline-block', 'text-align': 'center'})
     if choice == 'weight':
-        return html.Div([dash_table.DataTable(id='tbl3', data=edgedf2.to_dict('records'), columns=[{"name": i, "id": i} for i in edgedf2.columns])], style={'width': '50%', 'display': 'inline-block', 'text-align': 'center'})
+        return html.Div([dash_table.DataTable(id='tbl3', data=edgedf2.to_dict('records'), columns=[{"name": i, "id": i} for i in edgedf2.columns],style_cell={'textAlign': 'center'},style_header={'backgroundColor': 'white','fontWeight': 'bold'})], style={'width': '50%', 'display': 'inline-block', 'text-align': 'center'})
