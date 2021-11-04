@@ -275,20 +275,22 @@ layout = html.Div([
                     html.H5("Details on Source Post",
                     style={'color': 'black', 'fontSize': 15,
                             'text-align': 'center', 'float':'middle'}), 
-                    html.Pre(id='cytoscape-postNodeData-json')
-                ], style={'border': 'thin lightgrey solid','overflowX': 'auto','height':'320px',
-                             'width':'55%', 'display':'inline-block'
+                    html.Pre(id='cytoscape-postNodeData-json', style={'whiteSpace': 'pre-line','height': 'auto'})
+                ], style={'border': 'thin lightgrey solid','overflowY': 'auto','height':'300px',
+                             'width':'50%', 'display':'inline-block'
                             }),
                 html.Div([  
                     html.H5("Details on Hovered Node",
                     style={'color': 'black', 'fontSize': 15,
                             'text-align': 'center', 'float':'middle'}), 
-                    html.Pre(id='cytoscape-tapNodeData-json')
-                ], style={'border': 'thin lightgrey solid','overflowX': 'auto','height':'320px',
-                             'width':'45%', 'display':'inline-block'
+                    html.Pre(id='cytoscape-tapNodeData-json', style={'whiteSpace': 'pre-line','height': 'auto'})
+                ], style={'border': 'thin lightgrey solid','overflowY': 'auto','height':'300px',
+                             'width':'50%', 'display':'inline-block'
                 })
             ])
-    ],style={'width':'100%', 'float':'middle','padding-left':100, 'padding-right':100})])
+    ],style={'width':'100%', 'float':'middle','padding-left':100, 'padding-right':100}),
+        html.Br()
+    ])
 
 #Function to create a node
 def make_node(input, node_type, cluster_size = 1):
