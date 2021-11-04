@@ -17,7 +17,7 @@ from app import app
 
 
 #Read in the processed data with post_dates set prior to the earliest comment_date
-data = pd.read_csv('outputs/overview_cards post-centric_graph/time_elapsed.csv',encoding="utf-8")
+data = pd.read_csv('outputs/post-centric_graph/time_elapsed.csv',encoding="utf-8")
 data['post_time'] = pd.to_datetime(data['post_time'])
 data['comment_time'] = pd.to_datetime(data['comment_time'])
 data['time_elapsed'] = pd.to_timedelta(data['time_elapsed'])
