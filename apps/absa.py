@@ -17,7 +17,7 @@ FILE_DIR = 'outputs/absa_emotions/labelled_texts_absa_emotions.csv'
 df = pd.read_csv(FILE_DIR)
 
 df.entities = df.entities.apply(eval)
-df.entities = [entity[0] if len(entity[0]) < 4 and entity[0].isupper() else entity[0].title() for entity in df.entities]
+df.entities = [entity[0].upper() if len(entity[0]) < 4 else entity[0].title() for entity in df.entities]
 entities = list(df.groupby('entities').size().sort_values(ascending = False).index)
 ent_options = [{'label': entity, 'value': entity} for entity in entities]
 

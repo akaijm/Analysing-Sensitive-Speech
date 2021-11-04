@@ -13,8 +13,10 @@ import plotly.graph_objs as go
 from app import app
 
 df = pd.read_csv("outputs/distilbert_emotion/emotion_data.csv")
+labels = list(df.groupby('label').size().sort_values(ascending = False).index)
 
-labels = sorted(set(df.label))
+
+#labels = sorted(set(df.label))
 lab_options = [{'label': lab.capitalize(), 'value': lab} for lab in labels]
 
 layout = html.Div([

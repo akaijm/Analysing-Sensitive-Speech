@@ -24,6 +24,8 @@ data['comment_time'] = pd.to_datetime(data['comment_time'])
 data['time_elapsed'] = pd.to_timedelta(data['time_elapsed'])
 
 layout = html.Div([
+    dcc.Loading(
+    html.Div([
     dbc.Row([
         dbc.Col([
             html.Div(children=[
@@ -80,7 +82,7 @@ layout = html.Div([
                 html.P(id='peakHourAvg', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
             ], className="card-body flex-fill")
         ], className="card border-dark mb-3", style={"padding": 0})
-    ])], style={'text-align': 'center', 'padding-bottom': 10, 'padding-left': 10, 'padding-right': 10})
+    ])], style={'text-align': 'center', 'padding-bottom': 10, 'padding-left': 10, 'padding-right': 10}))])
 
 # Update card data
 
