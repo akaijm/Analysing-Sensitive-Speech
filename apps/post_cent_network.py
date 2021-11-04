@@ -275,7 +275,7 @@ layout = html.Div([
                     html.H5("Details on Source Post",
                     style={'color': 'black', 'fontSize': 15,
                             'text-align': 'center', 'float':'middle'}), 
-                    html.Pre(id='cytoscape-postNodeData-json', style={'whiteSpace': 'pre-line','height': 'auto'})
+                    html.Pre(id='cytoscape-postNodeData-json', style={'whiteSpace': 'break-spaces','height': 'auto'})
                 ], style={'border': 'thin lightgrey solid','overflowY': 'auto','height':'300px',
                              'width':'50%', 'display':'inline-block'
                             }),
@@ -283,7 +283,7 @@ layout = html.Div([
                     html.H5("Details on Hovered Node",
                     style={'color': 'black', 'fontSize': 15,
                             'text-align': 'center', 'float':'middle'}), 
-                    html.Pre(id='cytoscape-tapNodeData-json', style={'whiteSpace': 'pre-line','height': 'auto'})
+                    html.Pre(id='cytoscape-tapNodeData-json', style={'whiteSpace': 'break-spaces','height': 'auto'})
                 ], style={'border': 'thin lightgrey solid','overflowY': 'auto','height':'300px',
                              'width':'50%', 'display':'inline-block'
                 })
