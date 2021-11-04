@@ -12,7 +12,7 @@ import plotly.graph_objs as go
 
 from app import app
 
-df = pd.read_csv("outputs\distilbert_emotion\emotion_data.csv")
+df = pd.read_csv("outputs/distilbert_emotion/emotion_data.csv")
 
 labels = sorted(set(df.label))
 lab_options = [{'label': lab.capitalize(), 'value': lab} for lab in labels]
