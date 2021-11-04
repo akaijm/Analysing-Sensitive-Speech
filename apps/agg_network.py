@@ -212,11 +212,11 @@ layout = html.Div([
                         ],
                         value=['dehuman', 'tyrannical', 'vto pap', 'ingroup', 'culture',
                                'import', 'others', 'insult', 'opp', 'agreement', 'racist'],
-                        inputStyle={"margin-left": "20px",
-                                    "margin-right": "5px"}
+                        inputStyle={"marginLeft": "20px",
+                                    "marginRight": "5px"}
                     ),
                     html.P(
-                        'Drag the slider to see edges with weights higher than your chosen threshold:', style={'font-weight': 'bold'}),
+                        'Drag the slider to see edges with weights higher than your chosen threshold:', style={'fontWeight': 'bold'}),
                     dcc.Slider(
                         id='my-slider',
                         min=0,
@@ -235,7 +235,7 @@ layout = html.Div([
                                 value='rfrequency'),
                         dcc.Tab(label='weight', value='weight')
                     ]),
-                    html.Div(id='table', style={'text-align': 'center'})
+                    html.Div(id='table', style={'textAlign': 'center'})
                 ], width=4)
             ]
         )
@@ -337,10 +337,10 @@ def update_graph(boxval, sliderval):
     Input('tabs', 'value'))
 def update_graph(choice):
     if choice == 'centrality':
-        return html.Div([dash_table.DataTable(id='tbl', data=nodesdf2.to_dict('records'), columns=[{"name": i, "id": i} for i in nodesdf2.columns],style_cell={'textAlign': 'center'},style_header={'backgroundColor': 'white','fontWeight': 'bold'})], style={'width': '50%', 'display': 'inline-block', 'text-align': 'center'})
+        return html.Div([dash_table.DataTable(id='tbl', data=nodesdf2.to_dict('records'), columns=[{"name": i, "id": i} for i in nodesdf2.columns],style_cell={'textAlign': 'center'},style_header={'backgroundColor': 'white','fontWeight': 'bold'})], style={'display': 'inline-block', 'text-align': 'center'})
     if choice == 'pfrequency':
-        return html.Div([dash_table.DataTable(id='tbl2', data=nodesdfpostfrequency.to_dict('records'), columns=[{"name": i, "id": i} for i in nodesdfpostfrequency.columns],style_cell={'textAlign': 'center'},style_header={'backgroundColor': 'white','fontWeight': 'bold'})], style={'width': '50%', 'display': 'inline-block', 'text-align': 'center'})
+        return html.Div([dash_table.DataTable(id='tbl2', data=nodesdfpostfrequency.to_dict('records'), columns=[{"name": i, "id": i} for i in nodesdfpostfrequency.columns],style_cell={'textAlign': 'center'},style_header={'backgroundColor': 'white','fontWeight': 'bold'})], style={'display': 'inline-block', 'text-align': 'center'})
     if choice == 'rfrequency':
-        return html.Div([dash_table.DataTable(id='tbl4', data=nodesdfresponsefrequency.to_dict('records'), columns=[{"name": i, "id": i} for i in nodesdfresponsefrequency.columns],style_cell={'textAlign': 'center'},style_header={'backgroundColor': 'white','fontWeight': 'bold'})], style={'width': '50%', 'display': 'inline-block', 'text-align': 'center'})
+        return html.Div([dash_table.DataTable(id='tbl4', data=nodesdfresponsefrequency.to_dict('records'), columns=[{"name": i, "id": i} for i in nodesdfresponsefrequency.columns],style_cell={'textAlign': 'center'},style_header={'backgroundColor': 'white','fontWeight': 'bold'})], style={'display': 'inline-block', 'text-align': 'center'})
     if choice == 'weight':
-        return html.Div([dash_table.DataTable(id='tbl3', data=edgedf2.to_dict('records'), columns=[{"name": i, "id": i} for i in edgedf2.columns],style_cell={'textAlign': 'center'},style_header={'backgroundColor': 'white','fontWeight': 'bold'})], style={'width': '50%', 'display': 'inline-block', 'text-align': 'center'})
+        return html.Div([dash_table.DataTable(id='tbl3', data=edgedf2.to_dict('records'), columns=[{"name": i, "id": i} for i in edgedf2.columns],style_cell={'textAlign': 'center'},style_header={'backgroundColor': 'white','fontWeight': 'bold'})], style={'display': 'inline-block', 'text-align': 'center'})
