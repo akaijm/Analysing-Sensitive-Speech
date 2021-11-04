@@ -474,7 +474,7 @@ layout = html.Div(
                 start_date=dates[1],
                 end_date=dates[2],
                 display_format='DD MMM YYYY',
-                with_portal= True,
+                with_portal= True
             )),
         ]),
         html.Div([html.P()]),

@@ -276,7 +276,7 @@ children=[
                         )
                 ]
             ),
-            html.Div("*Sentiment score equals to -1 indicates the most negative sentiment while 1 indicates the most positive sentiment.", style={'textAlign':'center'})
+            html.Div("*Sentiment score equals to -1 indicates the most negative sentiment while 1 indicates the most positive sentiment.", style={'textAlign':'justify'})
             ]
         ),
         #className="mt-3",

@@ -3,3 +3,8 @@
 #time_slider {
     padding: 0px 25px 50px!important
 }
+
+/* For ecdf.py */
+.DateInput {
+    width: 150px!important
+}
