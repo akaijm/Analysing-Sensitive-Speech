@@ -3,6 +3,14 @@
 # Introduction 
 The objective of this project is to analyze sensitive speech in social media, as well as its contagion.
 
+# Usage Instructions
+Please have **Python** installed on your device. You can create a `conda` environment if you have Anaconda installed on your device.
+1. Open Command Line Terminal
+2. Type: `git clone https://github.com/Yocodeyo/Analysing-Sensitive-Speech` (download our code)
+3. Type: `pip install -r requirements.txt` (set up relevant libraries for use)
+4. Type: `python index.py` (run the dashboard)
+5. Open http://127.0.0.1:8050/ in your browser to visualise the dashboard.
+
 # Documentation
 
 ## Code Organization
