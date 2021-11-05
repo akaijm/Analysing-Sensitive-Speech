@@ -63,6 +63,8 @@ edges = pd.read_csv('outputs/agg_network/edges.csv')
 edgedf2 = edges[['source', 'target', 'weight']].sort_values(
     by=['weight'], ascending=False).head(10)
 # print(edgedf2.head()) # prints to terminal
+#get median of the edge weight to be set as default value for slider filter
+medianweight=edges['weight'].median()
 
 comments_to_posts = {'agreement_post': {}, 'culture_post': {}, 'dehuman_post': {}, 'import_post': {}, 'ingroup_post': {
 }, 'insult_post': {}, 'opp_post': {}, 'others_post': {}, 'racist_post': {}, 'tyrannical_post': {}, 'vto pap_post': {}}
@@ -222,7 +224,7 @@ layout = html.Div([
                         min=0,
                         max=8000,
                         step=10,
-                        value=1000,
+                        value=medianweight,
                     ),
                     dcc.Graph(id='network', figure=fig, style={
                               'width': '100%', 'height': '90vh', 'display': 'inline-block'})
