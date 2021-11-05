@@ -23,33 +23,41 @@ data['post_time'] = pd.to_datetime(data['post_time'])
 data['comment_time'] = pd.to_datetime(data['comment_time'])
 data['time_elapsed'] = pd.to_timedelta(data['time_elapsed'])
 
+# Prepare post data
+posts_df = data.loc[data.groupby('hashed_post_id')['post_time'].idxmin()].reset_index(drop=True).copy()
+posts_df = posts_df.dropna(subset=['post_text'])
+# Prepare comments data
+comments_df = data[data['hashed_comment_id'] != '0'].copy()
+
 layout = html.Div([
-    dcc.Loading(
     html.Div([
     dbc.Row([
         dbc.Col([
             html.Div(children=[
                 "Posts"], className="lead card-header", style={'font-size': HEADER_FONT_SIZE}),
-            html.Div([
-                html.H1(id='numPosts', className="lead",  style={'font-size': BODY_FONT_SIZE}),
-                html.P(id='avgPostLen', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
-            ], className="card-body flex-fill")
+            dcc.Loading(
+                html.Div([
+                    html.H1(id='numPosts', className="lead",  style={'font-size': BODY_FONT_SIZE}),
+                    html.P(id='avgPostLen', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
+                ], className="card-body flex-fill"))
         ], className="card border-dark mb-3", style={"padding": 0}),
         dbc.Col([
             html.Div(children=[
                 "Comments"], className="lead card-header", style={'font-size': HEADER_FONT_SIZE}),
+            dcc.Loading(
             html.Div([
                 html.H1(id='numComments', className="lead",  style={'font-size': BODY_FONT_SIZE}),
                 html.P(id='avgCommentLen', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
-            ], className="card-body flex-fill")
+            ], className="card-body flex-fill"))
         ], className="card border-dark mb-3", style={"padding": 0}),
         dbc.Col([
             html.Div(children=[
                 "Total Users"], className="lead card-header", style={'font-size': HEADER_FONT_SIZE}),
-            html.Div([
-                html.H1(id='numUsers', className="lead",  style={'font-size': BODY_FONT_SIZE}),
-                html.P(id='userDescription', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
-            ], className="card-body flex-fill")
+            dcc.Loading(
+                html.Div([
+                    html.H1(id='numUsers', className="lead",  style={'font-size': BODY_FONT_SIZE}),
+                    html.P(id='userDescription', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
+                ], className="card-body flex-fill"))
         ], className="card border-dark mb-3", style={"padding": 0}),
         dbc.Col([
             html.Div(children=[
@@ -61,10 +69,11 @@ layout = html.Div([
                     clearable=False,
                     style={'width': '100%'}
                 )], className="lead card-header", style={'font-size': HEADER_FONT_SIZE}),
-            html.Div([
-                html.H1(id='numLikes', className="lead",  style={'font-size': BODY_FONT_SIZE}),
-                html.P(id='avgLikes', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
-            ], className="card-body flex-fill")
+            dcc.Loading(
+                html.Div([
+                    html.H1(id='numLikes', className="lead",  style={'font-size': BODY_FONT_SIZE}),
+                    html.P(id='avgLikes', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
+                ], className="card-body flex-fill"))
         ], className="card border-dark mb-3", style={"padding": 0}),
         dbc.Col([
             html.Div(children=[
@@ -77,49 +86,39 @@ layout = html.Div([
                     style={'width': '100%'}
                 )
             ], className="lead card-header", style={'font-size': HEADER_FONT_SIZE}),
-            html.Div([
-                html.H1(id='peakHour', className="lead",  style={'font-size': BODY_FONT_SIZE}),
-                html.P(id='peakHourAvg', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
-            ], className="card-body flex-fill")
+            dcc.Loading(
+                html.Div([
+                    html.H1(id='peakHour', className="lead",  style={'font-size': BODY_FONT_SIZE}),
+                    html.P(id='peakHourAvg', className="card-text",  style={'font-size': FOOTER_FONT_SIZE})
+                ], className="card-body flex-fill"))
         ], className="card border-dark mb-3", style={"padding": 0})
-    ])], style={'text-align': 'center', 'padding-bottom': 10, 'padding-left': 10, 'padding-right': 10}))])
+    ])], style={'text-align': 'center', 'padding-bottom': 10, 'padding-left': 10, 'padding-right': 10})])
 
-# Update card data
-
-
+# Update Posts, Comments and Total Users
 @app.callback(
     Output("numPosts", "children"),
     Output("avgPostLen", "children"),
-    Output("numLikes", "children"),
-    Output("avgLikes", "children"),
     Output("numComments", "children"),
     Output("avgCommentLen", "children"),
     Output("numUsers", "children"),
     Output("userDescription", "children"),
-    Output("peakHour", "children"),
-    Output("peakHourAvg", "children"),
     Output("avgPostLen", "style"),
     Output("avgCommentLen", "style"),
     Input('selected_label', 'value'),
-    Input('selected_group', 'value'),
-    Input('filter_time', 'value'),
-    Input('filter_likes', 'value'))
-def helper(label, group, time_period, filter_likes):
-    # Prepare post data
-    posts = data.loc[data.groupby('hashed_post_id')[
-        'post_time'].idxmin()].reset_index(drop=True).copy()
-    posts = posts.dropna(subset=['post_text'])
-    # Prepare comments data
-    comments = data[data['hashed_comment_id'] != '0'].copy()
+    Input('selected_group', 'value'))
+
+def helper(label, group):
+    posts = posts_df.copy()
+    comments = comments_df.copy()
     # Filter by label
     if label != 'all':
-        posts = posts[posts['post_text_pred'] == label]
-        comments = comments[comments['comment_text_pred'] == label]
+        posts = posts_df[posts_df['post_text_pred'] == label]
+        comments = comments_df[comments_df['comment_text_pred'] == label]
     
     # Filter by group
     if group != 'all':
-        posts = posts[posts['group'] == group]
-        comments = comments[comments['group'] == group]
+        posts = posts_df[posts_df['group'] == group]
+        comments = comments_df[comments_df['group'] == group]
 
     post_lengths = posts['post_text'].str.split("\\s+")
     # Number of posts
@@ -130,8 +129,8 @@ def helper(label, group, time_period, filter_likes):
         avg_post_length = round(avg_post_length)
     else:
         avg_post_length = 0
-    # Sentiment score of each post
 
+    # Sentiment score of each post
     post_filtered = posts[posts['include'] == 1]['sentiment']
     post_sentiment = round(post_filtered.mean(), 2)
     # Fix floating point issue where negative numbers are rounded to -0
@@ -150,7 +149,7 @@ def helper(label, group, time_period, filter_likes):
 
     # Sentiment score of each comment
 
-    # Experiment with filtering by word length
+    # Filter out short texts or non-Engish ones
     comment_filtered = comments[comments['include'] == 1]['sentiment']
     comment_sentiment = round(comment_filtered.mean(), 2)
     # Fix floating point issue where negative numbers are rounded to -0
@@ -164,8 +163,80 @@ def helper(label, group, time_period, filter_likes):
     all_users = f'{pd.Series(np.concatenate((posters, commenters))).nunique():,}'
     user_description = f'{commenters.nunique():,} Commenters, {posters.nunique():,} Posters'
 
+    # Adjust text color based on sentiment
+    post_color = {}
+    comment_color = {}
+    if round(post_filtered.mean(), 2) > 0:
+        post_color = {'color': 'green'}
+    elif round(post_filtered.mean(), 2) < 0:
+        post_color = {'color': 'red'}
+    if round(comment_filtered.mean(), 2) > 0:
+        comment_color = {'color': 'green'}
+    elif round(comment_filtered.mean(), 2) < 0:
+        comment_color = {'color': 'red'}
+
+    post_color['font-size']= FOOTER_FONT_SIZE
+    comment_color['font-size'] = FOOTER_FONT_SIZE
+
+    return [num_posts, post_length_text, num_comments,
+            comment_length_text, all_users, user_description, post_color, comment_color]
+
+# Post likes
+@app.callback(
+    Output("numLikes", "children"),
+    Output("avgLikes", "children"),
+    Input('selected_label', 'value'),
+    Input('selected_group', 'value'),
+    Input('filter_likes', 'value'))
+def update_likes(label, group, filter_likes):
+    posts = posts_df.copy()
+   # Filter by label
+    if label != 'all':
+        posts = posts_df[posts_df['post_text_pred'] == label]
+    
+    # Filter by group
+    if group != 'all':
+        posts = posts_df[posts_df['group'] == group]
+
+    # Average number of likes
+    if filter_likes == 'Likes (Median)':
+        likes = posts['likes'].median()
+    elif filter_likes == 'Likes (Mean)':
+        likes = round(posts['likes'].mean(), 2)
+    elif filter_likes == 'Likes (Mode)':
+        if posts['likes'].mode().values == posts['likes'].mode().values:
+            likes = posts['likes'].mode().values[0]
+        else:
+            likes = 0
+    num_likes = f'{likes:,}'
+    if len(posts) != 0:
+        posts_with_likes = round(((len(posts[posts['likes'] > 0])*100)/len(posts)), 2)
+    else:
+        posts_with_likes = 0
+    likes_text = f'Posts with >0 likes: {posts_with_likes}%'
+
+    return [num_likes, likes_text]
+
+#Update peak hour
+@app.callback(
+    Output("peakHour", "children"),
+    Output("peakHourAvg", "children"),
+    Input('selected_label', 'value'),
+    Input('selected_group', 'value'),
+    Input('filter_time', 'value'))
+def helper(label, group, time_period):
+    comments = comments_df.copy()
+   # Filter by label
+    if label != 'all':
+        posts = posts_df[posts_df['post_text_pred'] == label]
+        comments = comments_df[comments_df['comment_text_pred'] == label]
+    
+    # Filter by group
+    if group != 'all':
+        posts = posts_df[posts_df['group'] == group]
+        comments = comments_df[comments_df['group'] == group]
+
     # Filter by chosen peak time period
-    # Filter by label
     period = 'hour'
     if time_period:
         if time_period == 'Daily':
@@ -222,42 +293,7 @@ def helper(label, group, time_period, filter_likes):
         peak_period = highest['period']
     periodic_text = f'Comment Frequency: {highest["val"]}'
 
-    # Adjust text color based on sentiment
-    post_color = {}
-    comment_color = {}
-    if round(post_filtered.mean(), 2) > 0:
-        post_color = {'color': 'green'}
-    elif round(post_filtered.mean(), 2) < 0:
-        post_color = {'color': 'red'}
-    if round(comment_filtered.mean(), 2) > 0:
-        comment_color = {'color': 'green'}
-    elif round(comment_filtered.mean(), 2) < 0:
-        comment_color = {'color': 'red'}
-
-    post_color['font-size']= FOOTER_FONT_SIZE
-    comment_color['font-size'] = FOOTER_FONT_SIZE
-
-    # Average number of likes
-    if filter_likes == 'Likes (Median)':
-        likes = posts['likes'].median()
-    elif filter_likes == 'Likes (Mean)':
-        likes = round(posts['likes'].mean(), 2)
-    elif filter_likes == 'Likes (Mode)':
-        if posts['likes'].mode().values == posts['likes'].mode().values:
-            likes = posts['likes'].mode().values[0]
-        else:
-            likes = 0
-    num_likes = f'{likes:,}'
-    if len(posts) != 0:
-        posts_with_likes = round(((len(posts[posts['likes'] > 0])*100)/len(posts)), 2)
-    else:
-        posts_with_likes = 0
-    likes_text = f'Posts with >0 likes: {posts_with_likes}%'
-
-    return [num_posts, post_length_text, num_likes, likes_text, num_comments,
-            comment_length_text, all_users, user_description,
-            peak_period, periodic_text, post_color, comment_color]
-
+    return [peak_period, periodic_text]
 
 def format_time(time):
     if time != time:

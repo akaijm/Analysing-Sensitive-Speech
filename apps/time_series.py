@@ -38,8 +38,8 @@ layout = html.Div([
                     value='All'
                 )], style={'width':'30%', 'padding-left':50, 'display':'inline-block'}),
 
-                
-            dcc.Graph(id = 'monthly_time_series')])
+            dcc.Loading(
+                dcc.Graph(id = 'monthly_time_series'))])
 
 @app.callback(
     Output('monthly_time_series', 'figure'),
