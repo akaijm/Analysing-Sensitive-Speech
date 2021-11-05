@@ -17,7 +17,11 @@ Please have **Python** installed on your device. You can create a `conda` enviro
 ## Code Organization
 
 The code is set up into several main directories:
+- [**apps**](https://github.com/Yocodeyo/Analysing-Sensitive-Speech/tree/main/apps): Stores the graphs to be imported into the dashboard
+- [**assets**](https://github.com/Yocodeyo/Analysing-Sensitive-Speech/tree/main/assets): Stores CSS stylesheets
+- [**outputs**](https://github.com/Yocodeyo/Analysing-Sensitive-Speech/tree/main/outputs): Stores the input data for the graphs
+     - The input data for each graph is stored in a sub-folder corresponding to its name
+     - hashed_0_data.h5 is the hashed source file provided by the client
 
-## Data Processing
 
 
