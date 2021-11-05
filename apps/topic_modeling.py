@@ -265,7 +265,7 @@ def update_wordcloud(clickData, label, group, df_jsons):
             freq_dict[top_30_tokens[i]] = float(top_30_token_weights[i])
 
         wordcloud = WordCloud(
-            font_path='C:/Windows/Fonts/Artifakt Element Regular.ttf',
+            font_path='preprocessing/topic_modeling/Artifakt Element Regular.ttf',
             background_color='white',
             color_func=lambda *args, **kwargs: color_of_topic,
             prefer_horizontal=1,

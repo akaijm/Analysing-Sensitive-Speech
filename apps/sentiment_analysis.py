@@ -314,7 +314,8 @@ children=[dbc.Card(
                         ]#, width = 12
                     )
             ]
-        )
+        ),
+        html.Div("*Sentiment score equals to -1 indicates the most negative sentiment while 1 indicates the most positive sentiment.", style={'textAlign':'justify'})
         ]
     ),
     #className="mt-3",
