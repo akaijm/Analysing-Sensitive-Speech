@@ -163,9 +163,10 @@ def update_df_used(num_topics, model):
 @app.callback(
     Output("piechart", "clickData"),
     [Input("selected_label", "value"),
-     Input("selected_group", "value")]
+     Input("selected_group", "value"),
+     Input("num_topics", "value")]
 )
-def update_clickdata(label, group):
+def update_clickdata(label, group, num_topics):
     return None
 
 
