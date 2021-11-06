@@ -305,6 +305,7 @@ def make_node(input, node_type, cluster_size = 1):
         if input['post_text'] == input['post_text']:
             #Remove next line characters
             text = input['post_text'].replace('\n','')
+            text = text.replace('\r','')
         else:
             text = ' '
         likes = input['likes']
@@ -324,6 +325,7 @@ def make_node(input, node_type, cluster_size = 1):
         username = input['hashed_commenter_name']
         if input['comment_text'] == input['comment_text']:
             text = input['comment_text'].replace('\n','')
+            text = text.replace('\r','')
         else:
             text = ' '
         likes = input['likes']
@@ -468,7 +470,14 @@ def displayTapNodeData(node, time_elapsed, time_limit):
         comment_df = comment_df.dropna(subset = ['comment_text', 'comment_time'])
 
         source_post['Label'] = post_df['post_text_pred']
-        source_post['Post Text'] = post_df['post_text']
+        
+        if post_df['post_text'] == post_df['post_text']:
+            #Remove next line characters
+            text = post_df['post_text'].replace('\n','')
+            text = text.replace('\r','')
+        else:
+            text = ' '
+        source_post['Post Text'] = text
         source_post['No. of Comments for This Post'] = len(comment_df)
         source_post['Post Sentiment'] = round(post_df['sentiment'], 2)
         source_post['Date Posted'] = post_df['post_time'].strftime('%d-%m-%Y %X')
