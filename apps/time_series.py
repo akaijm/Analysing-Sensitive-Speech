@@ -27,7 +27,7 @@ layout = html.Div([
                     id='Aggregation Period',
                     options=[{'label': 'Yearly', 'value': 'Yearly'},{'label': 'Monthly', 'value': 'Monthly'},
                             {'label': 'Daily', 'value': 'Daily'}],
-                    value='Yearly'
+                    value='Monthly'
                 )], style={'width':'30%', 'display':'inline-block'}),
 
             html.Div([
@@ -97,4 +97,6 @@ def update_time_series(time_frame, label, content_type, group):
             dtick = 1
         )
     )
+
+    fig.update_layout(yaxis_title = 'Total Frequency')
     return fig

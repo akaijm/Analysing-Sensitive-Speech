@@ -20,7 +20,7 @@ from app import app
 # load nodes infoamation
 nodesdf = pd.read_csv("outputs/agg_network/nodes.csv")
 nodesdfpost = nodesdf[nodesdf['type'] == 'post']
-nodesdfresponse = nodesdf[nodesdf['type'] == 'response']
+nodesdfresponse = nodesdf[nodesdf['type'] == 'comment']
 nodesdf2 = nodesdf[['topic', 'centrality']].sort_values(
     by=['centrality'], ascending=False)
 nodesdfpostfrequency = nodesdfpost[['topic', 'freq']].sort_values(
@@ -53,18 +53,22 @@ for i in range(len(names)):
 
 network = nx.Graph()
 # Add node for each character
+
 for p_label in nodes.keys():
     if nodes[p_label][0] > 0:
         network.add_node(p_label, size=nodes[p_label][0]/1000+1, node_color=nodes[p_label][1],
                          symbol=nodes[p_label][2], freq=nodes[p_label][3], centrality=nodes[p_label][4])
+#print(network.nodes())
 
 # load edge information
 edges = pd.read_csv('outputs/agg_network/edges.csv')
 edgedf2 = edges[['source', 'target', 'weight']].sort_values(
     by=['weight'], ascending=False).head(10)
-# print(edgedf2.head()) # prints to terminal
+#print(edgedf2.head()) # prints to terminal
 #get median of the edge weight to be set as default value for slider filter
 medianweight=edges['weight'].median()
+maxweight=edges['weight'].max()
+maxweightthreshold=maxweight-1
 
 comments_to_posts = {'agreement_post': {}, 'culture_post': {}, 'dehuman_post': {}, 'import_post': {}, 'ingroup_post': {
 }, 'insult_post': {}, 'opp_post': {}, 'others_post': {}, 'racist_post': {}, 'tyrannical_post': {}, 'vto pap_post': {}}
@@ -144,11 +148,14 @@ node_trace = go.Scatter(x=[],
                                      symbol=[],
                                      line=None))
 # For each node in midsummer, get the position and size and add to the node_trace
+
+#print(network.nodes())
 for node in network.nodes():
     x, y = pos_[node]
     node_trace['x'] += tuple([x])
     node_trace['y'] += tuple([y])
     #node_trace['freq'] +=tuple([network.nodes()[node]['freq']])
+    #print(node)
     node_trace['marker']['color'] += tuple(
         [network.nodes()[node]['node_color']])
     node_trace['marker']['size'] += tuple([7.5*network.nodes()[node]['size']])
@@ -218,14 +225,14 @@ layout = html.Div([
                                     "marginRight": "5px"}
                     ),
                     html.P(
-                        'Drag the slider to see edges with weights higher than your chosen threshold:', style={'fontWeight': 'bold'}),
-                    dcc.Slider(
-                        id='my-slider',
-                        min=0,
-                        max=8000,
-                        step=10,
-                        value=medianweight,
-                    ),
+                        'Please key in a threshold for edge weight between 0 and {} and press enter:'.format(maxweightthreshold), style={'fontWeight': 'bold'}),
+                    dcc.Input(
+                        id = "my-slider",
+                        type = "number",
+                        placeholder = medianweight,
+                        debounce=True,
+                        value = medianweight,
+                        ),
                     dcc.Graph(id='network', figure=fig, style={
                               'width': '100%', 'height': '90vh', 'display': 'inline-block'})
                 ], width=8),
@@ -233,7 +240,7 @@ layout = html.Div([
                     dcc.Tabs(id="tabs", value='centrality', children=[
                         dcc.Tab(label='centrality', value='centrality'),
                         dcc.Tab(label='post frequency', value='pfrequency'),
-                        dcc.Tab(label='response frequency',
+                        dcc.Tab(label='comment frequency',
                                 value='rfrequency'),
                         dcc.Tab(label='weight', value='weight')
                     ]),
@@ -253,7 +260,7 @@ def update_graph(boxval, sliderval):
     labels = ""
     node_trace2 = node_trace
     postname = labels+'_post'
-    responsename = labels+'_response'
+    responsename = labels+'_comment'
     cnt = 0
     colors = list(node_trace['marker']['color'])
     texts = textsall
@@ -321,7 +328,7 @@ def update_graph(boxval, sliderval):
         fig.add_trace(trace)
 
     fig.update_layout(
-        title_text='Showing edges with >{} interactions.'.format(
+        title_text='Showing edges with weight >{}.'.format(
             sliderval)
     )
     fig.update_layout(showlegend=False)
