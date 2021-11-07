@@ -65,6 +65,8 @@ edgedf2 = edges[['source', 'target', 'weight']].sort_values(
 # print(edgedf2.head()) # prints to terminal
 #get median of the edge weight to be set as default value for slider filter
 medianweight=edges['weight'].median()
+maxweight=edges['weight'].max()
+maxweightthreshold=maxweight-1
 
 comments_to_posts = {'agreement_post': {}, 'culture_post': {}, 'dehuman_post': {}, 'import_post': {}, 'ingroup_post': {
 }, 'insult_post': {}, 'opp_post': {}, 'others_post': {}, 'racist_post': {}, 'tyrannical_post': {}, 'vto pap_post': {}}
@@ -218,14 +220,14 @@ layout = html.Div([
                                     "marginRight": "5px"}
                     ),
                     html.P(
-                        'Drag the slider to see edges with weights higher than your chosen threshold:', style={'fontWeight': 'bold'}),
-                    dcc.Slider(
-                        id='my-slider',
-                        min=0,
-                        max=8000,
-                        step=10,
-                        value=medianweight,
-                    ),
+                        'Please key in a threshold for edge weight between 0 and {} and press enter:'.format(maxweightthreshold), style={'fontWeight': 'bold'}),
+                    dcc.Input(
+                        id = "my-slider",
+                        type = "number",
+                        placeholder = medianweight,
+                        debounce=True,
+                        value = medianweight,
+                        ),
                     dcc.Graph(id='network', figure=fig, style={
                               'width': '100%', 'height': '90vh', 'display': 'inline-block'})
                 ], width=8),
@@ -321,7 +323,7 @@ def update_graph(boxval, sliderval):
         fig.add_trace(trace)
 
     fig.update_layout(
-        title_text='Showing edges with >{} interactions.'.format(
+        title_text='Showing edges with weight >{}.'.format(
             sliderval)
     )
     fig.update_layout(showlegend=False)
