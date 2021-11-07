@@ -1,122 +1,122 @@
 ,post_text_pred,comment_text_pred,weight,source,target
-0,agreement,agreement,40,agreement_post,agreement_response
-1,agreement,culture,21,agreement_post,culture_response
-2,agreement,dehuman,33,agreement_post,dehuman_response
-3,agreement,import,69,agreement_post,import_response
-4,agreement,ingroup,20,agreement_post,ingroup_response
-5,agreement,insult,69,agreement_post,insult_response
-6,agreement,opp,10,agreement_post,opp_response
-7,agreement,others,60,agreement_post,others_response
-8,agreement,racist,20,agreement_post,racist_response
-9,agreement,tyrannical,161,agreement_post,tyrannical_response
-10,agreement,vto pap,16,agreement_post,vto pap_response
-11,culture,agreement,31,culture_post,agreement_response
-12,culture,culture,60,culture_post,culture_response
-13,culture,dehuman,17,culture_post,dehuman_response
-14,culture,import,148,culture_post,import_response
-15,culture,ingroup,24,culture_post,ingroup_response
-16,culture,insult,91,culture_post,insult_response
-17,culture,opp,22,culture_post,opp_response
-18,culture,others,39,culture_post,others_response
-19,culture,racist,28,culture_post,racist_response
-20,culture,tyrannical,166,culture_post,tyrannical_response
-21,culture,vto pap,60,culture_post,vto pap_response
-22,dehuman,agreement,23,dehuman_post,agreement_response
-23,dehuman,culture,18,dehuman_post,culture_response
-24,dehuman,dehuman,36,dehuman_post,dehuman_response
-25,dehuman,import,80,dehuman_post,import_response
-26,dehuman,ingroup,16,dehuman_post,ingroup_response
-27,dehuman,insult,61,dehuman_post,insult_response
-28,dehuman,opp,4,dehuman_post,opp_response
-29,dehuman,others,31,dehuman_post,others_response
-30,dehuman,racist,5,dehuman_post,racist_response
-31,dehuman,tyrannical,89,dehuman_post,tyrannical_response
-32,dehuman,vto pap,11,dehuman_post,vto pap_response
-33,import,agreement,2385,import_post,agreement_response
-34,import,culture,1038,import_post,culture_response
-35,import,dehuman,860,import_post,dehuman_response
-36,import,import,5646,import_post,import_response
-37,import,ingroup,1360,import_post,ingroup_response
-38,import,insult,3244,import_post,insult_response
-39,import,opp,1287,import_post,opp_response
-40,import,others,3512,import_post,others_response
-41,import,racist,641,import_post,racist_response
-42,import,tyrannical,7914,import_post,tyrannical_response
-43,import,vto pap,2724,import_post,vto pap_response
-44,ingroup,agreement,211,ingroup_post,agreement_response
-45,ingroup,culture,80,ingroup_post,culture_response
-46,ingroup,dehuman,82,ingroup_post,dehuman_response
-47,ingroup,import,318,ingroup_post,import_response
-48,ingroup,ingroup,160,ingroup_post,ingroup_response
-49,ingroup,insult,341,ingroup_post,insult_response
-50,ingroup,opp,127,ingroup_post,opp_response
-51,ingroup,others,300,ingroup_post,others_response
-52,ingroup,racist,54,ingroup_post,racist_response
-53,ingroup,tyrannical,687,ingroup_post,tyrannical_response
-54,ingroup,vto pap,304,ingroup_post,vto pap_response
-55,insult,agreement,232,insult_post,agreement_response
-56,insult,culture,141,insult_post,culture_response
-57,insult,dehuman,177,insult_post,dehuman_response
-58,insult,import,363,insult_post,import_response
-59,insult,ingroup,124,insult_post,ingroup_response
-60,insult,insult,417,insult_post,insult_response
-61,insult,opp,124,insult_post,opp_response
-62,insult,others,331,insult_post,others_response
-63,insult,racist,62,insult_post,racist_response
-64,insult,tyrannical,699,insult_post,tyrannical_response
-65,insult,vto pap,267,insult_post,vto pap_response
-66,opp,agreement,1071,opp_post,agreement_response
-67,opp,culture,356,opp_post,culture_response
-68,opp,dehuman,350,opp_post,dehuman_response
-69,opp,import,1604,opp_post,import_response
-70,opp,ingroup,606,opp_post,ingroup_response
-71,opp,insult,1414,opp_post,insult_response
-72,opp,opp,1032,opp_post,opp_response
-73,opp,others,1335,opp_post,others_response
-74,opp,racist,200,opp_post,racist_response
-75,opp,tyrannical,3380,opp_post,tyrannical_response
-76,opp,vto pap,1594,opp_post,vto pap_response
-77,others,agreement,1125,others_post,agreement_response
-78,others,culture,397,others_post,culture_response
-79,others,dehuman,425,others_post,dehuman_response
-80,others,import,1387,others_post,import_response
-81,others,ingroup,572,others_post,ingroup_response
-82,others,insult,1680,others_post,insult_response
-83,others,opp,717,others_post,opp_response
-84,others,others,1567,others_post,others_response
-85,others,racist,191,others_post,racist_response
-86,others,tyrannical,3372,others_post,tyrannical_response
-87,others,vto pap,1474,others_post,vto pap_response
-88,racist,agreement,214,racist_post,agreement_response
-89,racist,culture,92,racist_post,culture_response
-90,racist,dehuman,98,racist_post,dehuman_response
-91,racist,import,457,racist_post,import_response
-92,racist,ingroup,120,racist_post,ingroup_response
-93,racist,insult,329,racist_post,insult_response
-94,racist,opp,167,racist_post,opp_response
-95,racist,others,253,racist_post,others_response
-96,racist,racist,298,racist_post,racist_response
-97,racist,tyrannical,691,racist_post,tyrannical_response
-98,racist,vto pap,267,racist_post,vto pap_response
-99,tyrannical,agreement,834,tyrannical_post,agreement_response
-100,tyrannical,culture,325,tyrannical_post,culture_response
-101,tyrannical,dehuman,320,tyrannical_post,dehuman_response
-102,tyrannical,import,1348,tyrannical_post,import_response
-103,tyrannical,ingroup,502,tyrannical_post,ingroup_response
-104,tyrannical,insult,1206,tyrannical_post,insult_response
-105,tyrannical,opp,478,tyrannical_post,opp_response
-106,tyrannical,others,1035,tyrannical_post,others_response
-107,tyrannical,racist,185,tyrannical_post,racist_response
-108,tyrannical,tyrannical,2915,tyrannical_post,tyrannical_response
-109,tyrannical,vto pap,1173,tyrannical_post,vto pap_response
-110,vto pap,agreement,1089,vto pap_post,agreement_response
-111,vto pap,culture,324,vto pap_post,culture_response
-112,vto pap,dehuman,349,vto pap_post,dehuman_response
-113,vto pap,import,1156,vto pap_post,import_response
-114,vto pap,ingroup,522,vto pap_post,ingroup_response
-115,vto pap,insult,1390,vto pap_post,insult_response
-116,vto pap,opp,608,vto pap_post,opp_response
-117,vto pap,others,1257,vto pap_post,others_response
-118,vto pap,racist,158,vto pap_post,racist_response
-119,vto pap,tyrannical,2890,vto pap_post,tyrannical_response
-120,vto pap,vto pap,1339,vto pap_post,vto pap_response
+0,agreement,agreement,40,agreement_post,agreement_comment
+1,agreement,culture,21,agreement_post,culture_comment
+2,agreement,dehuman,33,agreement_post,dehuman_comment
+3,agreement,import,69,agreement_post,import_comment
+4,agreement,ingroup,20,agreement_post,ingroup_comment
+5,agreement,insult,69,agreement_post,insult_comment
+6,agreement,opp,10,agreement_post,opp_comment
+7,agreement,others,60,agreement_post,others_comment
+8,agreement,racist,20,agreement_post,racist_comment
+9,agreement,tyrannical,161,agreement_post,tyrannical_comment
+10,agreement,vto pap,16,agreement_post,vto pap_comment
+11,culture,agreement,31,culture_post,agreement_comment
+12,culture,culture,60,culture_post,culture_comment
+13,culture,dehuman,17,culture_post,dehuman_comment
+14,culture,import,148,culture_post,import_comment
+15,culture,ingroup,24,culture_post,ingroup_comment
+16,culture,insult,91,culture_post,insult_comment
+17,culture,opp,22,culture_post,opp_comment
+18,culture,others,39,culture_post,others_comment
+19,culture,racist,28,culture_post,racist_comment
+20,culture,tyrannical,166,culture_post,tyrannical_comment
+21,culture,vto pap,60,culture_post,vto pap_comment
+22,dehuman,agreement,23,dehuman_post,agreement_comment
+23,dehuman,culture,18,dehuman_post,culture_comment
+24,dehuman,dehuman,36,dehuman_post,dehuman_comment
+25,dehuman,import,80,dehuman_post,import_comment
+26,dehuman,ingroup,16,dehuman_post,ingroup_comment
+27,dehuman,insult,61,dehuman_post,insult_comment
+28,dehuman,opp,4,dehuman_post,opp_comment
+29,dehuman,others,31,dehuman_post,others_comment
+30,dehuman,racist,5,dehuman_post,racist_comment
+31,dehuman,tyrannical,89,dehuman_post,tyrannical_comment
+32,dehuman,vto pap,11,dehuman_post,vto pap_comment
+33,import,agreement,2385,import_post,agreement_comment
+34,import,culture,1038,import_post,culture_comment
+35,import,dehuman,860,import_post,dehuman_comment
+36,import,import,5646,import_post,import_comment
+37,import,ingroup,1360,import_post,ingroup_comment
+38,import,insult,3244,import_post,insult_comment
+39,import,opp,1287,import_post,opp_comment
+40,import,others,3512,import_post,others_comment
+41,import,racist,641,import_post,racist_comment
+42,import,tyrannical,7914,import_post,tyrannical_comment
+43,import,vto pap,2724,import_post,vto pap_comment
+44,ingroup,agreement,211,ingroup_post,agreement_comment
+45,ingroup,culture,80,ingroup_post,culture_comment
+46,ingroup,dehuman,82,ingroup_post,dehuman_comment
+47,ingroup,import,318,ingroup_post,import_comment
+48,ingroup,ingroup,160,ingroup_post,ingroup_comment
+49,ingroup,insult,341,ingroup_post,insult_comment
+50,ingroup,opp,127,ingroup_post,opp_comment
+51,ingroup,others,300,ingroup_post,others_comment
+52,ingroup,racist,54,ingroup_post,racist_comment
+53,ingroup,tyrannical,687,ingroup_post,tyrannical_comment
+54,ingroup,vto pap,304,ingroup_post,vto pap_comment
+55,insult,agreement,232,insult_post,agreement_comment
+56,insult,culture,141,insult_post,culture_comment
+57,insult,dehuman,177,insult_post,dehuman_comment
+58,insult,import,363,insult_post,import_comment
+59,insult,ingroup,124,insult_post,ingroup_comment
+60,insult,insult,417,insult_post,insult_comment
+61,insult,opp,124,insult_post,opp_comment
+62,insult,others,331,insult_post,others_comment
+63,insult,racist,62,insult_post,racist_comment
+64,insult,tyrannical,699,insult_post,tyrannical_comment
+65,insult,vto pap,267,insult_post,vto pap_comment
+66,opp,agreement,1071,opp_post,agreement_comment
+67,opp,culture,356,opp_post,culture_comment
+68,opp,dehuman,350,opp_post,dehuman_comment
+69,opp,import,1604,opp_post,import_comment
+70,opp,ingroup,606,opp_post,ingroup_comment
+71,opp,insult,1414,opp_post,insult_comment
+72,opp,opp,1032,opp_post,opp_comment
+73,opp,others,1335,opp_post,others_comment
+74,opp,racist,200,opp_post,racist_comment
+75,opp,tyrannical,3380,opp_post,tyrannical_comment
+76,opp,vto pap,1594,opp_post,vto pap_comment
+77,others,agreement,1125,others_post,agreement_comment
+78,others,culture,397,others_post,culture_comment
+79,others,dehuman,425,others_post,dehuman_comment
+80,others,import,1387,others_post,import_comment
+81,others,ingroup,572,others_post,ingroup_comment
+82,others,insult,1680,others_post,insult_comment
+83,others,opp,717,others_post,opp_comment
+84,others,others,1567,others_post,others_comment
+85,others,racist,191,others_post,racist_comment
+86,others,tyrannical,3372,others_post,tyrannical_comment
+87,others,vto pap,1474,others_post,vto pap_comment
+88,racist,agreement,214,racist_post,agreement_comment
+89,racist,culture,92,racist_post,culture_comment
+90,racist,dehuman,98,racist_post,dehuman_comment
+91,racist,import,457,racist_post,import_comment
+92,racist,ingroup,120,racist_post,ingroup_comment
+93,racist,insult,329,racist_post,insult_comment
+94,racist,opp,167,racist_post,opp_comment
+95,racist,others,253,racist_post,others_comment
+96,racist,racist,298,racist_post,racist_comment
+97,racist,tyrannical,691,racist_post,tyrannical_comment
+98,racist,vto pap,267,racist_post,vto pap_comment
+99,tyrannical,agreement,834,tyrannical_post,agreement_comment
+100,tyrannical,culture,325,tyrannical_post,culture_comment
+101,tyrannical,dehuman,320,tyrannical_post,dehuman_comment
+102,tyrannical,import,1348,tyrannical_post,import_comment
+103,tyrannical,ingroup,502,tyrannical_post,ingroup_comment
+104,tyrannical,insult,1206,tyrannical_post,insult_comment
+105,tyrannical,opp,478,tyrannical_post,opp_comment
+106,tyrannical,others,1035,tyrannical_post,others_comment
+107,tyrannical,racist,185,tyrannical_post,racist_comment
+108,tyrannical,tyrannical,2915,tyrannical_post,tyrannical_comment
+109,tyrannical,vto pap,1173,tyrannical_post,vto pap_comment
+110,vto pap,agreement,1089,vto pap_post,agreement_comment
+111,vto pap,culture,324,vto pap_post,culture_comment
+112,vto pap,dehuman,349,vto pap_post,dehuman_comment
+113,vto pap,import,1156,vto pap_post,import_comment
+114,vto pap,ingroup,522,vto pap_post,ingroup_comment
+115,vto pap,insult,1390,vto pap_post,insult_comment
+116,vto pap,opp,608,vto pap_post,opp_comment
+117,vto pap,others,1257,vto pap_post,others_comment
+118,vto pap,racist,158,vto pap_post,racist_comment
+119,vto pap,tyrannical,2890,vto pap_post,tyrannical_comment
+120,vto pap,vto pap,1339,vto pap_post,vto pap_comment

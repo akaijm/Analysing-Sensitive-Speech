@@ -10,14 +10,14 @@
 8,8,racist_post,108,post,2986
 9,9,tyrannical_post,322,post,10321
 10,10,vto pap_post,62,post,11082
-11,11,agreement_response,2776,response,7255
-12,12,culture_response,1329,response,2852
-13,13,dehuman_response,1122,response,2747
-14,14,import_response,7494,response,12576
-15,15,ingroup_response,1701,response,4026
-16,16,insult_response,3601,response,10242
-17,17,opp_response,1574,response,4576
-18,18,others_response,3824,response,9720
-19,19,racist_response,1129,response,1842
-20,20,tyrannical_response,9695,response,22964
-21,21,vto pap_response,2889,response,9229
+11,11,agreement_comment,2776,comment,7255
+12,12,culture_comment,1329,comment,2852
+13,13,dehuman_comment,1122,comment,2747
+14,14,import_comment,7494,comment,12576
+15,15,ingroup_comment,1701,comment,4026
+16,16,insult_comment,3601,comment,10242
+17,17,opp_comment,1574,comment,4576
+18,18,others_comment,3824,comment,9720
+19,19,racist_comment,1129,comment,1842
+20,20,tyrannical_comment,9695,comment,22964
+21,21,vto pap_comment,2889,comment,9229
