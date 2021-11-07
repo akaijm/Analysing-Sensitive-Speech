@@ -194,6 +194,8 @@ def update_piechart(label, group, df_jsons):
     # Create dictionary that will be used as input to piechart
     pie_dict = {'top_words': [], 'counts': [], 'topic_no': []}
     for index, row in topic_df.iterrows():  # index being the topic_no
+        if index not in topic_counts.index:
+            continue
         word_lst = row['topic_words'].split(',')
         # this number of words can vary
         pie_dict['top_words'].append(', '.join(word_lst[:10]))
