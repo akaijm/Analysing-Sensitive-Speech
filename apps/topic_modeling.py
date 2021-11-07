@@ -163,10 +163,9 @@ def update_df_used(num_topics, model):
 @app.callback(
     Output("piechart", "clickData"),
     [Input("selected_label", "value"),
-     Input("selected_group", "value"),
-     Input("num_topics", "value")]
+     Input("selected_group", "value")]
 )
-def update_clickdata(label, group, num_topics):
+def update_clickdata(label, group):
     return None
 
 
@@ -255,7 +254,7 @@ def update_wordcloud(clickData, label, group, df_jsons):
         return blank
     if clickData is not None:
         topic_df = pd.read_json(df_jsons[1])
-        topic_selected = clickData['points'][0]['customdata']
+        topic_selected = clickData['points'][0]['customdata'] # topic number may be out of scope e.g. index 3 for num_topics = 3; need to DEBUG
         color_of_topic = clickData['points'][0]['color']
         top_30_tokens = topic_df.loc[topic_selected]['topic_words'].split(',')
         top_30_token_weights = topic_df.loc[topic_selected]['word_weights'].split(
@@ -266,7 +265,7 @@ def update_wordcloud(clickData, label, group, df_jsons):
             freq_dict[top_30_tokens[i]] = float(top_30_token_weights[i])
 
         wordcloud = WordCloud(
-            font_path='preprocessing/topic_modeling/Artifakt Element Regular.ttf',
+            font_path='outputs/Artifakt Element Regular.ttf',
             background_color='white',
             color_func=lambda *args, **kwargs: color_of_topic,
             prefer_horizontal=1,
