@@ -99,7 +99,7 @@ layout = html.Div([
                             # style_as_list_view=True,
                             id='sample_texts',
                             columns=[{"name": "Sample Text", "id": "text"}, {
-                                "name": "Score", "id": "topic_pred_score"}],
+                                "name": "Topic Proportion", "id": "topic_pred_score"}],
                             data=[{}],
                             page_current=0,
                             page_size=1,
