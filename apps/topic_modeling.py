@@ -143,7 +143,7 @@ def update_model_desc(preselect_gsdmm):
         output = "*GSDMM model is recommended because the overall percentage of short texts is significant in the entire dataset."
     else:
         output = "*LDA Mallet model is recommended because the overall percentage of short texts is low in the entire dataset."
-    return [output, html.Br(), html.Br(), html.I(className="fas fa-database", style={"paddingRight": "5px"}), "Note that text duplicates are removed for topic modeling."]
+    return [output, html.Br(), html.Br(), html.I(className="fas fa-database", style={"paddingRight": "5px"}), "Note that text duplicates were removed and comments that were made before their source posts were made (due to data collection errors) were included."]
 
 @app.callback(
     Output("intermediate_value", "children"),
