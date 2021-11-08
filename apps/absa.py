@@ -22,7 +22,7 @@ entities = list(df.groupby('entities').size().sort_values(ascending = False).ind
 ent_options = [{'label': entity, 'value': entity} for entity in entities]
 
 layout = html.Div([
-    dcc.Markdown("**Aspect Based Emotion Classification**",style={'color': 'black', 'fontSize': 25,'text-align': 'center'}),
+    dcc.Markdown("**Aspect Based Emotion Classification**",style={'color': 'black', 'fontSize': 25,'textAlign': 'center'}),
     html.Div
     ([
         dcc.Dropdown(

@@ -109,20 +109,20 @@ layout = html.Div([
                             },
                             style_cell_conditional=[{
                                 'if': {'column_id': 'text'},
-                                'text_align': 'left',
-                                'max-width': '400px',
-                                'min-width': '400px',
-                                'width': '400px'
+                                'textAlign': 'left',
+                                'maxWidth': '70%',
+                                'minWidth': '70%',
+                                'width': '70%'
                             }, {
                                 'if': {'column_id': 'topic_pred_score'},
-                                'text_align': 'center'
+                                'textAlign': 'center'
                             }],
                             css=[{
                                 'selector': '.dash-spreadsheet td div',
                                 'rule': '''
-                                    max-height: 120px; min-height: 120px; height: 120px;
+                                    maxHeight: 120px; minHeight: 120px; height: 120px;
                                     display: block;
-                                    overflow-y: auto;
+                                    overflowY: auto;
                                 '''
                             }]
                         )], style={'display': 'none'})
@@ -260,7 +260,7 @@ def update_wordcloud(clickData, label, group, df_jsons):
         return blank
     if clickData is not None:
         topic_df = pd.read_json(df_jsons[1])
-        topic_selected = clickData['points'][0]['customdata'] # topic number may be out of scope e.g. index 3 for num_topics = 3; need to DEBUG
+        topic_selected = clickData['points'][0]['customdata']
         color_of_topic = clickData['points'][0]['color']
         top_30_tokens = topic_df.loc[topic_selected]['topic_words'].split(',')
         top_30_token_weights = topic_df.loc[topic_selected]['word_weights'].split(

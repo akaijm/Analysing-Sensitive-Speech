@@ -20,7 +20,7 @@ data_filtered['comment_time'] = pd.to_datetime(data_filtered['comment_time'])
 data_filtered['time_elapsed'] = pd.to_timedelta(data_filtered['time_elapsed'])
 
 layout = html.Div([
-            dcc.Markdown("**Post/Comment Frequency Over Time**",style={'color': 'black', 'fontSize': 25,'text-align': 'center'}),
+            dcc.Markdown("**Post/Comment Frequency Over Time**",style={'color': 'black', 'fontSize': 25,'textAlign': 'center'}),
             html.Div([
                 dcc.Markdown('Aggregation Period'),
                 dcc.Dropdown(
@@ -36,7 +36,7 @@ layout = html.Div([
                     id='Content Type',
                     options=[{'label': 'All', 'value': 'All'}, {'label': 'Posts', 'value': 'Posts'},{'label': 'Comments', 'value': 'Comments'}],
                     value='All'
-                )], style={'width':'30%', 'padding-left':50, 'display':'inline-block'}),
+                )], style={'width':'30%', 'paddingLeft':50, 'display':'inline-block'}),
 
             dcc.Loading(
                 dcc.Graph(id = 'monthly_time_series'))])

@@ -39,7 +39,7 @@ app.layout = html.Div([
                     multi=False,
                     clearable=False,
                     value='all'
-                )],style={'display':'inline-block', 'width': '50%','padding-right':20}),
+                )],style={'display':'inline-block', 'width': '50%','paddingRight':20}),
                 html.Div([html.Label("Filter by Group:"),
                       dcc.Dropdown(
                     id='selected_group',

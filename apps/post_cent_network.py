@@ -34,7 +34,7 @@ all_groups = np.append(all_groups, data['group'].unique())
 
 layout = html.Div([
         html.Div([
-            html.Div([dcc.Markdown("**Post-centric Network Graph**",style={'color': 'black', 'fontSize': 25,'text-align': 'center'})]),
+            html.Div([dcc.Markdown("**Post-centric Network Graph**",style={'color': 'black', 'fontSize': 25,'textAlign': 'center'})]),
             html.Div([
                 dcc.Markdown('Filter by Class'),
                 dcc.Dropdown(
@@ -48,14 +48,14 @@ layout = html.Div([
                     id='filter_group',
                     options=[{'label': i, 'value': i} for i in all_groups],
                     value=all_groups[0]
-                )], style={'display':'inline-block', 'width':'15%', 'padding-left':30}),
+                )], style={'display':'inline-block', 'width':'15%', 'paddingLeft':30}),
             html.Div([
                 dcc.Markdown('Top **N** Posts by Reaction Count'),
                 dcc.Dropdown(
                     id='top_n_clusters',
                     options=[{'label': i, 'value': i} for i in range(1, 10)],
                     value=1
-                    )], style={'display':'inline-block', 'width':'20%', 'padding-left':30}),
+                    )], style={'display':'inline-block', 'width':'20%', 'paddingLeft':30}),
             html.Div([
                 dcc.Markdown('Search for a Post'),
                 dcc.Input(
@@ -79,9 +79,9 @@ layout = html.Div([
                                 {
                                     "selector": "node",
                                     "style": {
-                                        "font-size": "100px",
-                                        "text-valign": "center",
-                                        "text-halign": "center",
+                                        "fontSize": "100px",
+                                        "textValign": "center",
+                                        "textHalign": "center",
                                         'width':50,
                                         'height':50
 
@@ -160,9 +160,9 @@ layout = html.Div([
                                         "background-color":"white",
                                         "width": "250",
                                         "height": "100",
-                                        "font-size": "100px",
-                                        "text-valign": "center",
-                                        "text-halign": "center"
+                                        "fontSize": "100px",
+                                        "textValign": "center",
+                                        "textHalign": "center"
                                     }
                                 },
                                 
@@ -267,7 +267,7 @@ layout = html.Div([
             html.Div([
                 dcc.Markdown("**Time Elapsed (Click on triangle node to filter)**",
                     style={'color': 'black', 'fontSize': 15,
-                            'text-align': 'center', 'float':'middle'}),
+                            'textAlign': 'center', 'float':'middle'}),
                 dcc.Slider(
                     id = 'time_slider'
             ),
@@ -275,7 +275,7 @@ layout = html.Div([
                 html.Div([  
                     html.H5("Details on Source Post",
                     style={'color': 'black', 'fontSize': 15,
-                            'text-align': 'center', 'float':'middle'}), 
+                            'textAlign': 'center', 'float':'middle'}), 
                     html.Pre(id='cytoscape-postNodeData-json', style={'whiteSpace': 'break-spaces','height': 'auto'})
                 ], style={'border': 'thin lightgrey solid','overflowY': 'auto','height':'300px',
                              'width':'50%', 'display':'inline-block'
@@ -283,13 +283,13 @@ layout = html.Div([
                 html.Div([  
                     html.H5("Details on Hovered Node",
                     style={'color': 'black', 'fontSize': 15,
-                            'text-align': 'center', 'float':'middle'}), 
+                            'textAlign': 'center', 'float':'middle'}), 
                     html.Pre(id='cytoscape-tapNodeData-json', style={'whiteSpace': 'break-spaces','height': 'auto'})
                 ], style={'border': 'thin lightgrey solid','overflowY': 'auto','height':'300px',
                              'width':'50%', 'display':'inline-block'
                 })
             ])
-    ],style={'width':'100%', 'float':'middle','padding-left':100, 'padding-right':100}),
+    ],style={'width':'100%', 'float':'middle','paddingLeft':100, 'paddingRight':100}),
         html.Br()
     ])
 
