@@ -246,6 +246,7 @@ children=[
                                         {'label': 'Posts', 'value': 'posts'},
                                     ],
                                 value='comments',
+                                clearable=False
                             )
                         ] , width = 3, style = {"marginLeft" : "7%","marginRight" : "13%"}
                     ),
@@ -260,6 +261,7 @@ children=[
                                         {'label': 'By Day', 'value': 'day'},
                                     ],
                                 value='day',
+                                clearable=False
                             )
                         ], width = 3, style = {"marginLeft" : "7%","marginRight" : "13%"}
                     ),
@@ -299,6 +301,7 @@ children=[dbc.Card(
                                     {'label': 'Minutes', 'value': 'minutes'},
                                 ],
                             value='days',
+                            clearable=False
                         )
                     ], width = 3, style = {"marginLeft" : "7%","marginRight" : "13%"}
                 ),

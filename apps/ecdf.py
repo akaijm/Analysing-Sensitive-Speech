@@ -405,6 +405,7 @@ ecdf_te_tab_card = dcc.Loading(id = "loading-ecdf-te",
                                         {'label': 'Top 5', 'value': 4},
                                     ],
                                 value=-1,
+                                clearable=False
                             )
                         ] #, width = 3, style = {"marginLeft" : "7%","marginRight" : "13%"}
                         , width="auto"
@@ -421,6 +422,7 @@ ecdf_te_tab_card = dcc.Loading(id = "loading-ecdf-te",
                                         {'label': 'Minutes', 'value': 'minutes'},
                                     ],
                                 value='days',
+                                clearable=False
                             )
                         ]#, width = 3, style = {"marginLeft" : "7%","marginRight" : "13%"}
                         , width=2
