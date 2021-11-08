@@ -192,11 +192,11 @@ def update_likes(label, group, filter_likes):
     posts = posts_df.copy()
    # Filter by label
     if label != 'all':
-        posts = posts_df[posts_df['post_text_pred'] == label]
+        posts = posts[posts['post_text_pred'] == label]
     
     # Filter by group
     if group != 'all':
-        posts = posts_df[posts_df['group'] == group]
+        posts = posts[posts['group'] == group]
 
     # Average number of likes
     if filter_likes == 'Likes (Median)':
@@ -228,13 +228,11 @@ def helper(label, group, time_period):
     comments = comments_df.copy()
    # Filter by label
     if label != 'all':
-        posts = posts_df[posts_df['post_text_pred'] == label]
-        comments = comments_df[comments_df['comment_text_pred'] == label]
+        comments = comments[comments['comment_text_pred'] == label]
     
     # Filter by group
     if group != 'all':
-        posts = posts_df[posts_df['group'] == group]
-        comments = comments_df[comments_df['group'] == group]
+        comments = comments[comments['group'] == group]
 
     # Filter by chosen peak time period
     period = 'hour'
