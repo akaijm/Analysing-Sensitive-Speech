@@ -112,13 +112,13 @@ def helper(label, group):
     comments = comments_df.copy()
     # Filter by label
     if label != 'all':
-        posts = posts_df[posts_df['post_text_pred'] == label]
-        comments = comments_df[comments_df['comment_text_pred'] == label]
+        posts = posts[posts['post_text_pred'] == label]
+        comments = comments[comments['comment_text_pred'] == label]
     
     # Filter by group
     if group != 'all':
-        posts = posts_df[posts_df['group'] == group]
-        comments = comments_df[comments_df['group'] == group]
+        posts = posts[posts['group'] == group]
+        comments = comments[comments['group'] == group]
 
     post_lengths = posts['post_text'].str.split("\\s+")
     # Number of posts
