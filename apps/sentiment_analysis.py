@@ -153,7 +153,7 @@ def sentiment_ts_plot(df=df,label='all',group='all', porc='comments', freq = 'da
                                  customdata = data['count'],
                                  hovertemplate =
                                 '<b>Date</b>: %{x}<br>'+
-                                '<b>Sentiment Score</b>: %{y}<br>'+
+                                '<b>Sentiment Score</b>: %{y:.3f}<br>'+
                                 "<b>#comments: %{customdata}"+
                                 '<extra></extra>',
                                  ),
@@ -204,8 +204,8 @@ def sentiment_te_plot(df=df,label='tyrannical',group='all', freq='days'):
                                      mode='markers',
                                      customdata = data['count'],
                                      hovertemplate =
-                                    '<b>Date</b>: %{x}<br>'+
-                                    '<b>Sentiment Score</b>: %{y}<br>'+
+                                    '<b>Time elapsed</b>: %{x}<br>'+
+                                    '<b>Sentiment Score</b>: %{y:.3f}<br>'+
                                     "<b>#comments: %{customdata}"+
                                     '<extra></extra>',
                                      ),

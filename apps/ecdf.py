@@ -271,7 +271,8 @@ def contagion_te_plot(df=df, label='all',group='all', start_date='2018-01-03', e
                                      mode='markers',
                                      hovertemplate =
                                     '<b>Time elapsed</b>: %{x}<br>'+
-                                    '<b>% Comments</b>: %{customdata}<br>'+
+                                    '<b># Comments</b>: %{y}<br>'+
+                                    '<b>% Comments</b>: %{customdata:.3f}<br>'+
                                     '<extra></extra>',
                                      ),
                               secondary_y=True,
@@ -314,15 +315,15 @@ def contagion_ts_plot(df=df, label='all',group='all', start_date='2018-01-03', e
                                  mode='markers',
                                  hovertemplate =
                                 '<b>Date</b>: %{x}<br>'+
-                                '<b># Comments</b>: %{y}<br>'
-                                '<b>% Comments</b>: %{customdata}<br>'+
+                                '<b># Comments</b>: %{y}<br>'+
+                                '<b>% Comments</b>: %{customdata:.3f}<br>'+
                                 '<extra></extra>',
                                  ),
                           secondary_y=True,
                          )
     fig.update_layout(
                 title={
-                    'text': 'Spread of posts under label - '+label,
+                    'text': 'Number of comments under posts with label - '+label,
                    'y':0.9,
                    'x':0.5,
                    'xanchor': 'center',
