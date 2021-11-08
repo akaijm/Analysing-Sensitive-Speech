@@ -90,74 +90,74 @@ layout = html.Div([
                                 {
                                     'selector' :'[label ^= "tyrannical"]',
                                     'style': {
-                                        'background-color': '#0459eb' #dark blue
+                                        'backgroundColor': '#0459eb' #dark blue
                                 }
                                     },
                                 {
                                     'selector' :'[label ^= "vto pap"]',
                                     'style': {
-                                        'background-color': '#B6D0E2' #light blue
+                                        'backgroundColor': '#B6D0E2' #light blue
                                 }
                                     },
                                 {
                                     'selector' :'[label ^= "dehuman"]',
                                     'style': {
-                                        'background-color': '#f0063e' #red
+                                        'backgroundColor': '#f0063e' #red
                                 }
                                     },
                                 {
                                     'selector' :'[label ^= "ingroup"]',
                                     'style': {
-                                        'background-color': '#f0d137' #yellow
+                                        'backgroundColor': '#f0d137' #yellow
                                 }
                                     },
                                 {
                                     'selector' :'[label ^= "culture"]',
                                     'style': {
-                                        'background-color': '#cfa502' #light brown
+                                        'backgroundColor': '#cfa502' #light brown
                                 }
                                     },
                                 {
                                     'selector' :'[label ^= "import"]',
                                     'style': {
-                                        'background-color': '#eb8bbe' #pink
+                                        'backgroundColor': '#eb8bbe' #pink
                                 }
                                     },
                                 {
                                     'selector' :'[label ^= "racist"]',
                                     'style': {
-                                        'background-color': '#551f02' #dark brown
+                                        'backgroundColor': '#551f02' #dark brown
                                 }
                                     },
                                 {
                                     'selector' :'[label ^= "agreement"]',
                                     'style': {
-                                        'background-color': '#316102' #dark green
+                                        'backgroundColor': '#316102' #dark green
                                 }
                                     },
                                 {
                                     'selector' :'[label ^= "opp"]',
                                     'style': {
-                                        'background-color': '#7cf605' #light green
+                                        'backgroundColor': '#7cf605' #light green
                                 }
                                     },
                                 {
                                     'selector' :'[label ^= "others"]',
                                     'style': {
-                                        'background-color': '#cacdc7' #grey
+                                        'backgroundColor': '#cacdc7' #grey
                                 }
                                     },
                                 {
                                     'selector' :'[label ^= "insult"]',
                                     'style': {
-                                        'background-color': '#8105c0' #purple
+                                        'backgroundColor': '#8105c0' #purple
                                 }
                                     },
                                 {
                                     'selector': '.comment',
                                     'style': {
                                         'content': 'data(label)',
-                                        "background-color":"white",
+                                        "backgroundColor":"white",
                                         "width": "250",
                                         "height": "100",
                                         "fontSize": "100px",
@@ -187,77 +187,77 @@ layout = html.Div([
                                     'selector' :".tyrannical",
                                     'style': {
                                         'line-color':'#0459eb',
-                                        'background-color': '#0459eb' #dark blue
+                                        'backgroundColor': '#0459eb' #dark blue
                                 }
                                     },
                                 {
                                     'selector' :'.vto pap',
                                     'style': {
                                         'line-color':'#B6D0E2',
-                                        'background-color': '#B6D0E2' #light blue
+                                        'backgroundColor': '#B6D0E2' #light blue
                                 }
                                     },
                                 {
                                     'selector' :'.dehuman',
                                     'style': {
                                         'line-color':'#f0063e',
-                                        'background-color': '#f0063e' #red
+                                        'backgroundColor': '#f0063e' #red
                                 }
                                     },
                                 {
                                     'selector' :'.ingroup',
                                     'style': {
                                         'line-color':'#f0d137',
-                                        'background-color': '#f0d137' #yellow
+                                        'backgroundColor': '#f0d137' #yellow
                                 }
                                     },
                                 {
                                     'selector' :'.culture',
                                     'style': {
                                         'line-color':'#cfa502',
-                                        'background-color': '#cfa502' #light brown
+                                        'backgroundColor': '#cfa502' #light brown
                                 }
                                     },
                                 {
                                     'selector' :'.import',
                                     'style': {
                                         'line-color':'#eb8bbe',
-                                        'background-color': '#eb8bbe' #pink
+                                        'backgroundColor': '#eb8bbe' #pink
                                 }
                                     },
                                 {
                                     'selector' :'.racist',
                                     'style': {
                                         'line-color':'#551f02',
-                                        'background-color': '#551f02'#dark brown
+                                        'backgroundColor': '#551f02'#dark brown
                                 }
                                     },
                                 {
                                     'selector' :'.agreement',
                                     'style': {
                                         'line-color':'#316102',
-                                        'background-color': '#316102' #dark green
+                                        'backgroundColor': '#316102' #dark green
                                 }
                                     },
                                 {
                                     'selector' :'.opp',
                                     'style': {
                                         'line-color':'#7cf605',
-                                        'background-color': '#7cf605' #light green
+                                        'backgroundColor': '#7cf605' #light green
                                 }
                                     },
                                 {
                                     'selector' :'.others',
                                     'style': {
                                         'line-color':'#cacdc7',
-                                        'background-color': '#cacdc7' #grey
+                                        'backgroundColor': '#cacdc7' #grey
                                 }
                                     },
                                 {
                                     'selector' :'.insult',
                                     'style': {
                                         'line-color':'#8105c0',
-                                        'background-color': '#8105c0' #purple
+                                        'backgroundColor': '#8105c0' #purple
                                 }
                                     }
                                 

@@ -120,9 +120,10 @@ layout = html.Div([
                             css=[{
                                 'selector': '.dash-spreadsheet td div',
                                 'rule': '''
-                                    maxHeight: 120px; minHeight: 120px; height: 120px;
+                                    max-height: 120px; min-height: 120px; height: 120px;
                                     display: block;
-                                    overflowY: auto;
+                                    overflow-y: auto;
+                                    overflow-wrap: anywhere;
                                 '''
                             }]
                         )], style={'display': 'none'})
