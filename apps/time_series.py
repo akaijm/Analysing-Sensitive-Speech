@@ -26,7 +26,7 @@ layout = html.Div([
                 dcc.Dropdown(
                     id='Aggregation Period',
                     options=[{'label': 'Yearly', 'value': 'Yearly'},{'label': 'Monthly', 'value': 'Monthly'},
-                            {'label': 'Daily', 'value': 'Daily'}],
+                            {'label': 'Daily', 'value': 'Daily'}, {'label': 'No Aggregation', 'value': 'No Aggregation'}],
                     value='Monthly'
                 )], style={'width':'30%', 'display':'inline-block'}),
 
@@ -82,6 +82,8 @@ def update_time_series(time_frame, label, content_type, group):
         timeSeries['trunc_time'] = timeSeries['time'].apply(lambda x:Timestamp(x.year, x.month, 1))
     elif time_frame == 'Daily':
         timeSeries['trunc_time'] = timeSeries['time'].apply(lambda x:Timestamp(x.year, x.month, x.day))
+    elif time_frame == 'No Aggregation':
+        timeSeries['trunc_time'] = timeSeries['time'].apply(lambda x:Timestamp(x.year, x.month, x.day, x.hour, x.minute))
 
 
     graphPlot = timeSeries[['label', 'trunc_time']].groupby(['trunc_time', 'label']).size().reset_index().rename(columns = {0:'Frequency'})
@@ -98,5 +100,5 @@ def update_time_series(time_frame, label, content_type, group):
         )
     )
 
-    fig.update_layout(yaxis_title = 'Total Frequency')
+    fig.update_layout(yaxis_title = 'Frequency (Summed Across All Labels)')
     return fig
