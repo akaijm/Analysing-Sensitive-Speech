@@ -265,7 +265,7 @@ def contagion_te_plot(df=df, label='all',group='all', start_date='2018-01-03', e
                              )
     fig.update_layout(
                 title={
-                    'text': 'Spread of posts under label - '+label,
+                    'text': 'Number of comments under posts with label - '+label,
                    'y':0.9,
                    'x':0.5,
                    'xanchor': 'center',
