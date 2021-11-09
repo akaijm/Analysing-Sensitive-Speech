@@ -26,20 +26,6 @@ df = pd.read_csv('outputs/time_series_graphs/time_elapsed_filtered.csv',encoding
 
 ######### data processing functions ########################
 
-# def datepickervariables(df, label):
-#     if label=='all':
-#         df=df
-#     else:
-#         df = df[df.post_text_pred==label]
-#     df['post_time'] = pd.to_datetime(df['post_time'])
-#     df['comment_time'] = pd.to_datetime(df['comment_time'])
-    
-#     df['comment_date'] = df['comment_time'].apply(lambda x: x.date())
-#     df = df[~df.comment_date.isnull()]
-    
-#     earliest = min(df['comment_date'])
-#     latest = max(df['comment_date'])
-#     return (df, earliest, latest)
 def datepickervariables(df, label,group):
     df['post_time'] = pd.to_datetime(df['post_time'])
     df['comment_time'] = pd.to_datetime(df['comment_time'])
@@ -550,7 +536,7 @@ def update_posttext_fig(start_date, end_date,label,group, individual, freq):
         freq='days'
     if individual!= None:
         if individual >=0:
-            print(freq)
+            # print(freq)
             tempdf = contagion_te_df(df = df, label= label,group=group, start_date=start_date,end_date=end_date,freq=freq,individualpost=individual)
             if len(tempdf)==0:
                 return [{'post_text': 'No datapoint for the post selected.'}], {'display': 'block'}
@@ -558,7 +544,7 @@ def update_posttext_fig(start_date, end_date,label,group, individual, freq):
                 tempdf.reset_index(inplace=True)
                 text = tempdf[['post_text']][:1]
                 res = text.to_dict('records')
-                print(res)
+                # print(res)
                 return res, {'display': 'block'}
 
     return [{}], {'display': 'none'}

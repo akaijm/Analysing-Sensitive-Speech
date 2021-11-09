@@ -86,12 +86,6 @@ def sentiment_ts_df(df, label,group, porc, freq):
 
 # aggregation for time elapsed
 def sentiment_te_df(df, label,group, freq):
-    # if label=='all':
-    #     df = df
-    # else:
-    #     df = df[df.post_text_pred==label]
-    # df = df[df.include==1]
-    # df = handletime(df)
         
     if freq == 'days':
         colname = 'time_elapsed_days'
@@ -179,38 +173,76 @@ def sentiment_ts_plot(df=df,label='all',group='all', porc='comments', freq = 'da
 
 
 def sentiment_te_plot(df=df,label='tyrannical',group='all', freq='days'):
-    data = sentiment_te_df(df, label,group, freq)
     colname = 'time_elapsed_'+freq
     fig = make_subplots(specs=[[{"secondary_y": True}]])
-    try:
-        miny = min(data['sentiment_score'])
-        miny = str(round(miny, 2))
-        maxy = max(data['sentiment_score'])
-        maxy = str(round(maxy, 2))
-    except:
-        miny = '0.0'
-        maxy = '0.0'
-    
-    fig.add_trace(go.Scatter(
+    if label!='all':
+        data = sentiment_te_df(df, label,group, freq)
+        try:
+            miny = min(data['sentiment_score'])
+            miny = str(round(miny, 2))
+            maxy = max(data['sentiment_score'])
+            maxy = str(round(maxy, 2))
+        except:
+            miny = '0.0'
+            maxy = '0.0'
+
+        fig.add_trace(go.Scatter(
                                 x=data[colname], y=data['sentiment_score'],
                                 mode='lines',
                                 hoverinfo='none',
                                 name='line'),
                          secondary_y=False
                          )
-    fig.add_trace(go.Scatter(name='point',
-                                     x=data[colname], 
-                                     y=data["sentiment_score"],
-                                     mode='markers',
-                                     customdata = data['count'],
-                                     hovertemplate =
-                                    '<b>Time elapsed</b>: %{x}<br>'+
-                                    '<b>Sentiment Score</b>: %{y:.3f}<br>'+
-                                    "<b>#comments: %{customdata}"+
-                                    '<extra></extra>',
-                                     ),
-                              secondary_y=True,
-                             )
+        fig.add_trace(go.Scatter(name='point',
+                                        x=data[colname], 
+                                        y=data["sentiment_score"],
+                                        mode='markers',
+                                        customdata = data['count'],
+                                        hovertemplate =
+                                        '<b>Time elapsed</b>: %{x}<br>'+
+                                        '<b>Sentiment Score</b>: %{y:.3f}<br>'+
+                                        "<b>#comments: %{customdata}"+
+                                        '<extra></extra>',
+                                        ),
+                                secondary_y=True,
+                                )
+        fig.update_layout(hovermode="x unified",showlegend=False)
+    else:
+        # datadict = {}
+        # try:
+        #     miny = min(df['sentiment_score'])
+        #     miny = str(round(miny, 2))
+        #     maxy = max(df['sentiment_score'])
+        #     maxy = str(round(maxy, 2))
+        # except:
+        miny = '-1.0'
+        maxy = '1.0'
+        labellist = list(df.post_text_pred.unique())
+        labellist.append('all')
+        for l in labellist:
+            data = sentiment_te_df(df, l,group, freq)
+            # datadict[l] = data
+
+            fig.add_trace(go.Scatter(
+                                x=data[colname], y=data['sentiment_score'],
+                                mode='lines',
+                                # hoverinfo='none',
+                                customdata = data['count'],
+                                text = [l for i in range(len(data))],
+                                hovertemplate =
+                                '<b>%{text}</b><br>'+
+                                '<b>Time elapsed</b>: %{x}<br>'+
+                                '<b>Sentiment Score</b>: %{y:.3f}<br>'+
+                                "<b>#comments: %{customdata}"+
+                                '<extra></extra>',
+                                name=l),
+                         secondary_y=False
+                         )
+
+            fig.update_layout(hovermode="x unified")
+
+    
+    
     fig.update_layout(
                 title={
                     'text':'Sentiment score of comments under posts with label - '+label+'<br>Ranges from '+str(miny)+' to '+str(maxy),
@@ -225,7 +257,7 @@ def sentiment_te_plot(df=df,label='tyrannical',group='all', freq='days'):
 
             )
     fig.update_yaxes(title_text="Mean Sentiment score", secondary_y=False)
-    fig.update_layout(hovermode="x unified",showlegend=False)
+    # fig.update_layout(hovermode="x unified",showlegend=False)
     return fig
 
 
