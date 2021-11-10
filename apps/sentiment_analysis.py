@@ -131,6 +131,9 @@ def sentiment_ts_plot(df=df,label='all',group='all', porc='comments', freq = 'da
     except:
         miny = '0.0'
         maxy = '0.0'
+
+    if porc=='comments':
+        porc = 'comments under posts'
     
     fig.add_trace(go.Scatter(
                                 x=data['date'], y=data["sentiment_score"],

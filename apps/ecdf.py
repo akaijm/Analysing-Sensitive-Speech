@@ -174,7 +174,7 @@ def contagion_te_df_all(df,group, start_date, end_date, freq):
     elif freq == 'hours':
         colname = 'time_elapsed_hours'
     elif freq == 'minutes':
-#         df = df[df.time_elapsed_hours==0]
+        df = df[df.time_elapsed_hours==0]
         colname = 'time_elapsed_minutes'
 
     if df.empty:
