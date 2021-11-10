@@ -141,7 +141,8 @@ def helper(label, group):
     # Number of comments
     num_comments = f'{len(comments):,}'
     # Average length of each comment
-    avg_comment_length = comments['comment_text'].str.len().median()
+    comment_lengths = comments['comment_text'].str.split("\\s+")
+    avg_comment_length = comment_lengths.str.len().median()
     if avg_comment_length == avg_comment_length:
         avg_comment_length = round(avg_comment_length)
     else:
