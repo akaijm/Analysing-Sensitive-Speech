@@ -224,18 +224,7 @@ layout = html.Div([
                         inputStyle={"marginLeft": "20px",
                                     "marginRight": "5px"}
                     ),
-                    html.P(
-                        'Please choose whether you want to use slider or inputbox:', style={'fontWeight': 'bold'}),
-                    dcc.RadioItems(
-                        id='my-radio',
-                        options=[
-                            {'label': 'slider', 'value': 'slider'},
-                            {'label': 'inputbox', 'value': 'inputbox'}
-                        ],
-                        value='slider',
-                        inputStyle={"marginLeft": "20px",
-                                    "marginRight": "5px"}
-                    ),
+                    
                     html.P(
                         'Please drag the slider to set a threshold for edge weight:', style={'fontWeight': 'bold'}),
                     dcc.Slider(
@@ -252,7 +241,7 @@ layout = html.Div([
                         type = "number",
                         placeholder = 0,
                         debounce=True,
-                        value = 0,
+                        value = medianweight,
                         ),
                     dcc.Graph(id='network', figure=fig, style={
                               'width': '100%', 'height': '70vh', 'display': 'inline-block'})
@@ -272,14 +261,17 @@ layout = html.Div([
     ], style={'width': '100%', 'display': 'inline-block'})
 ])
 
+@app.callback(
+    Output('my-slider', 'value'),
+    Input('my-slider2', 'value'))
+def update_graph(boxval):
+    return boxval
 
 @app.callback(
     Output('network', 'figure'),
     Input('checkbox', 'value'),
-    Input('my-radio', 'value'),
-    Input('my-slider', 'value'),
-    Input('my-slider2', 'value'))
-def update_graph(boxval, radioval, sliderval, inputval):
+    Input('my-slider', 'value'))
+def update_graph(boxval, sliderval):
     labels = ""
     node_trace2 = node_trace
     postname = labels+'_post'
@@ -329,6 +321,8 @@ def update_graph(boxval, radioval, sliderval, inputval):
     # For each edge, make an edge_trace, append to list
     edge_trace = []
 
+    radioval='slider'
+
     if radioval=='slider':
         fig = go.Figure(layout=fig_layout)
         fig.add_trace(node_trace2)
@@ -362,43 +356,6 @@ def update_graph(boxval, radioval, sliderval, inputval):
         fig.update_xaxes(showticklabels=False)
 
         fig.update_yaxes(showticklabels=False)
-        return fig
-
-    if radioval=='inputbox':
-        #print('yes')
-        fig = go.Figure(layout=fig_layout)
-        fig.add_trace(node_trace2)
-        for edge in network.edges():
-            # print(edge)
-            if (network.edges()[edge]['weight']-1)*1000 > int(inputval) and edge[0].split('_')[0] in boxval:
-                # weights.append((network.edges()[edge]['weight']-1)*1000)
-                char_1 = edge[0]
-                char_2 = edge[1]
-
-                x0, y0 = pos_[char_1]
-                x1, y1 = pos_[char_2]
-
-                text = char_1 + '--' + char_2 + ': ' + \
-                    str(network.edges()[edge]['weight'])
-
-                trace = make_edge([x0, x1, None], [y0, y1, None], text,
-                                0.3*network.edges()[edge]['weight']**1.75)
-
-                edge_trace.append(trace)
-
-        for trace in edge_trace:
-            fig.add_trace(trace)
-
-        fig.update_layout(
-            title_text='Showing edges with weight >{}.'.format(
-                inputval)
-        )
-        fig.update_layout(showlegend=False)
-
-        fig.update_xaxes(showticklabels=False)
-
-        fig.update_yaxes(showticklabels=False)
-        inputval=-1
         return fig
 
     return fig
