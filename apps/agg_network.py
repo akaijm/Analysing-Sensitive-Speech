@@ -171,7 +171,6 @@ fig_layout = go.Layout(
     plot_bgcolor='rgba(0,0,0,0)'
 )
 
-
 fig = go.Figure(layout=fig_layout)
 '''
 for trace in edge_trace:
@@ -224,7 +223,6 @@ layout = html.Div([
                         inputStyle={"marginLeft": "20px",
                                     "marginRight": "5px"}
                     ),
-                    
                     html.P(
                         'Please drag the slider to set a threshold for edge weight:', style={'fontWeight': 'bold'}),
                     dcc.Slider(
@@ -262,16 +260,22 @@ layout = html.Div([
 ])
 
 @app.callback(
-    Output('my-slider', 'value'),
-    Input('my-slider2', 'value'))
-def update_graph(boxval):
-    return boxval
+    [Output('my-slider', 'value'),
+    Output('my-slider2', 'value')],
+    [Input('my-slider', 'value'),
+    Input('my-slider2', 'value')])
+def update_graph(slider_val, input_val):
+    ctx = dash.callback_context
+    if ctx.triggered[0]["prop_id"] == 'my-slider.value':
+        return [slider_val, slider_val]
+    return [input_val, input_val]
+
 
 @app.callback(
     Output('network', 'figure'),
-    Input('checkbox', 'value'),
+    Input('checkbox','value'),
     Input('my-slider', 'value'))
-def update_graph(boxval, sliderval):
+def update_graph(boxval, syncval):
     labels = ""
     node_trace2 = node_trace
     postname = labels+'_post'
@@ -280,7 +284,7 @@ def update_graph(boxval, sliderval):
     colors = list(node_trace['marker']['color'])
     texts = textsall
     # print(network.nodes().keys())
-    print(boxval)
+    # print(boxval)
     for i in network.nodes().keys():
         topici = i.split('_')[0]
         typei = i.split('_')[1]
@@ -321,43 +325,38 @@ def update_graph(boxval, sliderval):
     # For each edge, make an edge_trace, append to list
     edge_trace = []
 
-    radioval='slider'
+    fig = go.Figure(layout=fig_layout)
+    fig.add_trace(node_trace2)
+    for edge in network.edges():
+        # print(edge)
+        if (network.edges()[edge]['weight']-1)*1000 > int(syncval) and edge[0].split('_')[0] in boxval:
+            # weights.append((network.edges()[edge]['weight']-1)*1000)
+            char_1 = edge[0]
+            char_2 = edge[1]
 
-    if radioval=='slider':
-        fig = go.Figure(layout=fig_layout)
-        fig.add_trace(node_trace2)
-        for edge in network.edges():
-            # print(edge)
-            if (network.edges()[edge]['weight']-1)*1000 > int(sliderval) and edge[0].split('_')[0] in boxval:
-                # weights.append((network.edges()[edge]['weight']-1)*1000)
-                char_1 = edge[0]
-                char_2 = edge[1]
+            x0, y0 = pos_[char_1]
+            x1, y1 = pos_[char_2]
 
-                x0, y0 = pos_[char_1]
-                x1, y1 = pos_[char_2]
+            text = char_1 + '--' + char_2 + ': ' + \
+                str(network.edges()[edge]['weight'])
 
-                text = char_1 + '--' + char_2 + ': ' + \
-                    str(network.edges()[edge]['weight'])
+            trace = make_edge([x0, x1, None], [y0, y1, None], text,
+                            0.3*network.edges()[edge]['weight']**1.75)
 
-                trace = make_edge([x0, x1, None], [y0, y1, None], text,
-                                0.3*network.edges()[edge]['weight']**1.75)
+            edge_trace.append(trace)
 
-                edge_trace.append(trace)
+    for trace in edge_trace:
+        fig.add_trace(trace)
 
-        for trace in edge_trace:
-            fig.add_trace(trace)
+    fig.update_layout(
+        title_text='Showing edges with weight >{}.'.format(
+            syncval)
+    )
+    fig.update_layout(showlegend=False)
 
-        fig.update_layout(
-            title_text='Showing edges with weight >{}.'.format(
-                sliderval)
-        )
-        fig.update_layout(showlegend=False)
+    fig.update_xaxes(showticklabels=False)
 
-        fig.update_xaxes(showticklabels=False)
-
-        fig.update_yaxes(showticklabels=False)
-        return fig
-
+    fig.update_yaxes(showticklabels=False)
     return fig
 
 
