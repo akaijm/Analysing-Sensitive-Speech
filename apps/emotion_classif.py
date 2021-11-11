@@ -96,7 +96,7 @@ def emotion_barchart(labels):
                     "</b> in <b>%{label}</b>: %{value}<br>Count: %{meta}<extra></extra>"))  # , marker_color = hex_to_rgb(COLORS[emotion])))
 
     fig = go.Figure(data=data)
-    fig.update_layout(title="Click on a bar to see a table of sample texts below!", font_family='"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',title_font=dict(size=15), barmode='group', yaxis=dict(title='Proportion of Emotion in Label'))
+    fig.update_layout(title="Click on a bar to see a table of sample texts below.", font_family='"Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',title_font=dict(size=15), barmode='group', yaxis=dict(title='Proportion of Emotion in Label'))
     return fig
 
 @app.callback(
