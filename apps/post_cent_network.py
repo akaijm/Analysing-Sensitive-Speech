@@ -83,7 +83,8 @@ layout = html.Div([
                                         "textValign": "center",
                                         "textHalign": "center",
                                         'width':50,
-                                        'height':50
+                                        'height':50,
+                                        'backgroundColor':'#551f02' #dark brown
 
                                 },
                                     },
