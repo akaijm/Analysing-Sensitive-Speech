@@ -21,7 +21,7 @@ labels = list(df.groupby('label').size().sort_values(ascending=False).index)
 lab_options = [{'label': lab.capitalize(), 'value': lab} for lab in labels]
 
 layout = html.Div([
-    dcc.Markdown("**Emotion Classification By Topic**",
+    dcc.Markdown("**Emotion Classification By Label**",
                  style={'color': 'black', 'fontSize': 25, 'textAlign': 'center'}),
     html.Div
     ([
