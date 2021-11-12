@@ -67,8 +67,8 @@ app.layout = html.Div([
                 html.H2("Dashboard for Analyzing Sensitive Speech",
                         style={'textAlign': 'center'}),
                 dbc.Row([
-                    dbc.Col([absa.layout]),
-                    dbc.Col([emotion_classif.layout])
+                    dbc.Col([emotion_classif.layout]),
+                    dbc.Col([absa.layout])
                 ], className="mt-3"),
             ], style={
                 "paddingLeft": '30px',
