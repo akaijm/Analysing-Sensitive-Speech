@@ -87,7 +87,10 @@ def update_time_series(time_frame, label, content_type, group):
 
 
     graphPlot = timeSeries[['label', 'trunc_time']].groupby(['trunc_time', 'label']).size().reset_index().rename(columns = {0:'Frequency'})
-
+    #Set to daily aggregation if there is only 1 time point
+    if len(graphPlot) == 1:
+        timeSeries['trunc_time'] = timeSeries['time'].apply(lambda x:Timestamp(x.year, x.month, x.day))
+        graphPlot = timeSeries[['label', 'trunc_time']].groupby(['trunc_time', 'label']).size().reset_index().rename(columns = {0:'Frequency'})
     fig = px.area(graphPlot, x='trunc_time', y='Frequency', color = 'label',
         labels = {"trunc_time":"Date"})
     
