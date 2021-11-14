@@ -319,9 +319,6 @@ def update_graph(boxval, syncval):
         cnt += 1
     node_trace2['marker']['color'] = tuple(colors)
     node_trace2['text'] = tuple(texts)
-    fig = go.Figure(layout=fig_layout)
-    #print(node_trace2['text'])
-    fig.add_trace(node_trace2)
     # For each edge, make an edge_trace, append to list
     edge_trace = []
 
