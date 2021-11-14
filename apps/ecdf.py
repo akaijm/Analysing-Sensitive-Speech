@@ -178,7 +178,7 @@ def contagion_te_df_all(df,group, start_date, end_date, freq):
         colname = 'time_elapsed_minutes'
 
     if df.empty:
-        return pd.DataFrame([], columns=[colname, 'cumsum', 'percentile'])
+        return {'':pd.DataFrame([], columns=[colname, 'cumsum', 'percentile'])}
         
     dfall = df.groupby(['hashed_post_id','post_text', colname])[['hashed_comment_id']] \
                            .agg(num_comments=('hashed_comment_id','count'),
