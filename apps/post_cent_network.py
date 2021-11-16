@@ -19,6 +19,8 @@ from app import app
 #Read in the processed data with post_dates set prior to the earliest comment_date
 data = pd.read_csv('outputs/post-centric_graph/time_elapsed.csv',encoding="utf-8")
 data['post_time'] = pd.to_datetime(data['post_time'])
+data['post_id'] = data['hashed_post_id'].astype(str)
+data['comment_id'] = data['hashed_comment_id'].astype(str)
 data['comment_time'] = pd.to_datetime(data['comment_time'])
 data['time_elapsed'] = pd.to_timedelta(data['time_elapsed'])
 
@@ -32,6 +34,70 @@ all_labels = np.append(['All'], all_labels)
 all_groups = ['All']
 all_groups = np.append(all_groups, data['group'].unique())
 
+#Prepare stylesheet to design node and edge colors
+stylesheets = [{"selector": "node",
+        "style": {
+            "fontSize": "100px",
+            "textValign": "center",
+            "textHalign": "center",
+            'width':50,
+            'height':50,
+            'backgroundColor':'#551f02' #dark brown
+    },
+        },
+    {
+        'selector': '.post',
+        'style': {
+            "width": "data(size)",
+            "height": "data(size)",
+            "shape": "triangle"
+        }
+    },
+    
+    {
+        'selector': 'edge',
+        'style': {
+            'curve-style': 'bezier',
+            "opacity": 1,
+            'width':"1.5",
+        }
+    }
+]
+#Get sorted list of topic labels
+labels = np.sort(data['post_text_pred'].unique())
+#Each color is matched to the corresponding label (feel free to modify the colors)
+colors = ['#316102', '#0459eb', '#f0063e', '#f0d137', '#8105c0', '#7cf605', '#cacdc7','#551f02', '#eb8bbe', '#cfa502', '#B6D0E2']
+for index in range(min(len(labels), len(colors))):
+    node_color = {
+        'selector' : f'[label ^= "{labels[index]}"]', 
+        'style' : {
+            'backgroundColor': f'{colors[index]}'
+        }
+    }
+    edge_color = {
+        'selector' : f".{labels[index]}",
+        'style': {
+            'line-color':f'{colors[index]}',
+            'backgroundColor':f'{colors[index]}'
+        }
+        
+    }
+    stylesheets.append(node_color)
+    stylesheets.append(edge_color)
+#Style for transparent node with topic label overlay
+stylesheets.append({
+        'selector': '.comment',
+        'style': {
+            'content': 'data(label)',
+            "backgroundColor":"white",
+            "width": "250",
+            "height": "100",
+            "fontSize": "100px",
+            "textValign": "center",
+            "textHalign": "center"
+        }
+    })
+    
 layout = html.Div([
         html.Div([
             html.Div([dcc.Markdown("**Post-centric Network Graph**",style={'color': 'black', 'fontSize': 25,'textAlign': 'center'})]),
@@ -75,194 +141,7 @@ layout = html.Div([
                     responsive = True,
                     maxZoom = 0.2,
                     minZoom = 0.08,
-                    stylesheet=[
-                                {
-                                    "selector": "node",
-                                    "style": {
-                                        "fontSize": "100px",
-                                        "textValign": "center",
-                                        "textHalign": "center",
-                                        'width':50,
-                                        'height':50,
-                                        'backgroundColor':'#551f02' #dark brown
-
-                                },
-                                    },
-                                {
-                                    'selector' :'[label ^= "tyrannical"]',
-                                    'style': {
-                                        'backgroundColor': '#0459eb' #dark blue
-                                }
-                                    },
-                                {
-                                    'selector' :'[label ^= "vto pap"]',
-                                    'style': {
-                                        'backgroundColor': '#B6D0E2' #light blue
-                                }
-                                    },
-                                {
-                                    'selector' :'[label ^= "dehuman"]',
-                                    'style': {
-                                        'backgroundColor': '#f0063e' #red
-                                }
-                                    },
-                                {
-                                    'selector' :'[label ^= "ingroup"]',
-                                    'style': {
-                                        'backgroundColor': '#f0d137' #yellow
-                                }
-                                    },
-                                {
-                                    'selector' :'[label ^= "culture"]',
-                                    'style': {
-                                        'backgroundColor': '#cfa502' #light brown
-                                }
-                                    },
-                                {
-                                    'selector' :'[label ^= "import"]',
-                                    'style': {
-                                        'backgroundColor': '#eb8bbe' #pink
-                                }
-                                    },
-                                {
-                                    'selector' :'[label ^= "racist"]',
-                                    'style': {
-                                        'backgroundColor': '#551f02' #dark brown
-                                }
-                                    },
-                                {
-                                    'selector' :'[label ^= "agreement"]',
-                                    'style': {
-                                        'backgroundColor': '#316102' #dark green
-                                }
-                                    },
-                                {
-                                    'selector' :'[label ^= "opp"]',
-                                    'style': {
-                                        'backgroundColor': '#7cf605' #light green
-                                }
-                                    },
-                                {
-                                    'selector' :'[label ^= "others"]',
-                                    'style': {
-                                        'backgroundColor': '#cacdc7' #grey
-                                }
-                                    },
-                                {
-                                    'selector' :'[label ^= "insult"]',
-                                    'style': {
-                                        'backgroundColor': '#8105c0' #purple
-                                }
-                                    },
-                                {
-                                    'selector': '.comment',
-                                    'style': {
-                                        'content': 'data(label)',
-                                        "backgroundColor":"white",
-                                        "width": "250",
-                                        "height": "100",
-                                        "fontSize": "100px",
-                                        "textValign": "center",
-                                        "textHalign": "center"
-                                    }
-                                },
-                                
-                                {
-                                    'selector': '.post',
-                                    'style': {
-                                        "width": "data(size)",
-                                        "height": "data(size)",
-                                        "shape": "triangle"
-                                    }
-                                },
-                                {
-                                    'selector': 'edge',
-                                    'style': {
-
-                                        'curve-style': 'bezier',
-                                        "opacity": 1,
-                                        'width':"1.5",
-                                    }
-                                },
-                                {
-                                    'selector' :".tyrannical",
-                                    'style': {
-                                        'line-color':'#0459eb',
-                                        'backgroundColor': '#0459eb' #dark blue
-                                }
-                                    },
-                                {
-                                    'selector' :'.vto pap',
-                                    'style': {
-                                        'line-color':'#B6D0E2',
-                                        'backgroundColor': '#B6D0E2' #light blue
-                                }
-                                    },
-                                {
-                                    'selector' :'.dehuman',
-                                    'style': {
-                                        'line-color':'#f0063e',
-                                        'backgroundColor': '#f0063e' #red
-                                }
-                                    },
-                                {
-                                    'selector' :'.ingroup',
-                                    'style': {
-                                        'line-color':'#f0d137',
-                                        'backgroundColor': '#f0d137' #yellow
-                                }
-                                    },
-                                {
-                                    'selector' :'.culture',
-                                    'style': {
-                                        'line-color':'#cfa502',
-                                        'backgroundColor': '#cfa502' #light brown
-                                }
-                                    },
-                                {
-                                    'selector' :'.import',
-                                    'style': {
-                                        'line-color':'#eb8bbe',
-                                        'backgroundColor': '#eb8bbe' #pink
-                                }
-                                    },
-                                {
-                                    'selector' :'.racist',
-                                    'style': {
-                                        'line-color':'#551f02',
-                                        'backgroundColor': '#551f02'#dark brown
-                                }
-                                    },
-                                {
-                                    'selector' :'.agreement',
-                                    'style': {
-                                        'line-color':'#316102',
-                                        'backgroundColor': '#316102' #dark green
-                                }
-                                    },
-                                {
-                                    'selector' :'.opp',
-                                    'style': {
-                                        'line-color':'#7cf605',
-                                        'backgroundColor': '#7cf605' #light green
-                                }
-                                    },
-                                {
-                                    'selector' :'.others',
-                                    'style': {
-                                        'line-color':'#cacdc7',
-                                        'backgroundColor': '#cacdc7' #grey
-                                }
-                                    },
-                                {
-                                    'selector' :'.insult',
-                                    'style': {
-                                        'line-color':'#8105c0',
-                                        'backgroundColor': '#8105c0' #purple
-                                }
-                                    }
-                                
-                            ]
+                    stylesheet= stylesheets
                     )
                 ),
             html.Div([

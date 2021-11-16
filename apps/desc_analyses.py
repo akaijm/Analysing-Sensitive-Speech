@@ -28,6 +28,7 @@ posts_df = data.loc[data.groupby('hashed_post_id')['post_time'].idxmin()].reset_
 posts_df = posts_df.dropna(subset=['post_text'])
 # Prepare comments data
 comments_df = data[data['hashed_comment_id'] != '0'].copy()
+comments_df = comments_df.dropna(subset=['comment_time'])
 
 layout = html.Div([
     html.Div([
