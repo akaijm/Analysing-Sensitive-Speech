@@ -24,10 +24,10 @@ data['comment_time'] = pd.to_datetime(data['comment_time'])
 data['time_elapsed'] = pd.to_timedelta(data['time_elapsed'])
 
 # Prepare post data
-posts_df = data.loc[data.groupby('hashed_post_id')['post_time'].idxmin()].reset_index(drop=True).copy()
+posts_df = data.loc[data.groupby('post_id')['post_time'].idxmin()].reset_index(drop=True).copy()
 posts_df = posts_df.dropna(subset=['post_text'])
 # Prepare comments data
-comments_df = data[data['hashed_comment_id'] != '0'].copy()
+comments_df = data[data['comment_id'] != '0'].copy()
 comments_df = comments_df.dropna(subset=['comment_time'])
 
 layout = html.Div([
@@ -123,7 +123,7 @@ def helper(label, group):
 
     post_lengths = posts['post_text'].str.split("\\s+")
     # Number of posts
-    num_posts = f'{posts["hashed_post_id"].nunique():,}'
+    num_posts = f'{posts["post_id"].nunique():,}'
     # Average length of each post
     avg_post_length = post_lengths.str.len().median()
     if avg_post_length == avg_post_length:
@@ -160,8 +160,8 @@ def helper(label, group):
     comment_length_text = f'Length: {avg_comment_length:,} words, Sentiment: {comment_sentiment:.2f}'
 
     # Number of people who made posts
-    posters = posts['hashed_username']
-    commenters = comments['hashed_commenter_name']
+    posters = posts['username']
+    commenters = comments['commenter_name']
     all_users = f'{pd.Series(np.concatenate((posters, commenters))).nunique():,}'
     user_description = f'{commenters.nunique():,} Commenters, {posters.nunique():,} Posters'
 
@@ -245,7 +245,7 @@ def helper(label, group, time_period):
             comments['weekday'] = comments['comment_time'].apply(
                 lambda x: x.strftime("%A"))
             # Get total number of comments made each weekday
-            agg_freq = comments[['hashed_comment_id', 'weekday']].groupby([
+            agg_freq = comments[['comment_id', 'weekday']].groupby([
                                                                           'weekday']).size()
             # Find how many unique occurrences of each weekday
             comments['full_date'] = comments['comment_time'].apply(
@@ -259,7 +259,7 @@ def helper(label, group, time_period):
             comments['month'] = comments['comment_time'].apply(
                 lambda x: x.strftime("%B"))
             # Get total number of comments made each month
-            agg_freq = comments[['hashed_comment_id', 'month']].groupby([
+            agg_freq = comments[['comment_id', 'month']].groupby([
                                                                         'month']).size()
             # Find how many unique occurrences of each month, after combining it with year
             comments['month_year'] = comments['comment_time'].apply(
@@ -271,7 +271,7 @@ def helper(label, group, time_period):
         comments['hour'] = comments['comment_time'].apply(
             lambda x: x.strftime('%H'))
         # Get total number of comments made each hour
-        agg_freq = comments[['hashed_comment_id', 'hour']].groupby([
+        agg_freq = comments[['comment_id', 'hour']].groupby([
                                                                    'hour']).size()
         # Find how many unique occurrences of each hour
         comments['datehour'] = comments['comment_time'].apply(

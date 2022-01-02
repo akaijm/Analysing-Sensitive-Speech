@@ -97,17 +97,17 @@ def contagion_te_df(df,label,group, start_date, end_date, freq, individualpost):
         return pd.DataFrame([], columns=[colname, 'cumsum', 'percentile'])
         
     # for individual post
-    df_agg = df.groupby(['hashed_post_id','post_text', colname])[['hashed_comment_id']] \
-                           .agg(num_comments=('hashed_comment_id','count'),
+    df_agg = df.groupby(['post_id','post_text', colname])[['comment_id']] \
+                           .agg(num_comments=('comment_id','count'),
                                 ).sort_values([colname]).reset_index()
-    df_agg['cumsum'] = df_agg.groupby(['hashed_post_id'])['num_comments'].cumsum(axis=0)
+    df_agg['cumsum'] = df_agg.groupby(['post_id'])['num_comments'].cumsum(axis=0)
     
     
-    top_5 = df_agg.groupby(['hashed_post_id'])[['num_comments']]\
+    top_5 = df_agg.groupby(['post_id'])[['num_comments']]\
                                  .agg(num_comments=('num_comments','sum'))\
                                  .sort_values(by=['num_comments'], ascending=False)\
                                  .reset_index()[:5]
-    top_5_post_ids = list(top_5.hashed_post_id.values)
+    top_5_post_ids = list(top_5.post_id.values)
 
     # individualpost = int(individualpost)
     if individualpost==-1:
@@ -129,7 +129,7 @@ def contagion_te_df(df,label,group, start_date, end_date, freq, individualpost):
         except IndexError:
             tempdf = pd.DataFrame([], columns=[colname, 'cumsum', 'percentile'])
             return tempdf
-        tempdf = df_agg[df_agg.hashed_post_id==postid].reset_index()
+        tempdf = df_agg[df_agg.post_id==postid].reset_index()
         totalcount = sum(tempdf.num_comments)
         tempdf['percentile'] = tempdf['cumsum']/totalcount *100
         if freq=='minutes':
@@ -147,10 +147,10 @@ def contagion_ts_df(df,label,group, start_date, end_date):
     if df.empty:
         return pd.DataFrame([], columns=['comment_date', 'cumsum', 'percentile'])
     
-    df_agg = df.groupby(['hashed_post_id','post_text', 'comment_date'])[['hashed_comment_id']] \
-                           .agg(num_comments=('hashed_comment_id','count'),
+    df_agg = df.groupby(['post_id','post_text', 'comment_date'])[['comment_id']] \
+                           .agg(num_comments=('comment_id','count'),
                                 ).sort_values(['comment_date']).reset_index()
-    df_agg['cumsum'] = df_agg.groupby(['hashed_post_id'])['num_comments'].cumsum(axis=0)
+    df_agg['cumsum'] = df_agg.groupby(['post_id'])['num_comments'].cumsum(axis=0)
     
     totalcount = sum(df_agg['num_comments'])
     
@@ -180,8 +180,8 @@ def contagion_te_df_all(df,group, start_date, end_date, freq):
     if df.empty:
         return {'':pd.DataFrame([], columns=[colname, 'cumsum', 'percentile'])}
         
-    dfall = df.groupby(['hashed_post_id','post_text', colname])[['hashed_comment_id']] \
-                           .agg(num_comments=('hashed_comment_id','count'),
+    dfall = df.groupby(['post_id','post_text', colname])[['comment_id']] \
+                           .agg(num_comments=('comment_id','count'),
                                 ).sort_values([colname]).reset_index()
     dfall = dfall.groupby([colname])[['num_comments']] \
                                .agg(num_comments=('num_comments','sum'),
@@ -192,8 +192,8 @@ def contagion_te_df_all(df,group, start_date, end_date, freq):
     labellist = list(df.post_text_pred.unique())
     for label in labellist:
         tempdf = df[df.post_text_pred==label]
-        tempdf = tempdf.groupby(['hashed_post_id','post_text', colname])[['hashed_comment_id']] \
-                           .agg(num_comments=('hashed_comment_id','count'),
+        tempdf = tempdf.groupby(['post_id','post_text', colname])[['comment_id']] \
+                           .agg(num_comments=('comment_id','count'),
                                 ).sort_values([colname]).reset_index()
         tempdf = tempdf.groupby([colname])[['num_comments']] \
                                    .agg(num_comments=('num_comments','sum'),

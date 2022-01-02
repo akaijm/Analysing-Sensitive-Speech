@@ -50,12 +50,12 @@ layout = html.Div([
 
 def update_time_series(time_frame, label, content_type, group):
 
-    post_time = data_filtered.loc[data_filtered.groupby('hashed_post_id')['post_time'].idxmin()].reset_index(drop = True).copy()
+    post_time = data_filtered.loc[data_filtered.groupby('post_id')['post_time'].idxmin()].reset_index(drop = True).copy()
     post_time = post_time.rename(columns = {'post_text_pred':'label', 'post_time':'time'})
     post_time['type'] = 'post'
 
     #Prepare comments data
-    comment_time = data_filtered[data_filtered['hashed_comment_id'] != '0'].copy()
+    comment_time = data_filtered[data_filtered['comment_id'] != '0'].copy()
     comment_time = comment_time.rename(columns = {'comment_text_pred':'label', 'comment_time':'time'})
     comment_time['type'] = 'comment'
 

@@ -19,8 +19,8 @@ from app import app
 #Read in the processed data with post_dates set prior to the earliest comment_date
 data = pd.read_csv('outputs/post-centric_graph/time_elapsed.csv',encoding="utf-8")
 data['post_time'] = pd.to_datetime(data['post_time'])
-data['post_id'] = data['hashed_post_id'].astype(str)
-data['comment_id'] = data['hashed_comment_id'].astype(str)
+data['post_id'] = data['post_id'].astype(str)
+data['comment_id'] = data['comment_id'].astype(str)
 data['comment_time'] = pd.to_datetime(data['comment_time'])
 data['time_elapsed'] = pd.to_timedelta(data['time_elapsed'])
 
@@ -57,6 +57,7 @@ stylesheets = [{"selector": "node",
     {
         'selector': 'edge',
         'style': {
+
             'curve-style': 'bezier',
             "opacity": 1,
             'width':"1.5",
@@ -84,7 +85,6 @@ for index in range(min(len(labels), len(colors))):
     }
     stylesheets.append(node_color)
     stylesheets.append(edge_color)
-#Style for transparent node with topic label overlay
 stylesheets.append({
         'selector': '.comment',
         'style': {
@@ -97,7 +97,6 @@ stylesheets.append({
             "textHalign": "center"
         }
     })
-    
 layout = html.Div([
         html.Div([
             html.Div([dcc.Markdown("**Post-centric Network Graph**",style={'color': 'black', 'fontSize': 25,'textAlign': 'center'})]),
@@ -141,7 +140,7 @@ layout = html.Div([
                     responsive = True,
                     maxZoom = 0.2,
                     minZoom = 0.08,
-                    stylesheet= stylesheets
+                    stylesheet=stylesheets
                     )
                 ),
             html.Div([
@@ -176,11 +175,11 @@ layout = html.Div([
 #Function to create a node
 def make_node(input, node_type, cluster_size = 1):
     if node_type == 'post':
-        hashed_id = input['hashed_post_id']
+        hashed_id = input['post_id']
         group = input['group']
         label = input['post_text_pred']
         time = input['post_time'].strftime('%d-%m-%Y %X')
-        username = input['hashed_username']
+        username = input['username']
         #Check for NaN
         if input['post_text'] == input['post_text']:
             #Remove next line characters
@@ -197,12 +196,12 @@ def make_node(input, node_type, cluster_size = 1):
 
     elif node_type == 'comment':
         #comment
-        hashed_id = input['hashed_comment_id']
-        post_id = input['hashed_post_id']
+        hashed_id = input['comment_id']
+        post_id = input['post_id']
         group = input['group']
         label = input['comment_text_pred']
         time = input['comment_time'].strftime('%d-%m-%Y %X')
-        username = input['hashed_commenter_name']
+        username = input['commenter_name']
         if input['comment_text'] == input['comment_text']:
             text = input['comment_text'].replace('\n','')
             text = text.replace('\r','')
@@ -231,10 +230,10 @@ def make_node(input, node_type, cluster_size = 1):
 def update_graph(search, label_name, group_name, num_clusters, time_elapsed, time_limit):
 
     #Prepare post data
-    post_df = data.loc[data.groupby('hashed_post_id')['post_time'].idxmin()].reset_index(drop = True).copy()
+    post_df = data.loc[data.groupby('post_id')['post_time'].idxmin()].reset_index(drop = True).copy()
 
     #Prepare comments data
-    comments = data[data['hashed_comment_id'] != '0'].copy()
+    comments = data[data['comment_id'] != '0'].copy()
 
     graph_edges = []
     nodes = []
@@ -251,8 +250,8 @@ def update_graph(search, label_name, group_name, num_clusters, time_elapsed, tim
     
     #Get top n posts in terms of number of reactions
     posts=post_df[['group','likes','comments','shares','reactions', 'sentiment',
-               'reaction_count','hashed_post_id',
-               'hashed_username','post_text','post_time','post_text_pred']].reset_index(drop = True)
+               'reaction_count','post_id',
+               'username','post_text','post_time','post_text_pred']].reset_index(drop = True)
     posts = posts.sort_values(by = 'reaction_count', ascending = False).iloc[0:num_clusters].reset_index(drop = True)
     
     #Filter comments based on time elapsed
@@ -261,17 +260,17 @@ def update_graph(search, label_name, group_name, num_clusters, time_elapsed, tim
     else:
         comments = comments.copy()
     #Iterate through unique post_ids
-    for count, post_id in enumerate(posts['hashed_post_id'].unique()):
-        comment_df = comments[comments['hashed_post_id'] == post_id]
+    for count, post_id in enumerate(posts['post_id'].unique()):
+        comment_df = comments[comments['post_id'] == post_id]
         comment_df = comment_df.dropna(subset = ['comment_text', 'comment_time'])
-        comment_df=comment_df[['group','likes','comments','shares','reactions','reaction_count','hashed_post_id', 'sentiment',
-                        'hashed_comment_id','hashed_commenter_name','comment_text','comment_time','comment_text_pred',
+        comment_df=comment_df[['group','likes','comments','shares','reactions','reaction_count','post_id', 'sentiment',
+                        'comment_id','commenter_name','comment_text','comment_time','comment_text_pred',
                         'comment_text_pred_prob', 'time_elapsed']]
         
         #Add comment edges and nodes
         for row in comment_df.index:
             #Add edge
-            target = comment_df.loc[row, 'hashed_comment_id']
+            target = comment_df.loc[row, 'comment_id']
             edge_id = post_id + ',' + target
             element = {'data': {'id': edge_id, 'source':comment_df.loc[row, 'comment_text_pred'] + str(count), 'target':target}, 
             'classes':comment_df.loc[row, 'comment_text_pred']}
@@ -337,16 +336,16 @@ def displayTapNodeData(node, time_elapsed, time_limit):
             output.append('')
 
         #Generate post details from post_id
-        post_df = data.loc[data.groupby('hashed_post_id')['post_time'].idxmin()]
-        post_df = post_df.loc[post_df['hashed_post_id'] == post_id].reset_index(drop = True).iloc[0]
+        post_df = data.loc[data.groupby('post_id')['post_time'].idxmin()]
+        post_df = post_df.loc[post_df['post_id'] == post_id].reset_index(drop = True).iloc[0]
 
         #Get cluster size
-        comments = data[data['hashed_comment_id'] != '0'].copy()
+        comments = data[data['comment_id'] != '0'].copy()
 
         if time_elapsed < time_limit:
             comments = comments[comments['time_elapsed'] < datetime.timedelta(minutes = time_elapsed)].copy()
 
-        comment_df = comments[comments['hashed_post_id'] == post_id]
+        comment_df = comments[comments['post_id'] == post_id]
         comment_df = comment_df.dropna(subset = ['comment_text', 'comment_time'])
 
         source_post['Label'] = post_df['post_text_pred']
@@ -384,11 +383,11 @@ def display_click_data(clickData):
         #Get the clicked post id
         post = clickData['id']
         #Filter the data to retrieve comments corresponding to this post
-        filtered_by_time = data[data['hashed_post_id'] == post]
+        filtered_by_time = data[data['post_id'] == post]
         #If no comments are found, set elapsed time to be 1
         elapsed_time = 1
         if len(filtered_by_time) > 0:
-            elapsed_time = data[data['hashed_post_id'] == post]['time_elapsed']
+            elapsed_time = data[data['post_id'] == post]['time_elapsed']
         
         #Get min number of minutes elapsed
         lower = elapsed_time.min().days*1440 + math.floor(elapsed_time.min().seconds/60)

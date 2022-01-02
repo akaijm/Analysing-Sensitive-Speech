@@ -41,7 +41,7 @@ for i in range(len(names)):
     typee = types[i]
     centrality = centralities[i]
     if typee == 'post':
-        if name == 'tyrannical':
+        if name == 'anti-govt':
             nodes[names[i]] = [freq[i]*20, "#0459eb",
                                "triangle-up", freq[i], centrality]
         else:
@@ -70,8 +70,8 @@ medianweight=edges['weight'].median()
 maxweight=edges['weight'].max()
 maxweightthreshold=maxweight-1
 
-comments_to_posts = {'agreement_post': {}, 'culture_post': {}, 'dehuman_post': {}, 'import_post': {}, 'ingroup_post': {
-}, 'insult_post': {}, 'opp_post': {}, 'others_post': {}, 'racist_post': {}, 'tyrannical_post': {}, 'vto pap_post': {}}
+comments_to_posts = {'agreement_post': {}, 'symbolic_threat_post': {}, 'dehumanising_post': {}, 'realistic_threat_post': {}, 'ingroup_post': {
+}, 'insult_post': {}, 'opp_post': {}, 'others_post': {}, 'racist_post': {}, 'anti-govt_post': {}, 'vto pap_post': {}}
 for index, row in edges.iterrows():
     source = row['source']
     target = row['target']
@@ -187,8 +187,8 @@ fig.update_yaxes(showticklabels = False)
 
 # fig.show()
 #py.plot(fig, filename='network.html')
-labels = ['import', 'agreement', 'racist', 'culture', 'dehuman',
-          'ingroup', 'insult', 'opp', 'others', 'tyrannical', 'vto pap']
+labels = ['realistic_threat', 'agreement', 'racist', 'symbolic_threat', 'dehumanising',
+          'ingroup', 'insult', 'opp', 'others', 'anti-govt', 'vto pap']
 
 layout = html.Div([
     html.Div([
@@ -200,17 +200,17 @@ layout = html.Div([
                     dcc.Checklist(
                         id='checkbox',
                         options=[
-                            {'label': 'dehuman   ',
-                             'value': 'dehuman'},
-                            {'label': 'tyrannical   ',
-                             'value': 'tyrannical'},
+                            {'label': 'dehumanising   ',
+                             'value': 'dehumanising'},
+                            {'label': 'anti-govt   ',
+                             'value': 'anti-govt'},
                             {'label': 'vto pap   ',
                              'value': 'vto pap'},
                             {'label': 'ingroup   ',
                              'value': 'ingroup'},
-                            {'label': 'culture   ',
-                             'value': 'culture'},
-                            {'label': 'import   ', 'value': 'import'},
+                            {'label': 'symbolic_threat   ',
+                             'value': 'symbolic_threat'},
+                            {'label': 'realistic_threat   ', 'value': 'realistic_threat'},
                             {'label': 'others   ', 'value': 'others'},
                             {'label': 'insult   ', 'value': 'insult'},
                             {'label': 'opp   ', 'value': 'opp'},
@@ -218,8 +218,8 @@ layout = html.Div([
                              'value': 'agreement'},
                             {'label': 'racist', 'value': 'racist'},
                         ],
-                        value=['dehuman', 'tyrannical', 'vto pap', 'ingroup', 'culture',
-                               'import', 'others', 'insult', 'opp', 'agreement', 'racist'],
+                        value=['dehumanising', 'anti-govt', 'vto pap', 'ingroup', 'symbolic_threat',
+                               'realistic_threat', 'others', 'insult', 'opp', 'agreement', 'racist'],
                         inputStyle={"marginLeft": "20px",
                                     "marginRight": "5px"}
                     ),
@@ -294,17 +294,17 @@ def update_graph(boxval, syncval):
             texts[cnt] = ""
         else:
             texts[cnt] = i
-            if topici == 'dehuman':
+            if topici == 'dehumanising':
                 colors[cnt] = '#f0063e'
-            elif topici == 'tyrannical':
+            elif topici == 'anti-govt':
                 colors[cnt] = '#0495eb'
             elif topici == 'vto pap':
                 colors[cnt] = "#B6D0E2"
             elif topici == 'ingroup':
                 colors[cnt] = "#f0d137"
-            elif topici == 'culture':
+            elif topici == 'symbolic_threat':
                 colors[cnt] = "#cfa502"
-            elif topici == 'import':
+            elif topici == 'realistic_threat':
                 colors[cnt] = "#eb8bbe"
             elif topici == 'others':
                 colors[cnt] = "#cacdc7"

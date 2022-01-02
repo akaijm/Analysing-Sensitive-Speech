@@ -72,9 +72,9 @@ def sentiment_ts_df(df, label,group, porc, freq):
         else:
             groupbycol = ['comment_date']
     
-    df_agg = df.groupby(groupbycol)[['sentiment','hashed_comment_id']] \
+    df_agg = df.groupby(groupbycol)[['sentiment','comment_id']] \
                            .agg(sentiment_score=('sentiment','mean'),
-                                count = ('hashed_comment_id','count')
+                                count = ('comment_id','count')
                                 ).sort_values(groupbycol).reset_index()
     if freq=='month':
         df_agg['day'] = 1
@@ -112,9 +112,9 @@ def sentiment_te_df(df, label,group, freq):
     except:
         return pd.DataFrame([], columns=[colname, 'sentiment_score', 'count'])
 
-    df_agg = df.groupby([colname])[['sentiment','hashed_comment_id']] \
+    df_agg = df.groupby([colname])[['sentiment','comment_id']] \
                            .agg(sentiment_score=('sentiment','mean'),
-                                count = ('hashed_comment_id','count')
+                                count = ('comment_id','count')
                                 ).sort_values([colname]).reset_index()
     return df_agg
 
@@ -175,7 +175,7 @@ def sentiment_ts_plot(df=df,label='all',group='all', porc='comments', freq = 'da
 
 
 
-def sentiment_te_plot(df=df,label='tyrannical',group='all', freq='days'):
+def sentiment_te_plot(df=df,label='anti-govt',group='all', freq='days'):
     colname = 'time_elapsed_'+freq
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     if label!='all':
